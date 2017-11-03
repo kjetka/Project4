@@ -45,38 +45,47 @@ int main(){
     vec temperatures = vec({1.0, 2.4});
     double Temperature =temperatures[0];
 
-    double Energi_state = 0;
+    double Energy = 0;
     for(int x =0; x < L; x++) {
       for (int y = 0; y < L; y++){
-          Energi_state -= Microstate(x,y)*(Microstate(periodicBC(x,L,1),y) + Microstate(x,periodicBC(y,L,1)));
+          Energy -= Microstate(x,y)*(Microstate(periodicBC(x,L,1),y) + Microstate(x,periodicBC(y,L,1)));
       }
     }
 
     vec Acceptance = zeros<mat>(17);
     for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
 
-
-    //vec Expectationvalues = zeros<vec>(5);
+    vec Expectationvalues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
     for(int MC =1; MC<MonteCarloCycles; MC++){
         int local_dEnergy = 0;
          // Flipping state ix,iy
+        // QUESTION
         int ix =random_nr()*L;
         int iy = random_nr()*L;
 
         // This is slow, as periodicBC has an if else loop...
-
         int dE =  2*Microstate(ix,iy)*(
                       Microstate(ix , periodicBC(iy,L,1) )
                     + Microstate(ix , periodicBC(iy,L,-1))
                     + Microstate(periodicBC(ix,L,1),  iy)
                     + Microstate(periodicBC(ix,L,-1), iy)    );
 
-        if (random_nr() <= Acceptance(dE + 8)){
+        // Very slow!
+        double probability = Acceptance(dE + 8);
+        if (random_nr() <= probability){
             Microstate(ix,iy) *= - 1;
-            Energi_state += dE;
+            Energy += dE;
         }
-   }
-    cout << Energi_state<<endl;
+        Expectationvalues[0] += Energy*probability;
+        Expectationvalues[1] +=Energy*Energy* probability;
+        /*
+        Expectationvalues[2] += Magnetic* probability;
+        Expectationvalues[3] += Magnetic*Magnetic probability;
+        Expectationvalues[4] += fabs(Magnetic)* probability;
+        */
+
+    }
+    cout << Energy<<endl;
 
                 /*
                     (Microstate(ix,PeriodicBoundary(iy,NSpins,-1))+
