@@ -15,6 +15,8 @@ using namespace arma;
 //void metropolisSampling(int N); //the whole prosess
 //void metropolisAlgorithm(mat Matrix);
 
+void analyticalExpectationValues(double T);
+
 std::random_device rd;
 std::mt19937_64 gen(rd());
 // Set up the uniform distribution for x \in [[0, 1]
