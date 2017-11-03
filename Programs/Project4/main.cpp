@@ -128,6 +128,7 @@ void analyticalExpectationValues(double T, vec analExpValue){
     analExpValue[2] = 0; // <M>
     analExpValue[3] = 8*expA+8/(coshA+3); // <M^2>
     analExpValue[4] = 2*expA+4/(coshA+3); // <|M|>
+}
 void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile){
 
     outfile << MCcycle << "\t";
