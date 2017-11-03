@@ -95,46 +95,6 @@ int main(){
     cout << Expectationvalues[2] << " <M>" << endl;
     cout << Expectationvalues[3] << " <M^2>" << endl;
     cout << Expectationvalues[4] << " <|M|>" << endl;
-    /*
-                    (Microstate(ix,PeriodicBoundary(iy,NSpins,-1))+
-                       Microstate(PeriodicBoundary(ix,NSpins,-1),iy) +
-                       Microstate(ix,PeriodicBoundary(iy,NSpins,1)) +
-                       Microstate(PeriodicBoundary(ix,NSpins,1),iy));
-                */
-    // Prob: How to gjennkjenne energiforandring?????
-
-    /*
-        for(int x =0; x < L; x++) {
-          for (int y = 0; y < L; y++){
-
-              //Microstate(x,y) = random_(); //Brute force  - alt 1 lecture notes Kjetil
-          }
-        }*/
-
-
-
-
-
-
-
-    /*
-        double E = 0;
-        double M = 0;
-        double M2 = 0;
-        double E2 = 0;
-        double sups = 0;
-        double E_tot = 0;
-
-        for(int i = 0; i <= MonteCarloCycles; i++){
-            metropolisSampling(N);
-            E += E;
-        }
-        E_tot = (1.0/MonteCarloCycles)*E;
-        */
-
-
-
-
 
     return 0;
 }
@@ -146,14 +106,6 @@ double random_spinn(){
     return number;
 }
 
-
-/*void metropolisSampling(int N){
-    //Matrix = makeMatrix(N);
-    //suggest a new move
-    //metropolisAlgorithm(Matrix);
-    //update averages
-}
-*/
 mat makeMicrostate(int L){
     mat microstate = ones<mat>(L,L);
     for (int j=0;j<L;j++){
@@ -176,17 +128,3 @@ void analyticalExpectationValues(double T, vec analExpValue){
     analExpValue[3] = 8*expA+8/(coshA+3); // <M^2>
     analExpValue[4] = 2*expA+4/(coshA+3); // <|M|>
 }
-
-/*void metropolisAlgorithm(mat Matrix){
-    //for(int i = 0; )
-}*/
-
-/*mat makeMatrix(int N, bool initial){ // true -> ordered initial | false -> random initial
-    if(initial == true){
-        return mat Matrix = ones(N,N); // returns a NxN matrix with only ones
-    }else{
-        return mat Matrix = rand(N,N); // returns a NxN matrix with random numbers either 1 or -1
-    }
-
-}
-*/
