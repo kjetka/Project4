@@ -46,26 +46,29 @@ int main(){
     double Temperature =temperatures[0];
 
     double Energy = 0;
+    double MagneticMoment = 0;
+
     for(int x =0; x < L; x++) {
-      for (int y = 0; y < L; y++){
-          Energy -= Microstate(x,y)*(Microstate(periodicBC(x,L,1),y) + Microstate(x,periodicBC(y,L,1)));
-      }
+        for (int y = 0; y < L; y++){
+            Energy -= Microstate(x,y)*(Microstate(periodicBC(x,L,1),y) + Microstate(x,periodicBC(y,L,1)));
+            MagneticMoment +=Microstate(x,y);
+        }
     }
 
     vec Acceptance = zeros<mat>(17);
     for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
 
     vec Expectationvalues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
-    for(int MC =1; MC<MonteCarloCycles; MC++){
+    for(int MC =1; MC<MonteCarloCycles*L*L; MC++){
         int local_dEnergy = 0;
-         // Flipping state ix,iy
+        // Flipping state ix,iy
         // QUESTION
         int ix =random_nr()*L;
         int iy = random_nr()*L;
 
         // This is slow, as periodicBC has an if else loop...
         int dE =  2*Microstate(ix,iy)*(
-                      Microstate(ix , periodicBC(iy,L,1) )
+                    Microstate(ix , periodicBC(iy,L,1) )
                     + Microstate(ix , periodicBC(iy,L,-1))
                     + Microstate(periodicBC(ix,L,1),  iy)
                     + Microstate(periodicBC(ix,L,-1), iy)    );
@@ -75,27 +78,27 @@ int main(){
         if (random_nr() <= probability){
             Microstate(ix,iy) *= - 1;
             Energy += dE;
+            MagneticMoment += -2*Microstate(ix,iy);
         }
         Expectationvalues[0] += Energy*probability;
         Expectationvalues[1] +=Energy*Energy* probability;
-        /*
-        Expectationvalues[2] += Magnetic* probability;
-        Expectationvalues[3] += Magnetic*Magnetic probability;
-        Expectationvalues[4] += fabs(Magnetic)* probability;
-        */
+        Expectationvalues[2] += MagneticMoment* probability;
+        Expectationvalues[3] += MagneticMoment*MagneticMoment*probability;
+        Expectationvalues[4] += fabs(MagneticMoment)* probability;
+
 
     }
     cout << Energy<<endl;
 
-                /*
+    /*
                     (Microstate(ix,PeriodicBoundary(iy,NSpins,-1))+
                        Microstate(PeriodicBoundary(ix,NSpins,-1),iy) +
                        Microstate(ix,PeriodicBoundary(iy,NSpins,1)) +
                        Microstate(PeriodicBoundary(ix,NSpins,1),iy));
                 */
-            // Prob: How to gjennkjenne energiforandring?????
+    // Prob: How to gjennkjenne energiforandring?????
 
-        /*
+    /*
         for(int x =0; x < L; x++) {
           for (int y = 0; y < L; y++){
 
@@ -109,7 +112,7 @@ int main(){
 
 
 
-        /*
+    /*
         double E = 0;
         double M = 0;
         double M2 = 0;
@@ -154,7 +157,7 @@ mat makeMicrostate(int L){
 
         }
     }
-return microstate;
+    return microstate;
 }
 
 /*void metropolisAlgorithm(mat Matrix){
