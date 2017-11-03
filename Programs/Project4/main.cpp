@@ -16,7 +16,7 @@ using namespace arma;
 //void metropolisAlgorithm(mat Matrix);
 mat makeMatrix();
 
-void analyticalExpectationValues(double T);
+vec analyticalExpectationValues(double T);
 
 std::random_device rd;
 std::mt19937_64 gen(rd());
@@ -32,7 +32,7 @@ int periodicBC(int i, int limit, int add){
     else return i+add;
 }
 inline double random_nr(){
-    return RandomNumberGenerator(gen);};
+    return RandomNumberGenerator(gen);}
 
 void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile);
 void writeHeader(ofstream &outfile, int MCcycles );
@@ -88,14 +88,20 @@ int main(){
                 MagneticMoment += -2*Microstate(ix,iy);
 
                 Expectationvalues[0] += Energy*probability;
-                Expectationvalues[1] +=Energy*Energy* probability;
+                Expectationvalues[1] += Energy*Energy* probability;
                 Expectationvalues[2] += MagneticMoment* probability;
                 Expectationvalues[3] += MagneticMoment*MagneticMoment*probability;
                 Expectationvalues[4] += fabs(MagneticMoment)* probability;
             }
         //writeToFile()
         }
+
     }
+
+    cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>" << endl;
+    vec analExpValues = analyticalExpectationValues(Temperature);
+    Expectationvalues.print("Expect:");
+    analExpValues.print("Analytical:");
 
     return 0;
 }
@@ -118,7 +124,8 @@ mat makeMicrostate(int L){
     return microstate;
 }
 
-void analyticalExpectationValues(double T, vec analExpValue){
+vec analyticalExpectationValues(double T){
+    vec analExpValue = zeros(5);
     double A = 8*(1/T);
     double sinhA = sinh(A);
     double coshA = cosh(A);
@@ -128,6 +135,7 @@ void analyticalExpectationValues(double T, vec analExpValue){
     analExpValue[2] = 0; // <M>
     analExpValue[3] = 8*expA+8/(coshA+3); // <M^2>
     analExpValue[4] = 2*expA+4/(coshA+3); // <|M|>
+    return analExpValue;
 }
 void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile){
 
