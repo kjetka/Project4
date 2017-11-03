@@ -16,6 +16,8 @@ using namespace arma;
 //void metropolisAlgorithm(mat Matrix);
 mat makeMatrix();
 
+void analyticalExpectationValues(double T);
+
 std::random_device rd;
 std::mt19937_64 gen(rd());
 // Set up the uniform distribution for x \in [[0, 1]
@@ -95,13 +97,6 @@ int main(){
         }
     }
 
-
-
-
-
-
-
-
     return 0;
 }
 
@@ -111,8 +106,6 @@ double random_spinn(){
     else number = -1;
     return number;
 }
-
-
 
 mat makeMicrostate(int L){
     mat microstate = ones<mat>(L,L);
@@ -125,6 +118,16 @@ mat makeMicrostate(int L){
     return microstate;
 }
 
+void analyticalExpectationValues(double T, vec analExpValue){
+    double A = 8*(1/T);
+    double sinhA = sinh(A);
+    double coshA = cosh(A);
+    double expA = exp(A);
+    analExpValue[0] = -8 *sinhA/(coshA+3); // <E>
+    analExpValue[1] = 64*coshA/(coshA+3); // <E^2>
+    analExpValue[2] = 0; // <M>
+    analExpValue[3] = 8*expA+8/(coshA+3); // <M^2>
+    analExpValue[4] = 2*expA+4/(coshA+3); // <|M|>
 void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile){
 
     outfile << MCcycle << "\t";
