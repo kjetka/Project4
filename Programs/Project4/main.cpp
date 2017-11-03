@@ -16,6 +16,8 @@ using namespace arma;
 //void metropolisAlgorithm(mat Matrix);
 mat makeMatrix();
 
+void analyticalExpectationValues(double T);
+
 std::random_device rd;
 std::mt19937_64 gen(rd());
 // Set up the uniform distribution for x \in [[0, 1]
@@ -88,8 +90,11 @@ int main(){
 
 
     }
-    cout << Energy<<endl;
-
+    cout << Expectationvalues[0] << " <E>" << endl;
+    cout << Expectationvalues[1] << " <E^2>" << endl;
+    cout << Expectationvalues[2] << " <M>" << endl;
+    cout << Expectationvalues[3] << " <M^2>" << endl;
+    cout << Expectationvalues[4] << " <|M|>" << endl;
     /*
                     (Microstate(ix,PeriodicBoundary(iy,NSpins,-1))+
                        Microstate(PeriodicBoundary(ix,NSpins,-1),iy) +
@@ -160,6 +165,18 @@ mat makeMicrostate(int L){
     return microstate;
 }
 
+void analyticalExpectationValues(double T, vec analExpValue){
+    double A = 8*(1/T);
+    double sinhA = sinh(A);
+    double coshA = cosh(A);
+    double expA = exp(A);
+    analExpValue[0] = -8 *sinhA/(coshA+3); // <E>
+    analExpValue[1] = 64*coshA/(coshA+3); // <E^2>
+    analExpValue[2] = 0; // <M>
+    analExpValue[3] = 8*expA+8/(coshA+3); // <M^2>
+    analExpValue[4] = 2*expA+4/(coshA+3); // <|M|>
+}
+
 /*void metropolisAlgorithm(mat Matrix){
     //for(int i = 0; )
 }*/
@@ -170,7 +187,6 @@ mat makeMicrostate(int L){
     }else{
         return mat Matrix = rand(N,N); // returns a NxN matrix with random numbers either 1 or -1
     }
-
 
 }
 */
