@@ -30,14 +30,16 @@ int periodicBC(int i, int limit, int add){
     else return i+add;
 }
 inline double random_nr(){
-    return RandomNumberGenerator(gen);};
+    return RandomNumberGenerator(gen);}
 
-void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile);
+void writeToFile(vec & Means, int &MCcycle, int &TotMCcycles ,  ofstream &outfile);
 void writeHeader(ofstream &outfile, int MCcycles );
+
+
 int main(){
 
-    int L = 2;
-    int MonteCarloCycles = 1e2;
+    int L = 10;
+    int MonteCarloCycles = 1e6;
 
     // Initialize matrix
 
@@ -49,9 +51,18 @@ int main(){
 
 
 
+
     double Temperature =temperatures[0];
     double Energy = 0;
     double MagneticMoment = 0;
+
+    ofstream outfile;
+    stringstream stream;
+    stream << fixed << setprecision(1  ) << Temperature;
+    string Temp_string = stream.str();
+
+    outfile.open("../../results/4b/T"+ Temp_string +"_L" + to_string(L)+  ".txt");
+    writeHeader(outfile,  MonteCarloCycles);
 
     for(int x =0; x < L; x++) {
         for (int y = 0; y < L; y++){
@@ -64,7 +75,7 @@ int main(){
 
     for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
 
-    vec Expectationvalues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
+    vec Meanvalues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
     for(int MC =1; MC<MonteCarloCycles; MC++){
         for (int xy =0; xy<L*L;xy++){
             // Flipping state ix,iy
@@ -85,18 +96,16 @@ int main(){
                 Energy += dE;
                 MagneticMoment += -2*Microstate(ix,iy);
 
-                Expectationvalues[0] += Energy*probability;
-                Expectationvalues[1] +=Energy*Energy* probability;
-                Expectationvalues[2] += MagneticMoment* probability;
-                Expectationvalues[3] += MagneticMoment*MagneticMoment*probability;
-                Expectationvalues[4] += fabs(MagneticMoment)* probability;
+                Meanvalues[0] += Energy;
+                Meanvalues[1] +=Energy*Energy;
+                Meanvalues[2] += MagneticMoment;
+                Meanvalues[3] += MagneticMoment*MagneticMoment;
+                Meanvalues[4] += fabs(MagneticMoment);
             }
-        //writeToFile()
         }
+    writeToFile(Meanvalues, MC, MonteCarloCycles,  outfile);
+
     }
-
-
-
 
 
 
@@ -105,14 +114,16 @@ int main(){
     return 0;
 }
 
+
+
+
+
 double random_spinn(){
     double number =  (double) (RandomNumberGenerator(gen));
     if(number>0.5) number = 1;
     else number = -1;
     return number;
 }
-
-
 
 mat makeMicrostate(int L){
     mat microstate = ones<mat>(L,L);
@@ -125,16 +136,16 @@ mat makeMicrostate(int L){
     return microstate;
 }
 
-void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile){
-
-    outfile << MCcycle << "\t";
+void writeToFile( vec & Means, int  &MCcycle, int &TotMCcycles, ofstream &outfile){
+    double norm =(double) TotMCcycles;
+    outfile << (int) MCcycle << "\t \t";
     for (int i=0;i<5;i++){
-        outfile << Expectations<<"\t";
+        outfile << Means(i)/norm<<"\t \t";
     }
-
+    outfile<< endl;
 }
 
 void writeHeader(ofstream &outfile, int MCcycles){
     outfile << "MCcycles: "<< MCcycles<<endl;
-    outfile << "MCcycle \t <E> \t <E^2> \t <M> \t <M^2> \t <|M|>" <<endl;
+    outfile << "MCcycle \t <E> \t\t <E^2> \t\t <M> \t\t <M^2> \t\t <|M|>" <<endl;
 }
