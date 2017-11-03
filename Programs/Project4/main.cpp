@@ -35,8 +35,6 @@ void writeToFile(vec Means, int &MCcycle, int &TotMCcycles , double& T, int L,  
 void writeHeader(ofstream &outfile, int MCcycles );
 vec analyticalExpectationValues(double T);
 vec calculateProperties(vec meanValues, double T);
-void writeToFileTemperature( vec & Means, double & T, vec & properties, ofstream &outfile);
-void writeHeaderTemperature(ofstream &outfile);
 
 
 int main(){
@@ -65,12 +63,6 @@ int main(){
 
         outfile.open("../../results/4b/T_random_"+ Temp_string +"_L" + to_string(L)+  ".txt");
         writeHeader(outfile,  MonteCarloCycles);
-
-        // ---------------------------------------
-
-        ofstream outfileTemperature;
-        outfileTemperature.open("../../results/4c/FinalProperties_L" + to_string(L)+  ".txt");
-        writeHeaderTemperature(outfileTemperature);
 
 
         for(int x =0; x < L; x++) {
@@ -119,9 +111,6 @@ int main(){
             writeToFile(meanValues, MC, MonteCarloCycles, Temperature, L, outfile);
 
         }
-
-
-    //writeToFileTemperature(meanValues, Temperature, properties, outfileTemperature);
 
     // Compare with analytical result for N=2:
 
@@ -201,12 +190,3 @@ void writeHeader(ofstream &outfile, int MCcycles){
     outfile << "MCcycle \t <E> \t\t <E^2> \t\t <M> \t\t <M^2> \t\t <|M|>" <<endl;
 }
 
-void writeToFileTemperature( vec & Means, double &T, vec & properties, ofstream &outfile){
-    outfile << T << "\t" << properties[0] << "\t" << properties[1];
-    outfile << "\t" << Means[0] << "\t" << Means[2] << "\t";
-    outfile<< endl;
-}
-
-void writeHeaderTemperature(ofstream &outfile){
-    outfile << "Temperature \t Suseptibiliy \t\t Heat Capacity \t\t Mean Energy \t\t Mean Magnetization" <<endl;
-}
