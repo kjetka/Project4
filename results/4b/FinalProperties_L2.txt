@@ -1,0 +1,1 @@
+Temperature 	 Suseptibiliy 		 Heat Capacity 		 Mean Energy 		 Mean Magnetization
