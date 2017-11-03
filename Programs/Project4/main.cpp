@@ -32,6 +32,8 @@ int periodicBC(int i, int limit, int add){
 inline double random_nr(){
     return RandomNumberGenerator(gen);};
 
+void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile);
+void writeHeader(ofstream &outfile, int MCcycles );
 int main(){
 
     int L = 2;
@@ -43,8 +45,11 @@ int main(){
 
     // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
     vec temperatures = vec({1.0, 2.4});
-    double Temperature =temperatures[0];
 
+
+
+
+    double Temperature =temperatures[0];
     double Energy = 0;
     double MagneticMoment = 0;
 
@@ -56,76 +61,42 @@ int main(){
     }
 
     vec Acceptance = zeros<mat>(17);
+
     for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
 
     vec Expectationvalues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
-    for(int MC =1; MC<MonteCarloCycles*L*L; MC++){
-        int local_dEnergy = 0;
-        // Flipping state ix,iy
-        // QUESTION
-        int ix =random_nr()*L;
-        int iy = random_nr()*L;
+    for(int MC =1; MC<MonteCarloCycles; MC++){
+        for (int xy =0; xy<L*L;xy++){
+            // Flipping state ix,iy
+            // QUESTION
+            int ix =random_nr()*L;
+            int iy = random_nr()*L;
+            // This is slow, as periodicBC has an if else loop...
+            int dE =  2*Microstate(ix,iy)*(
+                        Microstate(ix , periodicBC(iy,L,1) )
+                        + Microstate(ix , periodicBC(iy,L,-1))
+                        + Microstate(periodicBC(ix,L,1),  iy)
+                        + Microstate(periodicBC(ix,L,-1), iy)    );
 
-        // This is slow, as periodicBC has an if else loop...
-        int dE =  2*Microstate(ix,iy)*(
-                    Microstate(ix , periodicBC(iy,L,1) )
-                    + Microstate(ix , periodicBC(iy,L,-1))
-                    + Microstate(periodicBC(ix,L,1),  iy)
-                    + Microstate(periodicBC(ix,L,-1), iy)    );
+            // Very slow!
+            double probability = Acceptance(dE + 8);
+            if (random_nr() <= probability){
+                Microstate(ix,iy) *= - 1;
+                Energy += dE;
+                MagneticMoment += -2*Microstate(ix,iy);
 
-        // Very slow!
-        double probability = Acceptance(dE + 8);
-        if (random_nr() <= probability){
-            Microstate(ix,iy) *= - 1;
-            Energy += dE;
-            MagneticMoment += -2*Microstate(ix,iy);
+                Expectationvalues[0] += Energy*probability;
+                Expectationvalues[1] +=Energy*Energy* probability;
+                Expectationvalues[2] += MagneticMoment* probability;
+                Expectationvalues[3] += MagneticMoment*MagneticMoment*probability;
+                Expectationvalues[4] += fabs(MagneticMoment)* probability;
+            }
+        //writeToFile()
         }
-        Expectationvalues[0] += Energy*probability;
-        Expectationvalues[1] +=Energy*Energy* probability;
-        Expectationvalues[2] += MagneticMoment* probability;
-        Expectationvalues[3] += MagneticMoment*MagneticMoment*probability;
-        Expectationvalues[4] += fabs(MagneticMoment)* probability;
-
-
     }
-    cout << Energy<<endl;
-
-    /*
-                    (Microstate(ix,PeriodicBoundary(iy,NSpins,-1))+
-                       Microstate(PeriodicBoundary(ix,NSpins,-1),iy) +
-                       Microstate(ix,PeriodicBoundary(iy,NSpins,1)) +
-                       Microstate(PeriodicBoundary(ix,NSpins,1),iy));
-                */
-    // Prob: How to gjennkjenne energiforandring?????
-
-    /*
-        for(int x =0; x < L; x++) {
-          for (int y = 0; y < L; y++){
-
-              //Microstate(x,y) = random_(); //Brute force  - alt 1 lecture notes Kjetil
-          }
-        }*/
 
 
 
-
-
-
-
-    /*
-        double E = 0;
-        double M = 0;
-        double M2 = 0;
-        double E2 = 0;
-        double sups = 0;
-        double E_tot = 0;
-
-        for(int i = 0; i <= MonteCarloCycles; i++){
-            metropolisSampling(N);
-            E += E;
-        }
-        E_tot = (1.0/MonteCarloCycles)*E;
-        */
 
 
 
@@ -142,13 +113,7 @@ double random_spinn(){
 }
 
 
-/*void metropolisSampling(int N){
-    //Matrix = makeMatrix(N);
-    //suggest a new move
-    //metropolisAlgorithm(Matrix);
-    //update averages
-}
-*/
+
 mat makeMicrostate(int L){
     mat microstate = ones<mat>(L,L);
     for (int j=0;j<L;j++){
@@ -160,17 +125,16 @@ mat makeMicrostate(int L){
     return microstate;
 }
 
-/*void metropolisAlgorithm(mat Matrix){
-    //for(int i = 0; )
-}*/
+void writeToFile( vec & Expectations, int &MCcycle, ofstream &outfile){
 
-/*mat makeMatrix(int N, bool initial){ // true -> ordered initial | false -> random initial
-    if(initial == true){
-        return mat Matrix = ones(N,N); // returns a NxN matrix with only ones
-    }else{
-        return mat Matrix = rand(N,N); // returns a NxN matrix with random numbers either 1 or -1
+    outfile << MCcycle << "\t";
+    for (int i=0;i<5;i++){
+        outfile << Expectations<<"\t";
     }
 
-
 }
-*/
+
+void writeHeader(ofstream &outfile, int MCcycles){
+    outfile << "MCcycles: "<< MCcycles<<endl;
+    outfile << "MCcycle \t <E> \t <E^2> \t <M> \t <M^2> \t <|M|>" <<endl;
+}
