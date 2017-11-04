@@ -38,7 +38,7 @@ void writeHeader(ofstream &outfile, int MCcycles );
 
 int main(){
 
-    int L = 10;
+    int L = 2;
     int MonteCarloCycles = 1e6;
 
     // Initialize matrix
