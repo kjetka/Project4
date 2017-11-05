@@ -131,7 +131,7 @@ vec calculateProperties(vec ExpectationValues, double T){
     double beta = 1.0/T;
     vec calculatedValues = zeros(2);
     calculatedValues[0] = beta*(ExpectationValues[3] - ExpectationValues[2]*ExpectationValues[2]); // X
-    calculatedValues[1] = beta*(ExpectationValues[1] - ExpectationValues[0]*ExpectationValues[0]); // Cv
+    calculatedValues[1] = beta*beta*(ExpectationValues[1] - ExpectationValues[0]*ExpectationValues[0]); // Cv unit: [k]++
     return calculatedValues;
 }
 
@@ -167,7 +167,7 @@ vec analyticalExpectationValues(double T){
     analExpValue[2] = 0; // <M>
     analExpValue[3] = (8.0*expA+8)/(coshA+3); // <M^2>
     analExpValue[4] = (2.0*expA+4)/(coshA+3); // <|M|>
-    analExpValue[5] = beta*(analExpValue[3] - analExpValue[2]*analExpValue[2]); // Cv
+    analExpValue[5] = beta*beta*(analExpValue[3] - analExpValue[2]*analExpValue[2]); // Cv unit:[k]++
     analExpValue[6] = beta*(analExpValue[1] - analExpValue[0]*analExpValue[0]); //X
     return analExpValue/4;
 }
