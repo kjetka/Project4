@@ -17,9 +17,6 @@ anal_Cv.fill(3.9933)
 anal_X = zeros(len(MCcycle))
 anal_X.fill(0.0321)
 
-minx = min(MCcycle)
-maxx = max(MCcycle)
-
 # OBS! All values are per spin and normalized!
 
 figure()
@@ -30,7 +27,7 @@ title("Energy per spin vs Monte Carlo cycles")
 xlabel("Number of MC cycles")
 ylabel("$\\left< E \\right>$ [eV]")
 legend()
-savefig("N_2_energy.pdf")
+savefig("L_2_energy.pdf")
 
 figure()
 plot(MCcycle, magnetic_abs, label="numerical")
@@ -39,7 +36,7 @@ title("Magnetic moment per spin vs Monte Carlo cycles")
 xlabel("Number of MC cycles")
 ylabel("$\\left<\\| M \\| \\right>$ [?]")
 legend()
-savefig("N_2_magnetic_abs.pdf")
+savefig("L_2_magnetic_abs.pdf")
 
 figure()
 plot(MCcycle, Cv, label="numerical")
@@ -49,7 +46,7 @@ xlabel("Number of MC cycles")
 ylabel("$C_v$ [eV]")
 ylim([0.75, 4.25])
 legend(loc=4)
-savefig("N_2_heat_capasity.pdf")
+savefig("L_2_heat_capasity.pdf")
 
 figure()
 plot(MCcycle, X, label="numerical")
@@ -58,7 +55,7 @@ title("Susceptibility per spin vs Monte Carlo cycles")
 xlabel("Number of MC cycles")
 ylabel("$\\chi$ [eV]")
 legend()
-savefig("N_2_susceptibility.pdf")
+savefig("L_2_susceptibility.pdf")
 
 
 show()

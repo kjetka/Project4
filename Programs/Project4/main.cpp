@@ -39,12 +39,12 @@ vec calculateProperties(vec meanValues, double T);
 
 int main(){
 
-    int L = 2;
-    int MonteCarloCycles = 1e6;
+    int L = 20;
+    int MonteCarloCycles = 1e5;
 
     // Initialize matrix
 
-    mat Microstate = makeMicrostate(L, true); // initialType: true -> random spins | false -> ordered spins
+    mat Microstate = makeMicrostate(L, false); // initialType: true -> random spins | false -> ordered spins
     //mat Microstate = makeMicrostate(L, false);
 
     // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
@@ -61,7 +61,7 @@ int main(){
         stream << fixed << setprecision(1  ) << Temperature;
         string Temp_string = stream.str();
 
-        outfile.open("../../results/4b/T_random_"+ Temp_string +"_L" + to_string(L)+  ".txt");
+        outfile.open("../../results/4c/T_"+ Temp_string +"_L" + to_string(L)+  ".txt");
         writeHeader(outfile,  MonteCarloCycles);
 
 
@@ -71,8 +71,6 @@ int main(){
                 MagneticMoment +=Microstate(x,y);
             }
         }
-        Microstate.print("M");
-        cout << Energy << endl;
         vec Acceptance = zeros<mat>(17);
 
         for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
@@ -114,14 +112,14 @@ int main(){
 
     // Compare with analytical result:
 
-    cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Cv, " << "X" << endl;
-    vec analExpValues = analyticalExpectationValues(Temperature);
-    vec properties = calculateProperties(meanValues/MonteCarloCycles, Temperature);
-    meanValues = meanValues/(MonteCarloCycles*L*L);
-    properties = properties/(L*L);
-    meanValues.print("Expect:");
-    properties.print();
-    analExpValues.print("Analytical:");
+//    cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Cv, " << "X" << endl;
+//    vec analExpValues = analyticalExpectationValues(Temperature);
+//    vec properties = calculateProperties(meanValues/MonteCarloCycles, Temperature);
+//    meanValues = meanValues/(MonteCarloCycles*L*L);
+//    properties = properties/(L*L);
+//    meanValues.print("Expect:");
+//    properties.print();
+//    analExpValues.print("Analytical:");
 
 }
     return 0;
