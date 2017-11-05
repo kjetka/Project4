@@ -39,12 +39,12 @@ vec calculateProperties(vec meanValues, double T);
 
 int main(){
 
-    int L = 20;
-    int MonteCarloCycles = 1e4;
+    int L = 2;
+    int MonteCarloCycles = 1e6;
 
     // Initialize matrix
 
-    mat Microstate = makeMicrostate(L, true);
+    mat Microstate = makeMicrostate(L, true); // initialType: true -> random spins | false -> ordered spins
     //mat Microstate = makeMicrostate(L, false);
 
     // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
@@ -112,7 +112,7 @@ int main(){
 
         }
 
-    // Compare with analytical result for N=2:
+    // Compare with analytical result:
 
     cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Cv, " << "X" << endl;
     vec analExpValues = analyticalExpectationValues(Temperature);
@@ -187,6 +187,6 @@ void writeToFile(vec Means, int &MCcycle, int& TotMCcycles, double &T, int L, of
 
 void writeHeader(ofstream &outfile, int MCcycles){
     outfile << "MCcycles: "<< MCcycles<<endl;
-    outfile << "MCcycle \t <E> \t\t <E^2> \t\t <M> \t\t <M^2> \t\t <|M|>" <<endl;
+    outfile << "MCcycle \t <E> \t\t <E^2> \t\t <M> \t\t <M^2> \t\t <|M|>\t\t Cv\t\t X" <<endl;
 }
 
