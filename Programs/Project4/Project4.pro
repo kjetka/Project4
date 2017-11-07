@@ -3,11 +3,8 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp \
-    solver.cpp
+SOURCES += main.cpp
 
-HEADERS += \
-    solver.h
 #INCLUDEPATH += D:\armadillo-8.100.1/include
 
 INCLUDEPATH += /usr/local/include
@@ -16,5 +13,3 @@ LIBS += -larmadillo -llapack -lblas
 
 #QMAKE_CXXFLAGS += -O3
 #QMAKE_CXXFLAGS -= -O2
-
-
