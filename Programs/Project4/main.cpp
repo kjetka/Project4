@@ -7,11 +7,8 @@
 #include <armadillo>
 #include <string>
 #include <random>
-<<<<<<< HEAD
 #include <vector>
 #include <algorithm>
-=======
->>>>>>> parent of ea36a93... Merge remote-tracking branch 'origin/Kjetil_dev' into Kjetil_dev
 
 using namespace std;
 using namespace arma;
@@ -24,7 +21,6 @@ std::random_device rd;
 std::mt19937_64 gen(rd());
 // Set up the uniform distribution for x \in [[0, 1]
 std::uniform_real_distribution<double> RandomNumberGenerator(0.0,1.0);
-<<<<<<< Updated upstream
 
 int periodicBC(int i, int limit, int add){
     if ((i+add)>=limit) return 0;
@@ -32,15 +28,8 @@ int periodicBC(int i, int limit, int add){
     else return i+add;
 }
 
-=======
 
-int periodicBC(int i, int limit, int add){
-    if ((i+add)>=limit) return 0;
-    if ((i+add) <0) return limit-1;
-    else return i+add;
-}
 
->>>>>>> Stashed changes
 double randomSpin();
 inline double random_nr(){
     return RandomNumberGenerator(gen);}
@@ -57,29 +46,15 @@ int main(){
     int L = 20;
     int MonteCarloCycles = 1e5;
 
-<<<<<<< Updated upstream
     // Print to file for every Nth-value:
     int N = 10;
 
     // Initialize matrix
-=======
-<<<<<<< HEAD
-    Solver test(L, MonteCarloCycles);
-    test.algorithm();
-
-=======
-    // Print to file for every Nth-value:
-    int N = 10;
-
-    // Initialize matrix
->>>>>>> parent of ea36a93... Merge remote-tracking branch 'origin/Kjetil_dev' into Kjetil_dev
->>>>>>> Stashed changes
 
     mat Microstate = makeMicrostate(L, false); // initialType: true -> random spins | false -> ordered spins
     //mat Microstate = makeMicrostate(L, false);
     string initial_type = "_";
     //string initial_type = "_random_";
-<<<<<<< HEAD
 // can use 'set' instead of 'vector' - should take less time
     vector<int> listOfEnergies;
             listOfEnergies.reserve(200);
@@ -89,9 +64,7 @@ int main(){
 
     // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
     vec temperatures = vec({2.4});
-=======
 
-<<<<<<< Updated upstream
     for(unsigned int i = 0; i<temperatures.size();i++){
 
         double Temperature =temperatures[i];
@@ -105,8 +78,8 @@ int main(){
 
         outfile.open("../../results/4b/T_" + Temp_string + initial_type +"L" + to_string(L)+  ".txt");
         writeHeader(outfile,  MonteCarloCycles);
-=======
-    // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
+
+        // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
     vec temperatures = vec({1.0});
 
     for(unsigned int i = 0; i<temperatures.size();i++){
@@ -211,7 +184,6 @@ vec calculateProperties(vec ExpectationValues, double T){
     calculatedValues[1] = beta*beta*(ExpectationValues[1] - ExpectationValues[0]*ExpectationValues[0]); // Cv unit: [k]++
     return calculatedValues;
 }
->>>>>>> parent of ea36a93... Merge remote-tracking branch 'origin/Kjetil_dev' into Kjetil_dev
 
 double randomSpin(){
     double number =  (double) (RandomNumberGenerator(gen));
@@ -266,8 +238,6 @@ void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int& TotMC
     outfile<< endl;
 }
 
-<<<<<<< HEAD
->>>>>>> Stashed changes
 
 
         for(int x =0; x < L; x++) {
@@ -420,16 +390,8 @@ void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int& TotMC
     outfile<< endl;
 }
 
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
 void writeHeader(ofstream &outfile, int MCcycles){
     outfile << "MCcycles: "<< MCcycles<<endl;
     outfile << "MCcycle \t <E> \t\t <E^2> \t\t <M> \t\t <M^2> \t\t <|M|>\t\t Accepted config.\t\t X\t\t Cv" <<endl;
 }
-<<<<<<< Updated upstream
-=======
->>>>>>> parent of ea36a93... Merge remote-tracking branch 'origin/Kjetil_dev' into Kjetil_dev
->>>>>>> Stashed changes
 
