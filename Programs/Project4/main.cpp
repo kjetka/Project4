@@ -22,21 +22,22 @@ std::mt19937_64 gen(rd());
 // Set up the uniform distribution for x \in [[0, 1]
 std::uniform_real_distribution<double> RandomNumberGenerator(0.0,1.0);
 
-int periodicBC(int i, int limit, int add){
-    if ((i+add)>=limit) return 0;
-    if ((i+add) <0) return limit-1;
-    else return i+add;
-}
+int periodicBC(int i, int limit, int add);
+
 
 double randomSpin();
 inline double random_nr(){
     return RandomNumberGenerator(gen);}
 
 mat makeMicrostate(int L, bool initialType);
-void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int &TotMCcycles , double& T, int L,  ofstream &outfile);
-void writeHeader(ofstream &outfile, int MCcycles );
 vec analyticalExpectationValues(double T);
 vec calculateProperties(vec meanValues, double T);
+
+
+void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int &TotMCcycles , double& T, int L,  ofstream &outfile);
+void writeHeader(ofstream &outfile, int MCcycles );
+
+
 
 
 int main(){
@@ -86,6 +87,7 @@ int main(){
         }
         vec Acceptance = zeros<mat>(17);
 
+
         for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
         int acceptedConfigurations = 0;
         vec meanValues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
@@ -113,6 +115,7 @@ int main(){
                 }
 
             }
+
             meanValues[0] += Energy;
             meanValues[1] += Energy*Energy;
             meanValues[2] += MagneticMoment;
@@ -135,6 +138,8 @@ int main(){
                 writeToFile(meanValues, acceptedConfigurations, MC, MonteCarloCycles, Temperature, L, outfile);
             }
 */
+
+
             meanValues[0] += Energy;
             meanValues[1] += Energy*Energy;
             meanValues[2] += MagneticMoment;
@@ -158,6 +163,7 @@ int main(){
         //    analExpValues.print("Analytical:");
 
     }
+
     ofstream outfile2;
     outfile2.open("../../results/4d/probability.txt");
     outfile2 << "Energy:" << "\t"<< "Probability:"<< endl;
@@ -167,6 +173,13 @@ int main(){
     outfile2.close();
 }
 
+
+
+
+
+
+
+
 vec calculateProperties(vec ExpectationValues, double T){
     double beta = 1.0/T;
     vec calculatedValues = zeros(2);
@@ -174,6 +187,13 @@ vec calculateProperties(vec ExpectationValues, double T){
     calculatedValues[1] = beta*beta*(ExpectationValues[1] - ExpectationValues[0]*ExpectationValues[0]); // Cv unit: [k]++
     return calculatedValues;
 }
+
+int periodicBC(int i, int limit, int add){
+    if ((i+add)>=limit) return 0;
+    if ((i+add) <0) return limit-1;
+    else return i+add;
+}
+
 
 double randomSpin(){
     double number =  (double) (RandomNumberGenerator(gen));
@@ -195,6 +215,7 @@ mat makeMicrostate(int L, bool initialType){ // initialType: true -> random spin
     return microstate;
 }
 
+
 vec analyticalExpectationValues(double T){
     vec analExpValue = zeros(7);
     double A = 8*(1/T);
@@ -211,6 +232,7 @@ vec analyticalExpectationValues(double T){
     analExpValue[6] = beta*beta*(analExpValue[3] - analExpValue[2]*analExpValue[2]); // Cv unit:[k]++
     return analExpValue/4;
 }
+
 void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int& TotMCcycles, double &T, int L, ofstream &outfile){
     Means = Means/(MCcycle);
 
@@ -228,8 +250,23 @@ void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int& TotMC
     outfile<< endl;
 }
 
+
+
 void writeHeader(ofstream &outfile, int MCcycles){
     outfile << "MCcycles: "<< MCcycles<<endl;
     outfile << "MCcycle \t <E> \t\t <E^2> \t\t <M> \t\t <M^2> \t\t <|M|>\t\t Accepted config.\t\t X\t\t Cv" <<endl;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
