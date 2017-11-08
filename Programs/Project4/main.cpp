@@ -158,7 +158,7 @@ int main(){
             meanValues[4] += fabs(MagneticMoment);
 
 
-            writeToFile(meanValues, MC, MonteCarloCycles, Temperature, L, outfile);
+            //writeToFile(meanValues, MC, MonteCarloCycles, Temperature, L, outfile);
 
         }
 
