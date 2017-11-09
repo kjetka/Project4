@@ -74,8 +74,13 @@ int main(){
         stringstream stream;
         stream << fixed << setprecision(1  ) << Temperature;
         string Temp_string = stream.str();
+<<<<<<< Updated upstream
 
         outfile.open("../../results/4b/T_" + Temp_string + initial_type +"L" + to_string(L)+  ".txt");
+=======
+        string folderFilename = "4b/T_" + Temp_string + initial_type +"L" + to_string(L);
+        outfile.open("../../results/" + folderFilename + ".txt");
+>>>>>>> Stashed changes
         writeHeader(outfile,  MonteCarloCycles);
 
 
