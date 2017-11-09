@@ -37,7 +37,7 @@ vec calculateProperties(vec meanValues, double T);
 void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int &TotMCcycles , double& T, int L,  ofstream &outfile);
 void writeHeader(ofstream &outfile, int MCcycles );
 
-
+//void algorithm(int L, int MonteCarloCycles, vec temperatures,  str filename);
 
 
 int main(){
@@ -54,7 +54,8 @@ int main(){
     //mat Microstate = makeMicrostate(L, false);
     string initial_type = "_";
     //string initial_type = "_random_";
-// can use 'set' instead of 'vector' - should take less time
+
+    // can use 'set' instead of 'vector' - should take less time
     vector<int> listOfEnergies;
             listOfEnergies.reserve(200);
     vector<int> listOfProbabilityEnergies;
@@ -64,9 +65,11 @@ int main(){
     // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
     vec temperatures = vec({2.4});
 
-    for(unsigned int i = 0; i<temperatures.size();i++){
 
+    for(unsigned int i = 0; i<temperatures.size();i++){
         double Temperature =temperatures[i];
+
+
         double Energy = 0;
         double MagneticMoment = 0;
 
@@ -74,8 +77,8 @@ int main(){
         stringstream stream;
         stream << fixed << setprecision(1  ) << Temperature;
         string Temp_string = stream.str();
-
-        outfile.open("../../results/4b/T_" + Temp_string + initial_type +"L" + to_string(L)+  ".txt");
+        string folderFilename = "4b/T_" + Temp_string + initial_type +"L" + to_string(L)+ ;
+        outfile.open("../../results/folderFilename"  ".txt");
         writeHeader(outfile,  MonteCarloCycles);
 
 
@@ -85,12 +88,14 @@ int main(){
                 MagneticMoment +=Microstate(x,y);
             }
         }
+
         vec Acceptance = zeros<mat>(17);
 
-
         for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
+
         int acceptedConfigurations = 0;
         vec meanValues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
+
         for(int MC =1; MC<MonteCarloCycles; MC++){
             for (int xy =0; xy<L*L;xy++){
                 // Flipping state ix,iy
@@ -127,7 +132,8 @@ int main(){
             if (find(listOfEnergies.begin(),listOfEnergies.end(),Energy) != listOfEnergies.end()){
                 int i = find(listOfEnergies.begin(), listOfEnergies.end(), Energy) - listOfEnergies.begin();
                 listOfProbabilityEnergies[i] +=1;
-            }else{
+            }
+            else{
                 listOfEnergies.push_back(Energy);
                 numberOfEnergies +=1;
                 listOfProbabilityEnergies.push_back(1);
@@ -140,14 +146,6 @@ int main(){
 */
 
 
-            meanValues[0] += Energy;
-            meanValues[1] += Energy*Energy;
-            meanValues[2] += MagneticMoment;
-            meanValues[3] += MagneticMoment*MagneticMoment;
-            meanValues[4] += fabs(MagneticMoment);
-
-
-            //writeToFile(meanValues, MC, MonteCarloCycles, Temperature, L, outfile);
 
         }
 
@@ -164,13 +162,22 @@ int main(){
 
     }
 
+
+    string folderFilename = "4d/probability";
     ofstream outfile2;
-    outfile2.open("../../results/4d/probability.txt");
+    outfile2.open("../../results/"+ folderFilename+".txt");
     outfile2 << "Energy:" << "\t"<< "Probability:"<< endl;
             for(int i = 0; i<=listOfEnergies.size(); i++){
         outfile2 << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
     }
     outfile2.close();
+
+
+
+
+
+
+    return 0 ;
 }
 
 
@@ -178,15 +185,6 @@ int main(){
 
 
 
-
-
-vec calculateProperties(vec ExpectationValues, double T){
-    double beta = 1.0/T;
-    vec calculatedValues = zeros(2);
-    calculatedValues[0] = beta*(ExpectationValues[3] - ExpectationValues[2]*ExpectationValues[2]); // X
-    calculatedValues[1] = beta*beta*(ExpectationValues[1] - ExpectationValues[0]*ExpectationValues[0]); // Cv unit: [k]++
-    return calculatedValues;
-}
 
 int periodicBC(int i, int limit, int add){
     if ((i+add)>=limit) return 0;
@@ -215,6 +213,14 @@ mat makeMicrostate(int L, bool initialType){ // initialType: true -> random spin
     return microstate;
 }
 
+
+vec calculateProperties(vec ExpectationValues, double T){
+    double beta = 1.0/T;
+    vec calculatedValues = zeros(2);
+    calculatedValues[0] = beta*(ExpectationValues[3] - ExpectationValues[2]*ExpectationValues[2]); // X
+    calculatedValues[1] = beta*beta*(ExpectationValues[1] - ExpectationValues[0]*ExpectationValues[0]); // Cv unit: [k]++
+    return calculatedValues;
+}
 
 vec analyticalExpectationValues(double T){
     vec analExpValue = zeros(7);
@@ -249,8 +255,6 @@ void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int& TotMC
     }
     outfile<< endl;
 }
-
-
 
 void writeHeader(ofstream &outfile, int MCcycles){
     outfile << "MCcycles: "<< MCcycles<<endl;
