@@ -41,7 +41,7 @@ void writeHeader(ofstream &outfile, int MCcycles );
 
 
 int main(){
-
+void initializeRun(L, MonteCarloCycles, N, initialType, )
     int L = 20;
     int MonteCarloCycles = 1e5;
 
@@ -49,12 +49,14 @@ int main(){
     int N = 10;
 
     // Initialize matrix
-
+    if (initialType == false){
     mat Microstate = makeMicrostate(L, false); // initialType: true -> random spins | false -> ordered spins
+    string initial_type = "_ordered_";
+    }else{
     //mat Microstate = makeMicrostate(L, false);
-    string initial_type = "_";
-    //string initial_type = "_random_";
 
+    //string initial_type = "_random_";
+    }
     // can use 'set' instead of 'vector' - should take less time
     vector<int> listOfEnergies;
             listOfEnergies.reserve(200);
@@ -64,7 +66,7 @@ int main(){
 
     // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
     vec temperatures = vec({2.4});
-
+}
 
     for(unsigned int i = 0; i<temperatures.size();i++){
         double Temperature =temperatures[i];
