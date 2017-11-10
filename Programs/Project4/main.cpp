@@ -97,7 +97,7 @@ int main(int argc, char* argv[]){
 
     MonteCarloCycles = 1e3;
     writeResolution = 1;
-    temperatures = linspace<vec>(2.0, 2.3,6);
+    temperatures = linspace<vec>(2.0, 2.3, 6);
 
     randomStart = true;
     writeEveryMC = false ;
@@ -116,6 +116,7 @@ int main(int argc, char* argv[]){
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;
+
     if ( RankProcess == 0) {
         cout << "Time = " <<  TotalTime  << " on number of processors: "  << NProcesses  << endl;
     }
