@@ -36,10 +36,9 @@ inline double random_nr(){
     return RandomNumberGenerator(gen);}
 
 mat makeMicrostate(int L, bool initialType);
-void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int &TotMCcycles , double& T, int L,  ofstream &outfile);
 void writeHeader(ofstream &outfile);
 vec calculateProperties(vec meanValues, double T);
-void writeToFile(vec meanValues, int MonteCarloCycles ,double &T, int NSpins, ofstream &outfile);
+void writeToFile(vec meanValues, int MonteCarloCycles , int NProcesses, double &T, int NSpins, ofstream &outfile);
 void samplingMonteCarlo(int L, int MonteCarloCycles, double Temperature, vec &meanValues);
 
 
@@ -79,7 +78,7 @@ int main(int argc, char* argv[])
             MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
         }
         if(RankProcess == 0){
-            writeToFile(TotalMeanValues, MonteCarloCycles, Temperature, NSpins, outfile);
+            writeToFile(TotalMeanValues, MonteCarloCycles, NProcesses, Temperature, NSpins, outfile);
         }
     }
     if(RankProcess == 0){
@@ -173,10 +172,10 @@ mat makeMicrostate(int L, bool initialType){ // initialType: true -> random spin
 }
 
 
-void writeToFileTemperature(vec meanValues, int MonteCarloCycles ,double &T, int NSpins, ofstream &outfile){
+void writeToFile(vec meanValues, int MonteCarloCycles, int NProcesses ,double &T, int NSpins, ofstream &outfile){
 
     outfile << T << "\t\t";
-    double norm=(double) MonteCarloCycles;
+    double norm=(double) MonteCarloCycles*NProcesses;
     double Spins=(double) NSpins;
     meanValues = meanValues/norm;
 

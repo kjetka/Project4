@@ -14,7 +14,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = 
 CFLAGS        = -m64 -pipe -g -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -m64 -pipe -g -std=c++0x -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -m64 -pipe -O3 -v -g -std=c++0x -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../Project4 -I. -isystem /usr/local/include -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -48,8 +48,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../Project4/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../Project4/main.cpp \
+		../Project4/solver.cpp 
+OBJECTS       = main.o \
+		solver.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -101,7 +103,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../Project4/Project4.pro  ../Project4/main.cpp
+		../Project4/Project4.pro solver.h ../Project4/main.cpp \
+		../Project4/solver.cpp
 QMAKE_TARGET  = Project4
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Project4
@@ -277,8 +280,11 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../Project4/main.cpp 
+main.o: ../Project4/main.cpp ../Project4/solver.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Project4/main.cpp
+
+solver.o: ../Project4/solver.cpp ../Project4/solver.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o solver.o ../Project4/solver.cpp
 
 ####### Install
 

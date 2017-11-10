@@ -25,7 +25,7 @@ private:
 public:
     Solver(int L_, int MCcycles, int writeIntervall);
 
-    void algorithm(string folderFilename, vec temperatures, bool randomStart, bool writeEveryMC, bool writeWhenFinish);
+    void algorithm(string folderFilename, vec temperatures, bool randomStart, bool writeEveryMC, bool writeWhenFinish, bool writeForTemp);
 
     int periodicBC(int i, int limit, int add);
     double randomSpin();

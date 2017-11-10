@@ -11,7 +11,7 @@ Solver::Solver(int L_, int MCcycles, int writeIntervall){
     N = writeIntervall;
 }
 
-void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart, bool writeEveryMC, bool writeWhenFinish){
+void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart, bool writeEveryMC, bool writeWhenFinish, bool writeForTemp){
 
     // Print to file for every Nth-value:
 
