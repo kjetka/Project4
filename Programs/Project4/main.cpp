@@ -35,7 +35,6 @@ inline double random_nr(){
 mat makeMicrostate(int L, bool initialType);
 void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int &TotMCcycles , double& T, int L,  ofstream &outfile);
 void writeHeader(ofstream &outfile, int MCcycles );
-vec analyticalExpectationValues(double T);
 vec calculateProperties(vec meanValues, double T);
 
 
@@ -175,6 +174,23 @@ vec calculateProperties(vec ExpectationValues, double T){
     return calculatedValues;
 }
 
+vec analyticalExpectationValues(double T){
+    vec analExpValue = zeros(7);
+    double A = 8*(1/T);
+    double beta = A/8;
+    double sinhA = sinh(A);
+    double coshA = cosh(A);
+    double expA = exp(A);
+    analExpValue[0] = -8.0*sinhA/(coshA+3); // <E>
+    analExpValue[1] = 64.0*coshA/(coshA+3); // <E^2>
+    analExpValue[2] = 0; // <M>
+    analExpValue[3] = (8.0*expA+8)/(coshA+3); // <M^2>
+    analExpValue[4] = (2.0*expA+4)/(coshA+3); // <|M|>
+    analExpValue[5] = beta*(analExpValue[1] - analExpValue[0]*analExpValue[0]); //X
+    analExpValue[6] = beta*beta*(analExpValue[3] - analExpValue[2]*analExpValue[2]); // Cv unit:[k]++
+    return analExpValue/4;
+}
+
 double randomSpin(){
     double number =  (double) (RandomNumberGenerator(gen));
     if(number>0.5) number = 1;
@@ -195,22 +211,6 @@ mat makeMicrostate(int L, bool initialType){ // initialType: true -> random spin
     return microstate;
 }
 
-vec analyticalExpectationValues(double T){
-    vec analExpValue = zeros(7);
-    double A = 8*(1/T);
-    double beta = A/8;
-    double sinhA = sinh(A);
-    double coshA = cosh(A);
-    double expA = exp(A);
-    analExpValue[0] = -8.0*sinhA/(coshA+3); // <E>
-    analExpValue[1] = 64.0*coshA/(coshA+3); // <E^2>
-    analExpValue[2] = 0; // <M>
-    analExpValue[3] = (8.0*expA+8)/(coshA+3); // <M^2>
-    analExpValue[4] = (2.0*expA+4)/(coshA+3); // <|M|>
-    analExpValue[5] = beta*(analExpValue[1] - analExpValue[0]*analExpValue[0]); //X
-    analExpValue[6] = beta*beta*(analExpValue[3] - analExpValue[2]*analExpValue[2]); // Cv unit:[k]++
-    return analExpValue/4;
-}
 void writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int& TotMCcycles, double &T, int L, ofstream &outfile){
     Means = Means/(MCcycle);
 

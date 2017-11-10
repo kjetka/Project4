@@ -15,10 +15,10 @@ anal_M_abs = zeros(len(MCcycle))
 anal_M_abs.fill(0.9987)
 
 anal_Cv = zeros(len(MCcycle))
-anal_Cv.fill(3.9933)
+anal_Cv.fill(0.0321)
 
 anal_X = zeros(len(MCcycle))
-anal_X.fill(0.0321)
+anal_X.fill(3.9933)
 
 # OBS! All values are per spin and normalized!
 
