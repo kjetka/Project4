@@ -109,7 +109,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
         //Compare with analytical result:
 
-            /*
+
             cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Cv, " << "X" << setprecision(8)<< endl;
             vec analExpValues = analyticalExpectationValues(Temperature);
 
@@ -122,7 +122,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
             analExpValues.print("Analytical:");
         cout <<"stop"<<endl;
-            */
+
 
 
 
@@ -224,4 +224,3 @@ void Solver::writeHeader(ofstream &outfile, int MCcycles, double Temperature, bo
 }
 
 
-mnm

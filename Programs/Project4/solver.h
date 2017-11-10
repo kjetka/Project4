@@ -48,9 +48,4 @@ inline double random_nr(){
     return RandomNumberGenerator(gen);}
 */
 
-/*
-inline double random_nr(){
-     return RandomNumberGenerator(gen);}
-*/
-
 #endif // SOLVER_H
