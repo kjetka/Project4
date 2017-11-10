@@ -13,16 +13,14 @@ anal_E.fill(-1.9960) # T=1
 #anal_E.fill(-1.6436) #T=2
 
 anal_M_abs = zeros(len(MCcycle))
-anal_M_abs.fill(0.9987) #T=1
-#anal_M_abs.fill(0.8815) #T=2
+anal_M_abs.fill(0.9987) #T=1 
 
 anal_Cv = zeros(len(MCcycle))
 anal_Cv.fill(0.03208) # T=1
 #anal_Cv.fill(0.4126) # T=2
 
 anal_X = zeros(len(MCcycle))
-anal_X.fill(0.0040)			# T=1
-#anal_X.fill(    0.1251)  	# T=2
+anal_X.fill(0.0040)			# T=1. Using  < |M| >
 
 
 #sjekk at gaar mot rett verdi :)
@@ -30,7 +28,7 @@ anal_X.fill(0.0040)			# T=1
 # OBS! All values are per spin and normalized!
 
 figure()
-plot(MCcycle, energy, label="numerical")
+plot(MCcycle, energy, label="numerical value")
 plot(MCcycle, anal_E,'--',label="analytical value")
 title("Energy per spin for L=2")
 xlabel("Number of MC cycles")
@@ -57,6 +55,53 @@ savefig("L_2_magnetic_abs.pdf")
 
 
 
+
+
+
+
+
+
+fig1, ax1 =subplots()
+ax2 = ax1.twinx()
+title("Comparing $\langle |M| \\rangle$ with $\langle M \\rangle$ for L=2")
+
+ax1.plot(MCcycle, magnetic_abs,'b',  label="$\langle |M| \\rangle$, numerical")
+ax1.plot(MCcycle, anal_M_abs,'b--',label="analytical value")
+
+ax2.plot(MCcycle, magnetic,'r', label="$\langle M \\rangle$, numerical")
+ax2.plot(MCcycle, zeros(len(MCcycle)), 'r--',label="analytical value")
+
+
+ax1.set_xlabel("Number of MC cycles")
+ax1.set_ylabel("Magnetic moment", color = 'b' )
+ax2.set_ylabel("Magnetic moment", color = 'r')
+ax1.tick_params('y', colors='b')
+ax2.tick_params('y', colors='r')
+
+ax1.ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
+ax2.set_ylim([-0.5,0.07])
+h1, l1 = ax1.get_legend_handles_labels()
+h2, l2 = ax2.get_legend_handles_labels()
+ax1.legend(h2+h1, l2+l1, loc=5)
+savefig("L_2_mag_magabs.pdf")
+
+
+
+
+
+title('Relative energy')
+ax1.plot(Encut, relen, 'bo-', label = r'$ E_{rel}$')
+ax2.plot(dEncut2, drelEN, 'ro-', label = r'|$\Delta E_{rel}}$ |')
+
+ax1.set_ylabel('Relative energy (meV)', color = 'b')
+ax1.set_xlabel('Energy cutoff eV')
+ax2.set_ylabel(r' Relative energy meV', color = 'r')
+grid('on')
+
+
+
+
+show()
 
 figure()
 plot(MCcycle, Cv, label="numerical")

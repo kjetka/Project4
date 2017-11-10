@@ -1,2 +1,0 @@
-MCcycles: 100000
-MCcycle 	 <E> 		 <E^2> 		 <M> 		 <M^2> 		 <|M|>		 Accepted config.		 X		 Cv

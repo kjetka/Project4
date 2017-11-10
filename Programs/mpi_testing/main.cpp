@@ -16,39 +16,17 @@
 using namespace std;
 using namespace arma;
 
+int main(int argc, char* argv[]){
 
-//void metropolisSampling(int N); //the whole prosess
-//void metropolisAlgorithm(mat Matrix);
-
-std::random_device rd;
-std::mt19937_64 gen(rd());
-// Set up the uniform distribution for x \in [[0, 1]
-std::uniform_real_distribution<double> RandomNumberGenerator(0.0,1.0);
-
-int periodicBC(int i, int limit, int add){
-    if ((i+add)>=limit) return 0;
-    if ((i+add) <0) return limit-1;
-    else return i+add;
-}
-
-double randomSpin();
-inline double random_nr(){
-    return RandomNumberGenerator(gen);}
-
-mat makeMicrostate(int L, bool initialType);
-void writeHeader(ofstream &outfile);
-vec calculateProperties(vec meanValues, double T);
-void writeToFile(vec meanValues, int MonteCarloCycles , int NProcesses, double &T, int NSpins, ofstream &outfile);
-void samplingMonteCarlo(int L, int MonteCarloCycles, double Temperature, vec &meanValues);
-
-
-int main(int argc, char* argv[])
-{
-    int NProcesses, RankProcess;
-    //   MPI initializations
+    int numprocs, my_rank;
+//   MPI initializations
     MPI_Init(&argc, &argv);
-    MPI_Comm_size (MPI_COMM_WORLD, &NProcesses);
-    MPI_Comm_rank (MPI_COMM_WORLD, &RankProcess);
+    MPI_Comm_size (MPI_COMM_WORLD, &numprocs);
+    MPI_Comm_rank (MPI_COMM_WORLD, &my_rank);
+    cout << "Hello world, I have rank " << my_rank << " out of "
+         << numprocs << endl;
+    //  End MPI
+    MPI_Finalize ();
 
     int L = 2;
     int NSpins = L*L;
