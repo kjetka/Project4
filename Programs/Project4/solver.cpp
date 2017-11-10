@@ -224,3 +224,4 @@ void Solver::writeHeader(ofstream &outfile, int MCcycles, double Temperature, bo
 }
 
 
+mnm
