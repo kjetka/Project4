@@ -164,16 +164,23 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 outfile << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
             }
         }
-        if (writeForTemp && (RankProcess == 0)){
-
-            writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile);
-
+        if (writeEveryMC){
+            for( int i =0; i < 5; i++){
+                MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+                if (RankProcess == 0){
+                    writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile);
+                }
+            }
+            if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
+                outfile.close();
+            }
         }
-        if (RankProcess == 0){
-            outfile.close();
-        }
+    } //end of t-loop
 
+    if (RankProcess == 0 && writeForTemp){
+        outfile.close();
     }
+
 }
 
 int Solver::periodicBC(int i, int limit, int add){
