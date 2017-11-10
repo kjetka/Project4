@@ -57,24 +57,15 @@ int main(int argc, char* argv[])
 
     double initialTemp = 2.0;
     double finalTemp = 2.3;
-    double stepTemp = 0.3;
+    double stepTemp = 0.05;
     vec meanValues = zeros(5);
     ofstream outfile;
 
     if(RankProcess == 0){
-
-        outfile.open("../../results/4e/4e_results.txt");
+        outfile.open("../../results/4e/4e_results_L2.txt");
         writeHeader(outfile);
     }
 
-    //Broadcasts a message from the process with rank 0 to all other processes of the communicator
-    /*
-    MPI_Bcast (&MonteCarloCycles, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast (&NSpins, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast (&initialTemp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast (&finalTemp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast (&stepTemp, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    */
     double TimeStart, TimeEnd, TotalTime;
     TimeStart = MPI_Wtime();
 
@@ -88,7 +79,7 @@ int main(int argc, char* argv[])
             MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
         }
         if(RankProcess == 0){
-            writeToFile(TotalMeanValues, MonteCarloCycles, Temperature, L, outfile);
+            writeToFile(TotalMeanValues, MonteCarloCycles, Temperature, NSpins, outfile);
         }
     }
     if(RankProcess == 0){
@@ -182,18 +173,17 @@ mat makeMicrostate(int L, bool initialType){ // initialType: true -> random spin
 }
 
 
-void writeToFile(vec meanValues, int MonteCarloCycles ,double &T, int NSpins, ofstream &outfile){
+void writeToFileTemperature(vec meanValues, int MonteCarloCycles ,double &T, int NSpins, ofstream &outfile){
 
-    outfile << T << "\t";
-
+    outfile << T << "\t\t";
     double norm=(double) MonteCarloCycles;
     double Spins=(double) NSpins;
     meanValues = meanValues/norm;
 
     vec meanValues_Cv_X = calculateProperties(meanValues, T);
 
-    outfile << meanValues[0]/Spins << "\t" << meanValues[4]/Spins << "\t";
-    outfile << meanValues_Cv_X[0]/Spins << "\t" << meanValues_Cv_X[1]/Spins;
+    outfile << meanValues[0]/Spins << "\t" << meanValues[4]/Spins << "\t\t";
+    outfile << meanValues_Cv_X[0]/Spins << "\t" << meanValues_Cv_X[1]/Spins << "\t";
     outfile << endl;
 }
 
