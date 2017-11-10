@@ -16,7 +16,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
     // Print to file for every Nth-value:
 
     // Initialize matrix
-
+    int promille = MonteCarloCycles/1000;
     mat Microstate = makeMicrostate(L, randomStart); // initialType: true -> random spins | false -> ordered spins
     //mat Microstate = makeMicrostate(L, false);
     string initial_type = "_";
@@ -69,8 +69,10 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 int ix =random_nr()*L;
                 int iy = random_nr()*L;
                 // This is slow, as periodicBC has an if else loop...
-                int dE =  2*Microstate(ix,iy)*( Microstate(ix , periodicBC(iy,L,1) ) + Microstate(ix, periodicBC(iy,L,-1))
-                                              + Microstate(periodicBC(ix,L,1),  iy)  + Microstate(periodicBC(ix,L,-1), iy)    );
+                int dE =  2*Microstate(ix,iy)*( Microstate(ix , periodicBC(iy,L,1) )
+                                              + Microstate(ix, periodicBC(iy,L,-1))
+                                              + Microstate(periodicBC(ix,L,1), iy)
+                                              + Microstate(periodicBC(ix,L,-1), iy)    );
                 // Very slow!
                 double probability = Acceptance(dE + 8);
                 if (random_nr() <= probability){
@@ -99,13 +101,14 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             //cout << numberOfEnergies << endl;
             if (writeEveryMC){
                 //if (MC % N == 0 || MC == 1){ // writes every Nth value to file
-                if (MC % (MonteCarloCycles/1000)==0){
+                if (MC % (promille)==0|| MC ==1) {
                     writeToFile(meanValues, acceptedConfigurations, MC, MonteCarloCycles, Temperature, L, outfile);
                 }
             }
         }
 
         //Compare with analytical result:
+
             /*
             cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Cv, " << "X" << setprecision(8)<< endl;
             vec analExpValues = analyticalExpectationValues(Temperature);

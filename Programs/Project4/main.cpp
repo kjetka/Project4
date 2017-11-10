@@ -51,9 +51,9 @@ int main(){
     //----------------------------------------------------
 
 
-    /*
+
      L = 20;
-     MonteCarloCycles = 1e6;
+     MonteCarloCycles = 1e7;
      writeResolution = 1000;
      temperatures = vec({1, 2.4});
 
@@ -66,8 +66,6 @@ int main(){
 
     randomStart = false;
     opgc.algorithm("4c/c_", temperatures,randomStart,  writeEveryMC, writeWhenFinish);
-
-    */
 
 
     //----------------------------------------------------
@@ -89,10 +87,6 @@ int main(){
 */
 
 
-
-    //----------------------------------------------------
-    // OPG E
-    //----------------------------------------------------
 
 
 

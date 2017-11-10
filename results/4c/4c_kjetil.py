@@ -7,7 +7,7 @@ from numpy import *
 
 #Compare random v ordered 
 
-"""
+
 i=0
 for temp in [1,2.4]:
     i+=1
@@ -53,9 +53,9 @@ for temp in [1,2.4]:
     figure(i)
     legend()
     savefig('ran_order_T%i.pdf'%temp)   
+show()
 
 """
-
 
 output = Popen(["ls"], stdout=PIPE).communicate()[0]
 txtfiles = re.findall(".*random.*\.txt",output,re.IGNORECASE)
@@ -81,16 +81,7 @@ for txtfile in txtfiles:
 
         print data.keys()
 
-        """
-        f, (ax1,ax2) = subplots(2, sharex = True)
-        ax1.plot(data["MCcycles"], data["E"], 'b', label = ' $\langle E \rangle$')
-        ax1.set_title('testing')
 
-        ax2.plot(data["MCcycles"], data["Mabs"], 'brown', label = ' $\langle M \rangle$')
-        f.subplots_adjust(hspace = 0.051)
-        setp([a.get_xticklabels() for a in f.axes[:-1]], visible = False)
-
-        """
         fig1, ax1 =subplots()
         ax2 = ax1.twinx()
         title('Mean energy and magnetic moment at T = %s' %labell)
@@ -116,3 +107,4 @@ for txtfile in txtfiles:
 
 
     show()
+    """
