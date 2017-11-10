@@ -5,24 +5,31 @@ std::mt19937_64 gen(rd());
 // Set up the uniform distribution for x \in [[0, 1]
 std::uniform_real_distribution<double> RandomNumberGenerator(0.0,1.0);
 
-Solver::Solver(int L_, int MCcycles, int writeIntervall){
+Solver::Solver(int L_, int MCcycles, int writeIntervall, int NProcesses_, int RankProcess_){
     L = L_;
     MonteCarloCycles = MCcycles;
     N = writeIntervall;
+    NProcesses = NProcesses_;
+    RankProcess = RankProcess_;
 }
 
 void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart, bool writeEveryMC, bool writeWhenFinish, bool writeForTemp){
 
-    // Print to file for every Nth-value:
-
     // Initialize matrix
     int promille = MonteCarloCycles/1000;
     mat Microstate = makeMicrostate(L, randomStart); // initialType: true -> random spins | false -> ordered spins
-    //mat Microstate = makeMicrostate(L, false);
-    string initial_type = "_";
-    //string initial_type = "_random_";
 
-    // Speedup: when calc many temperatures - use converged state from last Temp as starting microstate
+    ofstream outfile;
+
+    if (RankProcess == 0 && (writeForTemp)){
+        outfile.open("../../results/"+ folderFilename + ".txt");
+    }
+
+    if (writeForTemp && (RankProcess == 0)){
+        writeHeaderTemperature(outfile);
+    }
+
+
     for(unsigned int i = 0; i<temperatures.size();i++){
         double Temperature =temperatures[i];
 
@@ -36,15 +43,25 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
         double Energy = 0;
         double MagneticMoment = 0;
-        ofstream outfile;
-        stringstream stream;
-        stream << fixed << setprecision(1  ) << Temperature;
-        string Temp_string = stream.str();
-        string Filename =  folderFilename + "T_"+ Temp_string + initial_type +"L" + to_string(L);
-        if (randomStart) Filename += "_random";
-        outfile.open("../../results/" + Filename + ".txt");
 
-        if (writeEveryMC){
+        vec TotalMeanValues = zeros(5);
+
+        // Opening file for printing
+        if(writeEveryMC || writeWhenFinish){
+            ofstream outfile;
+            stringstream stream;
+
+            stream << fixed << setprecision(1  ) << Temperature;
+            string Temp_string = stream.str();
+            string Filename =  folderFilename + "T_"+ Temp_string +"L" + to_string(L);
+            if (randomStart) Filename += "_random";
+
+            if (RankProcess == 0){
+                outfile.open("../../results/" + Filename + ".txt");
+            }
+        }
+
+        if (writeEveryMC && (RankProcess == 0)){
             writeHeader(outfile,  MonteCarloCycles, Temperature, randomStart);
         }
 
@@ -70,9 +87,9 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 int iy = random_nr()*L;
                 // This is slow, as periodicBC has an if else loop...
                 int dE =  2*Microstate(ix,iy)*( Microstate(ix , periodicBC(iy,L,1) )
-                                              + Microstate(ix, periodicBC(iy,L,-1))
-                                              + Microstate(periodicBC(ix,L,1), iy)
-                                              + Microstate(periodicBC(ix,L,-1), iy)    );
+                                                + Microstate(ix, periodicBC(iy,L,-1))
+                                                + Microstate(periodicBC(ix,L,1), iy)
+                                                + Microstate(periodicBC(ix,L,-1), iy)    );
                 // Very slow!
                 double probability = Acceptance(dE + 8);
                 if (random_nr() <= probability){
@@ -89,27 +106,39 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             meanValues[4] += fabs(MagneticMoment);
 
             // Counting the different energies to find probability
-            if (find(listOfEnergies.begin(),listOfEnergies.end(),Energy) != listOfEnergies.end()){
-                int i = find(listOfEnergies.begin(), listOfEnergies.end(), Energy) - listOfEnergies.begin();
-                listOfProbabilityEnergies[i] +=1;
+            if(RankProcess == 0){
+                if(writeWhenFinish){
+                    if (find(listOfEnergies.begin(),listOfEnergies.end(),Energy) != listOfEnergies.end()){
+                        int i = find(listOfEnergies.begin(), listOfEnergies.end(), Energy) - listOfEnergies.begin();
+                        listOfProbabilityEnergies[i] +=1;
+                    }
+                    else{
+                        listOfEnergies.push_back(Energy);
+                        numberOfEnergies +=1;
+                        listOfProbabilityEnergies.push_back(1);
+                    }
+                }
             }
-            else{
-                listOfEnergies.push_back(Energy);
-                numberOfEnergies +=1;
-                listOfProbabilityEnergies.push_back(1);
-            }
+
             //cout << numberOfEnergies << endl;
             if (writeEveryMC){
-                //if (MC % N == 0 || MC == 1){ // writes every Nth value to file
-                if (MC % (promille)==0|| MC ==1) {
-                    writeToFile(meanValues, acceptedConfigurations, MC, MonteCarloCycles, Temperature, L, outfile);
+                for( int i =0; i < 5; i++){
+                    MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+                }
+                if(RankProcess == 0){
+                    //if (MC % N == 0 || MC == 1){ // writes every Nth value to file
+                    if (MC % (promille)==0|| MC ==1) {
+                        writeToFile(TotalMeanValues, NProcesses, acceptedConfigurations, MC, MonteCarloCycles, Temperature, L, outfile);
+                    }
                 }
             }
         }
 
+
+
         //Compare with analytical result:
 
-            /*
+        /*
             cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Cv, " << "X" << setprecision(8)<< endl;
             vec analExpValues = analyticalExpectationValues(Temperature);
 
@@ -126,28 +155,32 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
 
 
+        //string folderFilename = "4d/probability";
+        if (writeWhenFinish == (RankProcess == 0)){
+            //ofstream outfile2;
+            //outfile2.open("../../results/"+ folderFilename+".txt");
+            outfile << "E" << "\t"<< "P"<< endl;
+            for(int i = 0; i<=listOfEnergies.size(); i++){
+                outfile << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
+            }
+        }
+        if (writeForTemp && (RankProcess == 0)){
 
-    //string folderFilename = "4d/probability";
-    if (writeWhenFinish){
-        //ofstream outfile2;
-        //outfile2.open("../../results/"+ folderFilename+".txt");
-        outfile << "E" << "\t"<< "P"<< endl;
-                for(int i = 0; i<=listOfEnergies.size(); i++){
-                    outfile << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
-                }
-    }
-    outfile.close();
+            writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile);
+
+        }
+        if (RankProcess == 0){
+            outfile.close();
+        }
+
     }
 }
-
-
 
 int Solver::periodicBC(int i, int limit, int add){
     if ((i+add)>=limit) return 0;
     if ((i+add) <0) return limit-1;
     else return i+add;
 }
-
 
 double Solver::randomSpin(){
     double number =  (double) (RandomNumberGenerator(gen));
@@ -172,7 +205,6 @@ mat Solver::makeMicrostate(int L, bool initialType){ // initialType: true -> ran
     }
     return microstate;
 }
-
 
 vec Solver::calculateProperties(vec ExpectationValues, double T){
     double beta = 1.0/T;
@@ -201,13 +233,13 @@ vec Solver::analyticalExpectationValues(double T){
     return analExpValue/4;
 }
 
-void Solver::writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, int& TotMCcycles, double &T, int L, ofstream &outfile){
-    Means = Means/(MCcycle);
+void Solver::writeToFile(vec Means, int NProcesses, int acceptedConfigurations, int &MCcycle, int& TotMCcycles, double &T, int L, ofstream &outfile){
+    Means = Means/(MCcycle*NProcesses);
 
     vec Means_Cv_X = calculateProperties(Means, T);
     //double norm=(double) TotMCcycles;
 
-    outfile << MCcycle << "\t";
+    outfile << MCcycle*NProcesses << "\t";
     for (int i=0;i<5;i++){
         outfile << Means(i)/(L*L)<<"\t \t";
     }
@@ -216,6 +248,24 @@ void Solver::writeToFile(vec Means, int acceptedConfigurations, int &MCcycle, in
         outfile << Means_Cv_X(i)/(L*L)<<"\t \t";
     }
     outfile<< endl;
+}
+
+void Solver::writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NProcesses ,double &T, int NSpins, ofstream &outfile){
+
+    outfile << T << "\t\t";
+    double norm=(double) MonteCarloCycles*NProcesses;
+    double Spins=(double) NSpins;
+    meanValues = meanValues/norm;
+
+    vec meanValues_Cv_X = calculateProperties(meanValues, T);
+
+    outfile << meanValues[0]/Spins << "\t" << meanValues[4]/Spins << "\t\t";
+    outfile << meanValues_Cv_X[0]/Spins << "\t" << meanValues_Cv_X[1]/Spins << "\t";
+    outfile << endl;
+}
+
+void Solver::writeHeaderTemperature(ofstream &outfile){
+    outfile << "Temperatures \t <E> \t\t <|M|> \t\t X \t\t Cv" <<endl;
 }
 
 void Solver::writeHeader(ofstream &outfile, int MCcycles, double Temperature, bool Randomstart){
