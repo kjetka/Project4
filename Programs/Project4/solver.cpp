@@ -222,3 +222,4 @@ void Solver::writeHeader(ofstream &outfile, int MCcycles, double Temperature, bo
     outfile << "MCcycles: "<< MCcycles<< "\t L = "<< L<< "\t T = "<< Temperature <<"\t Randomstart = " << Randomstart<<endl;
     outfile << "MCcycles \t E \t\t E2 \t\t M \t\t M2 \t\t Mabs \t\t accepted\t\t X \t\t Cv" <<endl;
 }
+
