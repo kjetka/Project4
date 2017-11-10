@@ -5,6 +5,10 @@ CONFIG -= qt
 
 SOURCES += main.cpp
 
+INCLUDEPATH += /usr/local/include
+LIBS += -L/usr/local/lib
+LIBS += -larmadillo -llapack -lblas
+
 # MPI Settings
 QMAKE_CXX = /usr/local/bin/mpicxx
 QMAKE_CXX_RELEASE = $$QMAKE_CXX

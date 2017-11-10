@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <mpi.h>
 #include <cstdlib>
 #include <random>
 #include <armadillo>
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
     // EXERCISE B
     //----------------------------------------------------
-
+/*
     L = 2;
     NSpin = L*L;
     MonteCarloCycles = 1e7;
@@ -44,7 +45,7 @@ int main(int argc, char* argv[]){
 
     Solver exerciseb(L, MonteCarloCycles, writeResolution);
     exerciseb.algorithm("4b/opgb", temperatures,randomStart,  writeEveryMC, writeWhenFinish, writeForTemp);
-
+*/
     //----------------------------------------------------
     // EXERCISE C
     //----------------------------------------------------
@@ -91,7 +92,7 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
     // EXERCISE E
     //----------------------------------------------------
-/*
+
      L = 20;
      NSpin = L*L;
      MonteCarloCycles = 1e6;
@@ -105,25 +106,7 @@ int main(int argc, char* argv[]){
 
     Solver exercised(L, MonteCarloCycles, writeResolution);
     exercised.algorithm("4d/d_", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
-*/
 
 
     return 0 ;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
