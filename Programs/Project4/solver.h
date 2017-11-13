@@ -37,7 +37,7 @@ public:
 
 vec analyticalExpectationValues(double T);
 
-void writeToFile(vec Means, int NProcesses, int acceptedConfigurations, int &MCcycle, int& TotMCcycles, double &T, int L, ofstream &outfile);
+void writeToFile(vec Means, int NProcesses, int acceptedConfigurations, int &MCcycle, double &T, int L, ofstream &outfile);
 
 
 void writeHeader(ofstream &outfile, int MCcycles, double Temperature, bool Randomstart);

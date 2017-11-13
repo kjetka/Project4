@@ -65,10 +65,10 @@ int main(int argc, char* argv[]){
        writeForTemp = false;
 
       Solver exercisec(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
-      exercisec.algorithm("4c/c_", temperatures,randomStart,  writeEveryMC, writeWhenFinish, writeForTemp);
+      exercisec.algorithm("4c/c_", temperatures, randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
       randomStart = false;
-      exercisec.algorithm("4c/c_", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
+      exercisec.algorithm("4c/c_", temperatures, randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     //----------------------------------------------------
     // EXERCISE D
