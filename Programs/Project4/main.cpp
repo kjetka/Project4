@@ -55,7 +55,7 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
 
        L = 20;
-       MonteCarloCycles = 1e5;
+       MonteCarloCycles = 1e4;
        writeResolution = 1000;
        temperatures = vec({1, 2.4});
 
@@ -116,6 +116,7 @@ int main(int argc, char* argv[]){
         exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     }
+    */
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;
@@ -124,7 +125,7 @@ int main(int argc, char* argv[]){
         cout << "Time = " <<  TotalTime  << " on number of processors: "  << NProcesses  << endl;
     }
 
-    */
+
     MPI_Finalize();
     return 0;
 }
