@@ -16,6 +16,9 @@ Solver::Solver(int L_, int MCcycles, int writeResolution, int NProcesses_, int R
 
 void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart, bool writeEveryMC, bool writeWhenFinish, bool writeForTemp){
 
+    // Equilibration time [MC cylces]:
+    int equilibrationTime = 5e5;
+
     // Initializing matrix of spins
     mat Microstate = makeMicrostate(L, randomStart); // initialType: true -> random spins | false -> ordered spins
 
@@ -40,7 +43,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         listOfEnergies.reserve(200);
         vector<int> listOfProbabilityEnergies;
         listOfProbabilityEnergies.reserve(200);
-        int numberOfEnergies;
+       // int numberOfEnergies;
 
         // Vector used when summing result from different
         // processors because of parallellizing
@@ -53,7 +56,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         // printing ----------------------------------------------
         ofstream outfile;
 
-        if(writeEveryMC || writeWhenFinish){
+        if(writeEveryMC){
             stringstream stream;
 
             stream << fixed << setprecision(1  ) << Temperature;
@@ -129,14 +132,14 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             meanValues[4] += fabs(MagneticMoment);
 
             // Counting the different energies to find probability
-            if(RankProcess == 0 && writeWhenFinish){
+            if(RankProcess == 0 && writeWhenFinish && MC >= equilibrationTime){
                 if (find(listOfEnergies.begin(),listOfEnergies.end(),Energy) != listOfEnergies.end()){
                     int i = find(listOfEnergies.begin(), listOfEnergies.end(), Energy) - listOfEnergies.begin();
                     listOfProbabilityEnergies[i] +=1;
                 }
                 else{
                     listOfEnergies.push_back(Energy);
-                    numberOfEnergies +=1;
+                   // numberOfEnergies +=1;
                     listOfProbabilityEnergies.push_back(1);
                 }
             }
@@ -154,7 +157,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             }
         } // end of MC loop
 
-
+        // cout << "variance: " << meanValues[1]/(MonteCarloCycles*NSpins) << " - " << meanValues[0]/(MonteCarloCycles*NSpins) << "^2" << endl;
 
         //Compare with analytical result:
 
@@ -173,17 +176,18 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         cout <<"stop"<<endl;
             */
 
-        //string folderFilename = "4d/probability";
+        ofstream outfile2;
         if (writeWhenFinish && (RankProcess == 0)){
-            //ofstream outfile2;
-            //outfile2.open("../../results/"+ folderFilename+".txt");
-            outfile << "E" << "\t"<< "P"<< endl;
-            for(int i = 0; i<=listOfEnergies.size(); i++){
-                outfile << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
+
+            outfile2.open("../../results/"+ folderFilename+"probability.txt");
+            outfile2 << "E" << "\t"<< "P"<< endl;
+            for(unsigned int i = 0; i<=listOfEnergies.size(); i++){
+                outfile2 << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
             }
+            outfile2.close();
         }
 
-        if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
+        if (RankProcess == 0 && (writeEveryMC)){
             outfile.close();
         }
 
