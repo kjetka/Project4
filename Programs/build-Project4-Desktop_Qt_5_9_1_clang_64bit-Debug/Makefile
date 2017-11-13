@@ -10,11 +10,11 @@ MAKEFILE      = Makefile
 
 ####### Compiler, tools and options
 
-CC            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
-CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
+CC            = /usr/local/bin/mpicc
+CXX           = /usr/local/bin/mpicxx
 DEFINES       = -DQT_QML_DEBUG
-CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -stdlib=libc++ -O3 -v -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
+CFLAGS        = -pipe -I/usr/local/Cellar/open-mpi/3.0.0/include -g $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -stdlib=libc++ -O3 -v -I/usr/local/Cellar/open-mpi/3.0.0/include -DMPICH_IGNORE_CXX_SEEK -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../Project4 -I. -I/usr/local/include -I/Users/Kjetil/Qt/5.9.1/clang_64/mkspecs/macx-clang
 QMAKE         = /Users/Kjetil/Qt/5.9.1/clang_64/bin/qmake
 DEL_FILE      = rm -f
@@ -36,8 +36,8 @@ TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Project41.0.0
 DISTDIR = /Users/Kjetil/Documents/UiO/sem7/fys4150/Project4/Programs/build-Project4-Desktop_Qt_5_9_1_clang_64bit-Debug/.tmp/Project41.0.0
-LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
-LFLAGS        = -stdlib=libc++ -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wl,-rpath,@executable_path/Frameworks
+LINK          = /usr/local/bin/mpicxx
+LFLAGS        = -stdlib=libc++ -L/usr/local/opt/libevent/lib -L/usr/local/Cellar/open-mpi/3.0.0/lib -lmpi -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wl,-rpath,@executable_path/Frameworks
 LIBS          = $(SUBLIBS) -L/usr/local/lib -larmadillo -llapack -lblas 
 AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
 RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s

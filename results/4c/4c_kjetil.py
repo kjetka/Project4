@@ -37,13 +37,13 @@ for temp in [1,2.4]:
 
 
             if "random" in txtfile:
-                labell = "random"
+                labell = "Random"
             else: 
                 labell = "Ordered "
             figure(i)
             title("$\langle E\\rangle$ for ordered and random initial spins, T = %.1f"%temp)
 
-            plot(data["MCcycles"], data["E"], label = labell)
+            plot(data["MCcycles"][1:], data["E"][1:], label = labell)
             #ylim([-1.998, -1.990])
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
             #xscale('log')
