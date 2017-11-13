@@ -26,7 +26,15 @@ int main(int argc, char* argv[]){
     int L, MonteCarloCycles, writeResolution;
 
     vec temperatures;
-    bool randomStart, writeEveryMC, writeWhenFinish, writeForTemp;
+
+    // if true -> the matrix of spins are initialized
+    // with random spin oriatation
+    // if false -> ordered spin orientation
+    bool randomStart;
+
+    // these tests defines when and what you want to print
+    // true -> print and false -> don't print
+    bool writeEveryMC, writeWhenFinish, writeForTemp;
 
     double TimeStart, TimeEnd, TotalTime;
     TimeStart = MPI_Wtime();
@@ -55,7 +63,7 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
 
        L = 20;
-       MonteCarloCycles = 1e4;
+       MonteCarloCycles = 1e7;
        writeResolution = 1000;
        temperatures = vec({1, 2.4});
 

@@ -23,6 +23,7 @@ private:
     int L=0;
     int MonteCarloCycles = 0;
     int N=1;
+    double NSpins;
     int NProcesses;
     int RankProcess;
 public:
@@ -37,7 +38,7 @@ public:
 
 vec analyticalExpectationValues(double T);
 
-void writeToFile(vec Means, int NProcesses, int acceptedConfigurations, int &MCcycle, double &T, int L, ofstream &outfile);
+void writeToFile(vec Means, int NProcesses, double percentAccepted, int &MCcycle, double &T, int L, ofstream &outfile);
 
 
 void writeHeader(ofstream &outfile, int MCcycles, double Temperature, bool Randomstart);

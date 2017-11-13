@@ -5,46 +5,54 @@ std::mt19937_64 gen(rd());
 // Set up the uniform distribution for x \in [[0, 1]
 std::uniform_real_distribution<double> RandomNumberGenerator(0.0,1.0);
 
-Solver::Solver(int L_, int MCcycles, int writeIntervall, int NProcesses_, int RankProcess_){
+Solver::Solver(int L_, int MCcycles, int writeResolution, int NProcesses_, int RankProcess_){
     L = L_;
     MonteCarloCycles = MCcycles;
-    N = writeIntervall;
+    NSpins = (double) L*L;
+    N = writeResolution;
     NProcesses = NProcesses_;
     RankProcess = RankProcess_;
 }
 
 void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart, bool writeEveryMC, bool writeWhenFinish, bool writeForTemp){
 
-    // Initialize matrix
-    int promille = MonteCarloCycles/1000;
+    // Initializing matrix of spins
     mat Microstate = makeMicrostate(L, randomStart); // initialType: true -> random spins | false -> ordered spins
 
+    // printing ----------------------------------------------
     ofstream outfile_temp;
 
     if (writeForTemp && (RankProcess == 0)){
-            outfile_temp.open("../../results/"+ folderFilename + ".txt");
-            writeHeaderTemperature(outfile_temp);
-        }
+        outfile_temp.open("../../results/"+ folderFilename + ".txt");
+        writeHeaderTemperature(outfile_temp);
+    }
 
+    // Defines how many points printed to file for plotting
+    int promille = MonteCarloCycles/N;
+
+    // -------------------------------------------------------
 
     for(unsigned int i = 0; i<temperatures.size();i++){
         double Temperature =temperatures[i];
 
-        // Reserveing vecotors to get probability of energies
+        // Reserving vecotors to get probability of energies
         vector<int> listOfEnergies;
         listOfEnergies.reserve(200);
         vector<int> listOfProbabilityEnergies;
         listOfProbabilityEnergies.reserve(200);
         int numberOfEnergies;
 
+        // Vector used when summing result from different
+        // processors because of parallellizing
         vec TotalMeanValues = zeros(5);
-        ofstream outfile;
+
 
         double Energy = 0;
         double MagneticMoment = 0;
 
+        // printing ----------------------------------------------
+        ofstream outfile;
 
-        // Opening file for printing
         if(writeEveryMC || writeWhenFinish){
             stringstream stream;
 
@@ -60,8 +68,10 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         if (writeEveryMC && (RankProcess == 0)){
             writeHeader(outfile,  MonteCarloCycles, Temperature, randomStart);
         }
+        // ---------------------------------------------------------
 
-        // initial energies, mag moment...
+        // Calculating total energy and total magnetic moment for initial
+        // system of spins
         for(int x =0; x < L; x++) {
             for (int y = 0; y < L; y++){
                 Energy -= Microstate(x,y)*(Microstate(periodicBC(x,L,1),y) + Microstate(x,periodicBC(y,L,1)));
@@ -69,30 +79,41 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             }
         }
 
+        // QUESTION: why 17?
         vec Acceptance = zeros<mat>(17);
 
         for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
 
         int acceptedConfigurations;
 
-        vec meanValues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
+        // The mean values are in the order:
+        // <E>, <E^2>, <M>, <M^2>, <|M|>
+        vec meanValues = zeros<vec>(5);
 
         for(int MC =1; MC<MonteCarloCycles; MC++){
+            // Finding the percentage of accepted
+            // configurations for every L^2th attempt.
+            // Need to reset the number here
             acceptedConfigurations = 0;
 
+            // Make L^2 attempts of changing the configuration
+            // for every Monte Carlo cycle
             for (int xy =0; xy<L*L;xy++){
-                // Flipping state ix,iy
+                // Pick a random spin to flip
                 int ix =random_nr()*L;
                 int iy = random_nr()*L;
 
-                // This is slow, as periodicBC has an if else loop...
+                // Calculate the change in energy if the
+                // spin is flipped
                 int dE =  2*Microstate(ix,iy)*( Microstate(ix , periodicBC(iy,L,1) )
                                                 + Microstate(ix, periodicBC(iy,L,-1))
                                                 + Microstate(periodicBC(ix,L,1), iy)
                                                 + Microstate(periodicBC(ix,L,-1), iy)    );
-                // Very slow!
+
                 double probability = Acceptance(dE + 8);
 
+                // Metropolis algorithm:
+                // Desides if the new configuration is accepted
                 if (random_nr() <= probability){
                     acceptedConfigurations += 1;
                     Microstate(ix,iy) *= - 1;
@@ -100,6 +121,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                     MagneticMoment += 2*Microstate(ix,iy);
                 }
             }
+
             meanValues[0] += Energy;
             meanValues[1] += Energy*Energy;
             meanValues[2] += MagneticMoment;
@@ -107,41 +129,37 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             meanValues[4] += fabs(MagneticMoment);
 
             // Counting the different energies to find probability
-            if(RankProcess == 0){
-                if(writeWhenFinish){
-
-                    if (find(listOfEnergies.begin(),listOfEnergies.end(),Energy) != listOfEnergies.end()){
-                        int i = find(listOfEnergies.begin(), listOfEnergies.end(), Energy) - listOfEnergies.begin();
-                        listOfProbabilityEnergies[i] +=1;
-                    }
-                    else{
-                        listOfEnergies.push_back(Energy);
-                        numberOfEnergies +=1;
-                        listOfProbabilityEnergies.push_back(1);
-                    }
+            if(RankProcess == 0 && writeWhenFinish){
+                if (find(listOfEnergies.begin(),listOfEnergies.end(),Energy) != listOfEnergies.end()){
+                    int i = find(listOfEnergies.begin(), listOfEnergies.end(), Energy) - listOfEnergies.begin();
+                    listOfProbabilityEnergies[i] +=1;
+                }
+                else{
+                    listOfEnergies.push_back(Energy);
+                    numberOfEnergies +=1;
+                    listOfProbabilityEnergies.push_back(1);
                 }
             }
 
-            //cout << numberOfEnergies << endl;
             if (writeEveryMC){
                 for( int i =0; i < 5; i++){
                     MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
                 }
                 if(RankProcess == 0){
                     if (MC % (promille)==0|| MC ==1) {
-                        int  percentAccepted = acceptedConfigurations/(double ) (L*L);
+                        double  percentAccepted = acceptedConfigurations/NSpins;
                         writeToFile(TotalMeanValues, NProcesses, percentAccepted, MC, Temperature, L, outfile);
                     }
                 }
-            } // end of if-loop
-        }
+            }
+        } // end of MC loop
 
 
 
         //Compare with analytical result:
 
         /*
-            cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Cv, " << "X" << setprecision(8)<< endl;
+            cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Xv, " << "Cv" << setprecision(8)<< endl;
             vec analExpValues = analyticalExpectationValues(Temperature);
 
             vec properties = calculateProperties(meanValues/MonteCarloCycles, Temperature);
@@ -170,20 +188,18 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         }
 
         if (writeForTemp){
-
             for( int i =0; i < 5; i++){
                 MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
             }
 
-            //MPI_Reduce(&meanValues, &TotalMeanValues, 5, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
             if (RankProcess == 0){
                 writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile_temp);
             }
         }
-    } //end of T-loop
+
+    } //end of temperature-loop
 
     if (RankProcess == 0 && writeForTemp){
-
         outfile_temp.close();
     }
 
@@ -219,11 +235,11 @@ mat Solver::makeMicrostate(int L, bool initialType){ // initialType: true -> ran
     return microstate;
 }
 
-vec Solver::calculateProperties(vec ExpectationValues, double T){
+vec Solver::calculateProperties(vec MeanValues, double T){
     double beta = 1.0/T;
     vec calculatedValues = zeros(2);
-    calculatedValues[0] = beta*(ExpectationValues[3] - ExpectationValues[4]*ExpectationValues[4]); // X uses <M^2>-<|M|>^2
-    calculatedValues[1] = beta*beta*(ExpectationValues[1] - ExpectationValues[0]*ExpectationValues[0]); // Cv unit: [k]++
+    calculatedValues[0] = beta*(MeanValues[3] - MeanValues[4]*MeanValues[4]); // X uses <M^2>-<|M|>^2
+    calculatedValues[1] = beta*beta*(MeanValues[1] - MeanValues[0]*MeanValues[0]);
     return calculatedValues;
 }
 
@@ -246,17 +262,16 @@ vec Solver::analyticalExpectationValues(double T){
     return analExpValue/4;
 }
 
-void Solver::writeToFile(vec Means, int NProcesses, int acceptedConfigurations, int &MCcycle, double &T, int L, ofstream &outfile){
+void Solver::writeToFile(vec Means, int NProcesses, double percentAccepted, int &MCcycle, double &T, int L, ofstream &outfile){
     Means = Means/(MCcycle*NProcesses);
-    int Nspins = L*L;
+    double Nspins = (double) L*L;
     vec Means_Cv_X = calculateProperties(Means, T);
-    //double norm=(double) TotMCcycles;
 
     outfile << MCcycle*NProcesses << "\t";
     for (int i=0;i<5;i++){
         outfile << Means(i)/Nspins<<"\t \t";
     }
-    outfile << acceptedConfigurations << "\t \t";
+    outfile << percentAccepted << "\t \t";
     for(int i = 0; i<2; i++){
         outfile << Means_Cv_X(i)/Nspins<<"\t \t";
     }

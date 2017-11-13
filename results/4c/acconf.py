@@ -33,13 +33,13 @@ for txtfile in txtfiles:
         else:
             labell = "2.4"
 
-        semilogy(data["MCcycles"], data["accepted"], label= 'T = '+labell)
+        plot(data["MCcycles"], data["accepted"], label= 'T = '+labell)
 
 
 figure(10)
 title("Accepted configurations")
 xlabel("Number of MC cycles")
-ylabel("Number of accepted configurations")
+ylabel("% of accepted configurations")
 legend(loc=4)
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 savefig("L_20_accepted_configs.pdf")
