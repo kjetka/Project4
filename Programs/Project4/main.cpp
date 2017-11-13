@@ -99,6 +99,9 @@ int main(int argc, char* argv[]){
     writeResolution = 1;
     temperatures = linspace<vec>(2.0, 2.3, 6);
 
+    for (int i =0;i<size(temperatures)[0]; i++)
+        cout << temperatures[i]<<endl;
+
     randomStart = true;
     writeEveryMC = false ;
     writeWhenFinish = false;
@@ -112,7 +115,6 @@ int main(int argc, char* argv[]){
         exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     }
-
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;

@@ -40,11 +40,11 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         listOfProbabilityEnergies.reserve(200);
         int numberOfEnergies;
 
+        vec TotalMeanValues = zeros(5);
 
         double Energy = 0;
         double MagneticMoment = 0;
 
-        vec TotalMeanValues = zeros(5);
 
         // Opening file for printing
         if(writeEveryMC || writeWhenFinish){
@@ -65,6 +65,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             writeHeader(outfile,  MonteCarloCycles, Temperature, randomStart);
         }
 
+        // initial energies, mag moment...
         for(int x =0; x < L; x++) {
             for (int y = 0; y < L; y++){
                 Energy -= Microstate(x,y)*(Microstate(periodicBC(x,L,1),y) + Microstate(x,periodicBC(y,L,1)));
@@ -153,8 +154,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         cout <<"stop"<<endl;
             */
 
-
-
         //string folderFilename = "4d/probability";
         if (writeWhenFinish && (RankProcess == 0)){
             //ofstream outfile2;
@@ -172,13 +171,13 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         if (writeForTemp){
             for( int i =0; i < 5; i++){
                 MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-                if (RankProcess == 0){
+            }
+
+            //MPI_Reduce(&meanValues, &TotalMeanValues, 5, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+            if (RankProcess == 0){
                     writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile);
                 }
-            }
         }
-
-
     } //end of t-loop
 
     if (RankProcess == 0 && writeForTemp){
@@ -273,6 +272,10 @@ void Solver::writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NP
     outfile << meanValues[0]/Spins << "\t" << meanValues[4]/Spins << "\t\t";
     outfile << meanValues_Cv_X[0]/Spins << "\t" << meanValues_Cv_X[1]/Spins << "\t";
     outfile << endl;
+
+    cout << "TEST: T = "<< T <<endl;
+    cout << meanValues[0];
+    cout << endl;
 }
 
 void Solver::writeHeaderTemperature(ofstream &outfile){

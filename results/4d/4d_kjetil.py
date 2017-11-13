@@ -10,7 +10,7 @@ from numpy import *
 output = Popen(["ls"], stdout=PIPE).communicate()[0]
 txtfiles = re.findall(".*\.txt",output,re.IGNORECASE)
 print txtfiles
-
+"""
 for txtfile in txtfiles:
     with open(txtfile,"r") as infile:
         data = {}
@@ -46,6 +46,7 @@ for txtfile in txtfiles:
         xlabel("Energy, eV")
 	savefig('PD_T_' + titlee[0:1]+'MC_1e6'+'.pdf')
 show()
+"""
 # normalizing probability:
 
 """
