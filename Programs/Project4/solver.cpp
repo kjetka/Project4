@@ -178,7 +178,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                     writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile);
                 }
         }
-    } //end of t-loop
+    } //end of T-loop
 
     if (RankProcess == 0 && writeForTemp){
         outfile.close();
@@ -245,17 +245,17 @@ vec Solver::analyticalExpectationValues(double T){
 
 void Solver::writeToFile(vec Means, int NProcesses, int acceptedConfigurations, int &MCcycle, int& TotMCcycles, double &T, int L, ofstream &outfile){
     Means = Means/(MCcycle*NProcesses);
-
+    int Nspins = L*L;
     vec Means_Cv_X = calculateProperties(Means, T);
     //double norm=(double) TotMCcycles;
 
     outfile << MCcycle*NProcesses << "\t";
     for (int i=0;i<5;i++){
-        outfile << Means(i)/(L*L)<<"\t \t";
+        outfile << Means(i)/Nspins<<"\t \t";
     }
     outfile << acceptedConfigurations << "\t \t";
     for(int i = 0; i<2; i++){
-        outfile << Means_Cv_X(i)/(L*L)<<"\t \t";
+        outfile << Means_Cv_X(i)/Nspins<<"\t \t";
     }
     outfile<< endl;
 }
@@ -264,7 +264,7 @@ void Solver::writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NP
 
     outfile << T << "\t\t";
     double norm=(double) MonteCarloCycles*NProcesses;
-    double Spins=(double) NSpins;
+    double Spins=(double) NSpins;   //L*L
     meanValues = meanValues/norm;
 
     vec meanValues_Cv_X = calculateProperties(meanValues, T);
@@ -273,9 +273,6 @@ void Solver::writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NP
     outfile << meanValues_Cv_X[0]/Spins << "\t" << meanValues_Cv_X[1]/Spins << "\t";
     outfile << endl;
 
-    cout << "TEST: T = "<< T <<endl;
-    cout << meanValues[0];
-    cout << endl;
 }
 
 void Solver::writeHeaderTemperature(ofstream &outfile){
