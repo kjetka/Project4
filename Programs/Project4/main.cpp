@@ -62,21 +62,21 @@ int main(int argc, char* argv[]){
     // EXERCISE C
     //----------------------------------------------------
 
-//       L = 20;
-//       MonteCarloCycles = 1e5;
-//       writeResolution = 1000;
-//       temperatures = vec({1, 2.4});
-
-//       randomStart = true;
-//       writeEveryMC = true ;
-//       writeWhenFinish = false;
-//       writeForTemp = false;
-
-//      Solver exercisec(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
-//      exercisec.algorithm("4c/c_", temperatures, randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
-
-//      randomStart = false;
-//      exercisec.algorithm("4c/c_", temperatures, randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
+    //   L = 20;
+    //   MonteCarloCycles = 1e5;
+    //   writeResolution = 1000;
+    //   temperatures = vec({1, 2.4});
+    //
+    //   randomStart = true;
+    //   writeEveryMC = true ;
+    //   writeWhenFinish = false;
+    //   writeForTemp = false;
+    //
+    //  Solver exercisec(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
+    //  exercisec.algorithm("4c/c_", temperatures,randomStart,  writeEveryMC, writeWhenFinish, writeForTemp);
+    //
+    //  randomStart = false;
+    //  exercisec.algorithm("4c/c_", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
 
     //----------------------------------------------------
     // EXERCISE D
@@ -104,7 +104,7 @@ int main(int argc, char* argv[]){
     // EXERCISE E
     //----------------------------------------------------
 
-    /*
+
     //vec Ls = vec({40, 60, 80, 100});
     vec Ls = vec({5, 10});
 
