@@ -178,7 +178,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                     writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile);
                 }
         }
-
     } //end of t-loop
 
     if (RankProcess == 0 && writeForTemp){
