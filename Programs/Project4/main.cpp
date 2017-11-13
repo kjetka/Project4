@@ -63,7 +63,7 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
 
        L = 20;
-       MonteCarloCycles = 1e7;
+       MonteCarloCycles = 1e5;
        writeResolution = 1000;
        temperatures = vec({1, 2.4});
 

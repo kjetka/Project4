@@ -34,7 +34,7 @@ public:
     int periodicBC(int i, int limit, int add);
     double randomSpin();
     mat makeMicrostate(int L, bool initialType);
-    vec calculateProperties(vec ExpectationValues, double T);
+    vec calculateProperties(vec MeanValues, double T);
 
 vec analyticalExpectationValues(double T);
 
