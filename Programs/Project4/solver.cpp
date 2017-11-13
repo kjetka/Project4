@@ -78,9 +78,13 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
 
         int acceptedConfigurations = 0;
+        //double numberOfAttempts = 0;
+
         vec meanValues = zeros<vec>(5); //0: <E>, <E^2>, <M>, <M^2> , <|M|>
 
         for(int MC =1; MC<MonteCarloCycles; MC++){
+            acceptedConfigurations = 0;
+            //numberOfAttempts = 0;
             for (int xy =0; xy<L*L;xy++){
                 // Flipping state ix,iy
                 // QUESTION
@@ -93,6 +97,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                                                 + Microstate(periodicBC(ix,L,-1), iy)    );
                 // Very slow!
                 double probability = Acceptance(dE + 8);
+                //numberOfAttempts += 1;
                 if (random_nr() <= probability){
                     acceptedConfigurations += 1;
                     Microstate(ix,iy) *= - 1;
@@ -129,7 +134,8 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 if(RankProcess == 0){
                     //if (MC % N == 0 || MC == 1){ // writes every Nth value to file
                     if (MC % (promille)==0|| MC ==1) {
-                        writeToFile(TotalMeanValues, NProcesses, acceptedConfigurations, MC, MonteCarloCycles, Temperature, L, outfile);
+                       int  prosentaccepted = acceptedConfigurations/(double ) (L*L);
+                        writeToFile(TotalMeanValues, NProcesses, prosentaccepted, MC, MonteCarloCycles, Temperature, L, outfile);
                     }
                 }
             }
