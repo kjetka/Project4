@@ -46,7 +46,7 @@ for temp in [1,2.4]:
             plot(data["MCcycles"], data["E"], label = labell)
             #ylim([-1.998, -1.990])
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
-            xscale('log')
+            #xscale('log')
             xlabel('Monte Carlo cycles, logarithmic scale')     
             ylabel('Energy, eV')
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')

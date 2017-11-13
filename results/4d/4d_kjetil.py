@@ -40,7 +40,7 @@ for txtfile in txtfiles:
 			titlee = "2.4"
 
         title("Probability distribution for L=20 at T = " + titlee)
-        bar(data["E"][:-1], data["P"][:-1],3)
+        bar(data["E"][:-1], data["P"][:-1],4)
         ylim([0,max(data["P"])+0.01])
         ylabel("Probability")
         xlabel("Energy, eV")

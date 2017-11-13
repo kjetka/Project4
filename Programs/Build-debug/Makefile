@@ -10,11 +10,11 @@ MAKEFILE      = Makefile
 
 ####### Compiler, tools and options
 
-CC            = gcc
-CXX           = g++
+CC            = mpicc
+CXX           = mpicxx
 DEFINES       = 
-CFLAGS        = -m64 -pipe -g -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -m64 -pipe -g -std=c++0x -Wall -W -fPIC $(DEFINES)
+CFLAGS        = -m64 -pipe -I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent -I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent/include -I/usr/lib/openmpi/include -I/usr/lib/openmpi/include/openmpi -pthread -g -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -m64 -pipe -O3 -v -I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent -I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent/include -I/usr/lib/openmpi/include -I/usr/lib/openmpi/include/openmpi -pthread -DMPICH_IGNORE_CXX_SEEK -g -std=c++0x -Wall -W -fPIC $(DEFINES)
 INCPATH       = -I../Project4 -I. -isystem /usr/local/include -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -34,8 +34,8 @@ TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Project41.0.0
 DISTDIR = /home/vildemari/GitHub/Project4/Programs/Build-debug/.tmp/Project41.0.0
-LINK          = g++
-LFLAGS        = -m64
+LINK          = mpicxx
+LFLAGS        = -m64 -pthread -Wl,-rpath -Wl,/usr/lib/openmpi/lib -Wl,--enable-new-dtags -L/usr/lib/openmpi/lib -lmpi_cxx -lmpi
 LIBS          = $(SUBLIBS) -L/usr/local/lib -larmadillo -llapack -lblas 
 AR            = ar cqs
 RANLIB        = 
@@ -48,8 +48,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../Project4/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../Project4/main.cpp \
+		../Project4/solver.cpp 
+OBJECTS       = main.o \
+		solver.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -101,7 +103,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../Project4/Project4.pro  ../Project4/main.cpp
+		../Project4/Project4.pro solver.h ../Project4/main.cpp \
+		../Project4/solver.cpp
 QMAKE_TARGET  = Project4
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Project4
@@ -277,8 +280,11 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../Project4/main.cpp 
+main.o: ../Project4/main.cpp ../Project4/solver.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Project4/main.cpp
+
+solver.o: ../Project4/solver.cpp ../Project4/solver.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o solver.o ../Project4/solver.cpp
 
 ####### Install
 
