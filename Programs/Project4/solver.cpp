@@ -194,8 +194,10 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             outfile.close();
             cout << "close"<<endl;
 
-        }
-
+    if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
+        outfile.close();
+        cout << "close"<<endl;
+    }
         if (writeForTemp){
             for( int i =0; i < 5; i++){
                 MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -212,6 +214,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         outfile_temp.close();
     }
 
+ */
 }
 
 int Solver::periodicBC(int i, int limit, int add){
