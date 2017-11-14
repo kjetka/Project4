@@ -23,7 +23,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
     if ((RankProcess == 0) && writeForTemp){
         outfile.open("../../results/"+ folderFilename + ".txt");
-        cout << "feil open"<<endl;
 
     }
 
@@ -32,6 +31,12 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
     }
 
 
+    if ((RankProcess == 0) && writeEveryMC){
+        outfile.open("../../results/"+ folderFilename + ".txt");
+        outfile <<  "hei"<<endl;
+    }
+
+/*
     for(unsigned int i = 0; i<temperatures.size();i++){
         double Temperature =temperatures[i];
 
@@ -49,7 +54,9 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
 
         // Opening file for printing
-        if(writeEveryMC ){
+        //if((writeEveryMC || writeWhenFinish) && RankProcess == 0){
+          if( RankProcess == 0){
+
             ofstream outfile;
             stringstream stream;
 
@@ -140,7 +147,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                     //if (MC % N == 0 || MC == 1){ // writes every Nth value to file
                     if (MC % (promille)==0|| MC ==1) {
                        int  prosentaccepted = acceptedConfigurations/(double ) (L*L);
-                        writeToFile(TotalMeanValues, NProcesses, prosentaccepted, MC, MonteCarloCycles, Temperature, L, outfile);
+                       writeToFile(TotalMeanValues, NProcesses, prosentaccepted, MC, MonteCarloCycles, Temperature, L, outfile);
                     }
                 }
             }
@@ -166,6 +173,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             */
 
         //string folderFilename = "4d/probability";
+        /*
         if (writeWhenFinish && (RankProcess == 0)){
             //ofstream outfile2;
             //outfile2.open("../../results/"+ folderFilename+".txt");
@@ -175,12 +183,11 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             }
         }
 
-        if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
-            outfile.close();
-            cout << "close"<<endl;
 
-        }
-
+    if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
+        outfile.close();
+        cout << "close"<<endl;
+    }
         if (writeForTemp){
             for( int i =0; i < 5; i++){
                 MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -191,12 +198,17 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                     writeToFileTemperature(TotalMeanValues, MonteCarloCycles, NProcesses ,Temperature, L*L, outfile);
                 }
         }
+
+
     } //end of T-loop
+
+
 
     if (RankProcess == 0 && writeForTemp){
         outfile.close();
     }
 
+ */
 }
 
 int Solver::periodicBC(int i, int limit, int add){
@@ -261,7 +273,6 @@ void Solver::writeToFile(vec Means, int NProcesses, int acceptedConfigurations, 
     int Nspins = L*L;
     vec Means_Cv_X = calculateProperties(Means, T);
     //double norm=(double) TotMCcycles;
-
     outfile << MCcycle*NProcesses << "\t";
     for (int i=0;i<5;i++){
         outfile << Means(i)/Nspins<<"\t \t";

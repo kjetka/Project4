@@ -57,7 +57,8 @@ int main(int argc, char* argv[]){
        L = 20;
        MonteCarloCycles = 0.5e4;
        writeResolution = 1000;
-       temperatures = vec({1, 2.4});
+       //temperatures = vec({1, 2.4});
+       temperatures = vec({1});
 
        randomStart = true;
        writeEveryMC = true ;
