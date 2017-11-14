@@ -23,10 +23,7 @@ anal_X = zeros(len(MCcycle))
 anal_X.fill(0.0040)			# T=1. Using  < |M| >
 
 
-#sjekk at gaar mot rett verdi :)
-
-# OBS! All values are per spin and normalized!
-
+"""
 figure()
 plot(MCcycle, energy, label="numerical value")
 plot(MCcycle, anal_E,'--',label="analytical value")
@@ -101,7 +98,6 @@ grid('on')
 
 
 
-show()
 
 figure()
 plot(MCcycle, Cv, label="numerical")
@@ -123,6 +119,24 @@ xlabel("Number of MC cycles")
 ylabel("$\chi $, [eV]")
 ylim([0.003,0.006])
 savefig("L_2_susceptibility.pdf")
+"""
+
+"""error = []
+for i in range(len(energy)):
+	error.append(energy[i] - anal_E[i])
+"""
+error = [(energy[i]-anal_E[i])/float(anal_E[i]) for i in range(len(energy)) ]
 
 
+print type(MCcycle), type(error)
+print type(error)
+figure()
+title('Absolute error in energy for the L=2 system')
+plot(MCcycle, error)
+xlabel('Monte Carlo cycles')
+ylabel('Energy, ')
+grid('on')
+ylim([-0.001, 0.001])
+savefig('abs_error.pdf')
+show()
 

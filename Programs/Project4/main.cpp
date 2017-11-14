@@ -61,28 +61,29 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
     // EXERCISE C
     //----------------------------------------------------
-
+/*
        L = 20;
-       MonteCarloCycles = 0.5e4;
+       MonteCarloCycles = 1e6;
        writeResolution = 1000;
        //temperatures = vec({1, 2.4});
-       temperatures = vec({1});
+       temperatures = vec({1, 2.4});
 
-       randomStart = true;
+       randomStart = false;
        writeEveryMC = true ;
        writeWhenFinish = false;
        writeForTemp = false;
 
       Solver exercisec(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
-      exercisec.algorithm("4c/c_test2_", temperatures,randomStart,  writeEveryMC, writeWhenFinish, writeForTemp);
+      exercisec.algorithm("4c/c_", temperatures,randomStart,  writeEveryMC, writeWhenFinish, writeForTemp);
 
      // randomStart = false;
      // exercisec.algorithm("4c/c_", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
-
+*/
     //----------------------------------------------------
     // EXERCISE D
     //----------------------------------------------------
 
+      /*
          L = 20;
          MonteCarloCycles = 1e6;
          writeResolution = 1;
@@ -99,24 +100,20 @@ int main(int argc, char* argv[]){
         temperatures = vec({2.4});
         exercised.algorithm("4d/d_T_2_4", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
 
-
+*/
 
     //----------------------------------------------------
     // EXERCISE E
     //----------------------------------------------------
 
-/*
-    //vec Ls = vec({40, 60, 80, 100});
-    vec Ls = vec({5, 10});
+
+    vec Ls = vec({40, 60, 80, 100});
 
     MonteCarloCycles = 0.5e6;
     writeResolution = 1;
-    temperatures = linspace<vec>(2.0, 2.3, 15);
+    //temperatures = linspace<vec>(2.0, 2.3, 15);
     //temperatures = linspace<vec>(2.15, 2.75, 25);
     temperatures = vec({2.1,2.15,2.2,2.23,2.25,2.27,2.28,2.30,2.32,2.34,2.36,2.38,2.4,2.45,2.5,2.55,2.6,2.65,2.7});
-
-    cout << temperatures.size()<<endl;
-
 
     randomStart = true;
     writeEveryMC = false ;
@@ -131,7 +128,7 @@ int main(int argc, char* argv[]){
         exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     }
-    */
+
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;
@@ -140,7 +137,7 @@ int main(int argc, char* argv[]){
         cout << "Time = " <<  TotalTime  << " on number of processors: "  << NProcesses  << endl;
     }
 
-*/
+
     MPI_Finalize();
     return 0;
 }

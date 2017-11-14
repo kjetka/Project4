@@ -61,7 +61,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
             stream << fixed << setprecision(1) << Temperature;
             string Temp_string = stream.str();
-            string Filename =  folderFilename + "T_"+ Temp_string +"L" + to_string(L);
+            string Filename =  folderFilename + "T_"+ Temp_string +"L_" + to_string(L);
             if (randomStart) Filename += "_random";
             if (RankProcess == 0){
                 outfile.open("../../results/" + Filename + ".txt");
@@ -153,6 +153,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 }
                 if(RankProcess == 0){
                     if (MC % (promille)==0|| MC ==1) {
+
                         double  percentAccepted = acceptedConfigurations/NSpins;
                         writeToFile(TotalMeanValues, NProcesses, percentAccepted, MC, Temperature, L, outfile);
                     }
@@ -190,9 +191,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             outfile2.close();
         }
 
-        if (RankProcess == 0 && (writeEveryMC)){
-            outfile.close();
-            cout << "close"<<endl;
+
 
     if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
         outfile.close();
@@ -214,7 +213,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         outfile_temp.close();
     }
 
- */
+
 }
 
 int Solver::periodicBC(int i, int limit, int add){

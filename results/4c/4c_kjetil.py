@@ -12,11 +12,11 @@ i=0
 for temp in [1,2.4]:
     i+=1
     output = Popen(["ls"], stdout=PIPE).communicate()[0]
-    txtfiles = re.findall("c_T_%i.*\.txt" %temp,output,re.IGNORECASE)
+    files = re.findall("c_T_%i.*\.txt" %temp,output,re.IGNORECASE)
 
 
-    for txtfile in txtfiles:
-        with open(txtfile,"r") as infile:
+    for file in files:
+        with open(file,"r") as infile:
             data = {}
             infile.readline()
             identifiers = infile.readline().split()
@@ -36,7 +36,7 @@ for temp in [1,2.4]:
 
 
 
-            if "random" in txtfile:
+            if "random" in file:
                 labell = "Random"
             else: 
                 labell = "Ordered "
@@ -51,37 +51,49 @@ for temp in [1,2.4]:
             ylabel('Energy, eV')
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
     figure(i)
-    legend()
+    if temp == 1:
+        #ylim([ -2.01,-1.8])
+        legend()
+    else:
+        legend(loc = 4)
     savefig('ran_order_T%i.pdf'%temp)   
 show()
 """
-#Test:
 
 
-output = Popen(["ls"], stdout=PIPE).communicate()[0]
-txtfiles = re.findall("c_test.*\.txt",output,re.IGNORECASE)
-print txtfiles
 
-for txtfile in txtfiles:
-    with open(txtfile,"r") as infile:
-        data = {}
-        infile.readline()
-        identifiers = infile.readline().split()
-        for identifier in identifiers:
-            data[identifier] = []
+fig1, ax1 =subplots()
+ax2 = ax1.twinx()
 
-        lines = infile.readlines()
-        for line in lines: 
-            values = line.split()
-            for identifier,value in zip(identifiers,values):
-                data[identifier].append(float(value))
-
-        for key in data.keys():
-            data[key] = array(data[key])
-
-        print data.keys()
+MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20.txt",unpack=True, skiprows=2)
+ax1.plot(MCcycles, E, 'b', label = "ordered")
 
 
+
+MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20_random.txt",unpack=True, skiprows=2)
+ax2.plot(MCcycles, E, 'r', label = "random")
+
+ax1.set_xscale('log')
+
+
+
+ax1.set_ylabel('Energy', color = 'b')
+ax1.set_xlabel('Monte Carlo cycles')
+ax2.set_ylabel('Energy', color = 'r')
+ax1.tick_params('y', colors='b')
+ax2.tick_params('y', colors='r')
+
+ax1.set_ylim([-2.01,-1.9])
+ax1.set_xlim([0,1e4])
+
+grid('on')
+
+h1, l1 = ax1.get_legend_handles_labels()
+h2, l2 = ax2.get_legend_handles_labels()
+ax1.legend(h1+h2, l1+l2)
+title('$\\langle E \\rangle $ convergence trends for different initial systems')
+savefig('ran_order_T1_start.pdf')
+show()
 
 
 
@@ -89,12 +101,12 @@ for txtfile in txtfiles:
 """
 
 output = Popen(["ls"], stdout=PIPE).communicate()[0]
-txtfiles = re.findall(".*random.*\.txt",output,re.IGNORECASE)
+files = re.findall(".*random.*\.txt",output,re.IGNORECASE)
 
 
 
-for txtfile in txtfiles:
-    with open(txtfile,"r") as infile:
+for file in files:
+    with open(file,"r") as infile:
         data = {}
         infile.readline()
         identifiers = infile.readline().split()

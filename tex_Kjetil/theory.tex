@@ -16,3 +16,108 @@ L=2 case:
 
 Error
 Random number
+
+
+
+\subsection{Introduction to statistics}
+
+\begin{equation}\label{eq:probability_density}
+P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
+\end{equation}
+
+\begin{equation}\label{eq:expectation_value}
+\left< h \right>_X = \int \,h(x) \,p(x)\,dx
+\end{equation}
+
+\begin{equation}\label{eq:moment}
+\left< x^n \right> = \int \,x^n \,p(x)\,dx
+\end{equation}
+
+\begin{equation}\label{eq:mean_value}
+\left< x \right> = \int \,x \,p(x)\,dx
+\end{equation}
+
+\subsection{Magnet - properties}
+
+Energy, magnetic moment, susceptibility, heat capacity.
+
+\begin{equation}\label{eq:critical_T}
+T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
+\end{equation}
+
+Boltzman
+Markhow chain - convergance
+
+L=2 case:
+\begin{table}[H]
+	\caption{text}
+	\label{tab: makro}
+	\begin{tabular}{cccccc}
+		\input{../results/table_makro.tex}
+	\end{tabular}
+\end{table}
+
+Error
+Random number
+
+The partition function:
+\[
+Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{\beta 8 J} + 12
+\]
+\[
+= 2e^{-\beta 8 J}+ 2e^{\beta 8 J} + 12 = 4\left(\frac{e^{-\beta 8 J}+ e^{-\beta 8 J}}{2}\right)+12
+\]
+\[
+= 4 \cosh\left( \beta 8 J \right) + 12
+\]
+The energy:
+\[
+\left< E \right> = k_B T^2 \left(\frac{\partial Z}{\partial T}
+\right)_{V,N}
+\]
+\[
+= k_B T^2 \frac{\partial}{\partial T} \left[\ln \left(4\cosh \left(\frac{8J}{k_BT}\right) +12\right) \right]\]
+
+\[
+\frac{\partial \ln Z}{\partial T} = \frac{\partial Z}{\partial \beta}\frac{\partial \beta}{\partial T} = \frac{\partial \ln Z}{\partial \beta}\left(\frac{-1}{k_B T^2}\right)
+\]
+
+\[
+\left< E\right> = -\left(\frac{\partial Z}{\partial \beta} \right)_{V,N} = - \frac{\partial}{\partial \beta} \ln \left[ 4 \cosh \left( 8J\beta\right)+12\right]
+\]
+
+\[
+= \frac{-1}{4\cosh (8J\beta) + 12}4 \sinh(8J\beta)8J\beta
+\]
+$
+= \frac{-8J \sinh(8J\beta)}{3\cosh(J\beta)+ 4}
+$
+
+Following the same method, we found that:
+
+\[
+\left< |M| \right> = \frac{1}{Z} \sum_i^M M_i e^{\beta E_i}  = \frac{(8J)^2 \cosh(8J\beta )}{\cosh (8J\beta ) + 3}
+\]
+
+\[
+\left< M \right> = 0
+\]
+
+\[
+\left< E^2 \right> = \frac{8 \left( e^{8J\beta } + 1\right) }{\cosh (8J\beta ) + 3}
+\]
+
+
+\[
+\left< M^2 \right> = \frac{1}{Z} \left( \sum_i^M M_i^2 e^{\beta E_i}\right) = \frac{2 \left( e^{8J\beta } + 2\right) }{\cosh (8J\beta ) + 3}
+\]
+
+We can use these to calculate the rest:
+
+\[
+C_V = k \beta^2\left( \left< E^2\right> - \left< E\right>^2 \right)
+\]
+
+\[
+\chi = \beta \left( \left< M^2\right> - \left< M\right>^2\right)
+\]
