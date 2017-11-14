@@ -21,8 +21,10 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
     ofstream outfile;
 
-    if (RankProcess == 0 && (writeForTemp)){
+    if ((RankProcess == 0) && writeForTemp){
         outfile.open("../../results/"+ folderFilename + ".txt");
+        cout << "feil open"<<endl;
+
     }
 
     if (writeForTemp && (RankProcess == 0)){
@@ -47,22 +49,25 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
 
         // Opening file for printing
-        if(writeEveryMC || writeWhenFinish){
+        if(writeEveryMC ){
             ofstream outfile;
             stringstream stream;
 
-            stream << fixed << setprecision(1  ) << Temperature;
+            stream << fixed << setprecision(1) << Temperature;
             string Temp_string = stream.str();
             string Filename =  folderFilename + "T_"+ Temp_string +"L" + to_string(L);
             if (randomStart) Filename += "_random";
 
             if (RankProcess == 0){
                 outfile.open("../../results/" + Filename + ".txt");
+                cout << "open "<< Temperature <<endl;
             }
         }
 
         if (writeEveryMC && (RankProcess == 0)){
             writeHeader(outfile,  MonteCarloCycles, Temperature, randomStart);
+            cout << "header ";
+            cout << RankProcess <<endl;
         }
 
         // initial energies, mag moment...
@@ -172,6 +177,8 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
         if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
             outfile.close();
+            cout << "close"<<endl;
+
         }
 
         if (writeForTemp){

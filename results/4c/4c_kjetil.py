@@ -7,7 +7,7 @@ from numpy import *
 
 #Compare random v ordered 
 
-
+"""
 i=0
 for temp in [1,2.4]:
     i+=1
@@ -54,6 +54,37 @@ for temp in [1,2.4]:
     legend()
     savefig('ran_order_T%i.pdf'%temp)   
 show()
+"""
+#Test:
+
+
+output = Popen(["ls"], stdout=PIPE).communicate()[0]
+txtfiles = re.findall("c_test.*\.txt",output,re.IGNORECASE)
+print txtfiles
+
+for txtfile in txtfiles:
+    with open(txtfile,"r") as infile:
+        data = {}
+        infile.readline()
+        identifiers = infile.readline().split()
+        for identifier in identifiers:
+            data[identifier] = []
+
+        lines = infile.readlines()
+        for line in lines: 
+            values = line.split()
+            for identifier,value in zip(identifiers,values):
+                data[identifier].append(float(value))
+
+        for key in data.keys():
+            data[key] = array(data[key])
+
+        print data.keys()
+
+
+
+
+
 
 """
 
