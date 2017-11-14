@@ -1,42 +1,79 @@
-from numpy import *
+import re
+import os
+from subprocess import Popen, PIPE
 from matplotlib.pyplot import *
+from numpy import *
+
+#energy, probability = loadtxt("probability.txt", unpack=True, skiprows=1)
 
 
-T, energy, magnetic_abs, X, Cv = loadtxt("4e_results_L2.txt", unpack=True, skiprows=1)
+output = Popen(["ls"], stdout=PIPE).communicate()[0]
+txtfiles = re.findall(".*\.txt",output,re.IGNORECASE)
+print txtfiles
+for txtfile in txtfiles:
+    with open(txtfile,"r") as infile:
+        data = {}
+        #infile.readline()
+        identifiers = infile.readline().split()
+        for identifier in identifiers:
+            data[identifier] = []
 
-figure()
-hold('on')
-plot(T, energy)
-title("Energy")
-xlabel("Temperature")
-ylabel("$\\left< E \\right>$ [eV]")
-tight_layout()
-savefig("L2_energy_temp.pdf")
+        lines = infile.readlines()
+        for line in lines: 
+            values = line.split()
+            for identifier,value in zip(identifiers,values):
+                data[identifier].append(float(value))
 
-figure()
-plot(T, magnetic_abs)
-title("Magnetic moment")
-xlabel("temperature")
-ylabel("$\\left<\| M \| \\right>$ [?]")
-tight_layout()
-savefig("L2_magnetic_temp.pdf")
+        for key in data.keys():
+            data[key] = array(data[key])
 
-figure()
-plot(T, Cv, label= "ordered initial")
-title("Heat capacity")
-xlabel("Temperature")
-ylabel(r"$C_V$")
-legend()
-tight_layout()
-savefig("L2_heatcapacity_temp.pdf")
+        print data.keys()
+        print txtfile
 
-figure()
-hold('on')
-plot(T, X)
-title("Susceptibility")
-xlabel("Temperature")
-ylabel(r"$ \chi $ []")
-tight_layout()
-savefig("L2_susceptibility_temp.pdf")
+        start = txtfile.find("L_")
+        stopp = txtfile.find(".txt")
+        labell = txtfile[start+2:stopp]
+        figure(1)
+        plot(data["Temperatures"], data["E_avg"], label = "L = " + labell)
+        xlabel('Temperature, ')
+        ylabel('Energy, ')
+
+        figure(2)
+        plot(data["Temperatures"], data["M_abs"], label = "L = " + labell)
+        xlabel('Temperature, ')
+        ylabel('Magnetic moment, ')
+
+        figure(3)
+        plot(data["Temperatures"], data["X"], label = "L = " + labell)
+        xlabel('Temperature')
+        ylabel('susceptibility, ')
+
+        figure(4)
+        plot(data["Temperatures"], data["Cv"], label = "L = " + labell)
+        xlabel('Temperature')
+        ylabel('Heat capacity, ')
+
+
+figure(1)
+legend(loc = 2)
+title(r'$ \langle E \rangle$ as function of system size and temperature ')
+savefig('4e_energy.pdf')
+figure(2)
+legend(loc = 4)
+title(r'$ \langle | M | \rangle$ as function of system size and temperature')
+
+savefig('4e_mag.pdf')
+
+figure(3)
+legend(loc = 2)
+title('Susceptibility as function of system size and temperature ')
+
+savefig('4e_x.pdf')
+
+figure(4)
+title('Heat capacity as function of system size and temperature ')
+
+legend(loc = 2)
+savefig('4e_Cv.pdf')
 
 show()

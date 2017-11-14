@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <cstdlib>
 #include <random>
-#include <armadillo>
+//#include <armadillo>
 #include <string>
 #include <random>
 #include <vector>
@@ -14,7 +14,7 @@
 #include "mpi.h"
 
 using namespace std;
-using namespace arma;
+//using namespace arma;
 
 
 

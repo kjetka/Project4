@@ -298,7 +298,7 @@ void Solver::writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NP
 }
 
 void Solver::writeHeaderTemperature(ofstream &outfile){
-    outfile << "Temperatures \t <E> \t\t <|M|> \t\t X \t\t Cv" <<endl;
+    outfile << "Temperatures \t E_avg \t\t M_abs \t\t X \t\t Cv" <<endl;
 }
 
 void Solver::writeHeader(ofstream &outfile, int MCcycles, double Temperature, bool Randomstart){
