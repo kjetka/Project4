@@ -1,66 +1,41 @@
 
 
+Ising model
 
-Bolzman
 Markhow chain - convergance
-
-L=2 case:
-\begin{table}[H]
-	\caption{text}
-	\label{tab: makro}
-\begin{tabular}{cccccc}
-	\input{../results/table_makro.tex}
-\end{tabular}
-\end{table}
-
-
 Error
-Random number
+Random number ?????
+
+\subsection{The Ising model}
+General (kort - viss i forelesningsnotat)
+simplified version
 
 
+Bolzman: $ P(E_i) = \frac{e^{-E_i\beta}}{Z_{\beta}} $, $ Z_{\beta} = \sum\limits_{i=0}^{N} e^{-E_i\beta}$. 
+Kommentere temperatur
 
-\subsection{Introduction to statistics}
 
-\begin{equation}\label{eq:probability_density}
-P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
-\end{equation}
+Energy, magnetic moment, susceptibility, heat capacity, critical temperature:
 
-\begin{equation}\label{eq:expectation_value}
-\left< h \right>_X = \int \,h(x) \,p(x)\,dx
-\end{equation}
-
-\begin{equation}\label{eq:moment}
-\left< x^n \right> = \int \,x^n \,p(x)\,dx
-\end{equation}
-
-\begin{equation}\label{eq:mean_value}
-\left< x \right> = \int \,x \,p(x)\,dx
-\end{equation}
-
-\subsection{Magnet - properties}
-
-Energy, magnetic moment, susceptibility, heat capacity.
 
 \begin{equation}\label{eq:critical_T}
 T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
 \end{equation}
 
-Boltzman
-Markhow chain - convergance
+Analytical solution
+
+If one has experimental data from  two systems with different matrix sizes, L and L',  and doing some simple algebra, the following expression emerges for $T_C(\infty)  $:
+
+\begin{equation}
+T_C(\infty) = T_C(L) - aL^{-1/\nu} = T_C(L) - \frac{T_C(L') - T_C(L)}{\frac{1}{L'} - \frac{1}{L}}L^{-1/\nu}
+\label{eq:T_infty}
+\end{equation}
+
+
+\subsection{Simple example of the Ising model}
 
 L=2 case:
-\begin{table}[H]
-	\caption{text}
-	\label{tab: makro}
-	\begin{tabular}{cccccc}
-		\input{../results/table_makro.tex}
-	\end{tabular}
-\end{table}
 
-Error
-Random number
-
-The partition function:
 \[
 Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{\beta 8 J} + 12
 \]
@@ -70,7 +45,9 @@ Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{
 \[
 = 4 \cosh\left( \beta 8 J \right) + 12
 \]
-The energy:
+
+
+Energy:
 \[
 \left< E \right> = k_B T^2 \left(\frac{\partial Z}{\partial T}
 \right)_{V,N}
@@ -121,3 +98,33 @@ C_V = k \beta^2\left( \left< E^2\right> - \left< E\right>^2 \right)
 \[
 \chi = \beta \left( \left< M^2\right> - \left< M\right>^2\right)
 \]
+
+\begin{table}[H]
+	\caption{text}
+	\label{tab: makro}
+\begin{tabular}{cccccc}
+	\input{../results/table_makro.tex}
+\end{tabular}
+\end{table}
+
+
+
+
+
+\subsection{Introduction to statistics}
+
+\begin{equation}\label{eq:probability_density}
+P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
+\end{equation}
+
+\begin{equation}\label{eq:expectation_value}
+\left< x \right> = \sum\limits_{i} x_ip_i
+\end{equation}
+
+\begin{equation}\label{eq:moment}
+\left< x^n \right> = \sum\limits_{i} x_i^n p_i
+\end{equation}
+
+\begin{equation}\label{eq:mean_value}
+\left< x \right> = \int \,x \,p(x)\,dx
+\end{equation}

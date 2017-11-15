@@ -113,8 +113,9 @@ int main(int argc, char* argv[]){
     writeResolution = 1;
     //temperatures = linspace<vec>(2.0, 2.3, 15);
     //temperatures = linspace<vec>(2.15, 2.75, 25);
-    temperatures = vec({2.1,2.15,2.2,2.23,2.25,2.27,2.28,2.30,2.32,2.34,2.36,2.38,2.4,2.45,2.5,2.55,2.6,2.65,2.7});
-
+    temperatures = vec({2.1, 2.2,2.23,2.25,2.26, 2.265,2.27,2.275,2.28, 2.285, 2.9, 2.95,2.30,2.32,2.34,2.36,2.38,2.4,2.45,2.5,2.55,2.6,2.7, 2.8});
+    cout << temperatures.size() <<endl;
+    /*
     randomStart = true;
     writeEveryMC = false ;
     writeWhenFinish = false;
@@ -137,7 +138,11 @@ int main(int argc, char* argv[]){
         cout << "Time = " <<  TotalTime  << " on number of processors: "  << NProcesses  << endl;
     }
 
-
+    ofstream outfiletime;
+    outfiletime.open("../../results/4e/timing.txt");
+    outfiletime << "Number of processors: "  << NProcesses  << " Time: " <<TotalTime<<endl;
+    outfiletime.close();
+*/
     MPI_Finalize();
     return 0;
 }

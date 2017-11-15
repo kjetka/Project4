@@ -37,8 +37,34 @@
 	\label{fig:abserror}
 \end{figure}
 
+OBS! Need an number of MC cycles necessary!
+
+All calculations in this subsection are at T = 1.0 K. 
+
+\begin{table}\caption{This table compares the analytical values for L=2 with the numerical ones after $10^6$ Monte Carlo cycles. The values are in units per spin.}\label{tab:compare_values}
+	\begin{tabular}{ccc}
+		& Numerical: & Analytical:\\ \hline
+		$\left<E\right>$ &   -1.9958 & -1.9960\\
+		$\left<E^2\right>$ &   15.9664 & 15.9679\\
+		$\left<M\right>$ &    0.0451 & 0\\
+		$\left<M^2\right>$ &    3.9930 & 3.9933\\
+		$\left<|M|\right>$ &    0.9986 & 0.9987\\
+		$\chi$ &   3.9849 & 3.9933\\
+		$C_V$& 0.0335 & 0.0321\\
+	\end{tabular}
+\end{table}
+
 
 \subsection{The L=20 system}
+
+HMM: Should define an area that is enough for equilibrium!
+
+OBS: Need the number of MC cycles to reach equilibrium!
+
+OBS: Need equilibration time! (5 1e5?)
+
+OBS: Comment accepted configs T dependency
+
 
 \subsubsection{Initial ordering of the system}
 
@@ -56,20 +82,6 @@
 	\label{fig:ranordert2}
 \end{figure}
 
-
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../results/4c/ran_order_T1}
-	\caption{}
-	\label{fig:ranordert1}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../results/4c/ran_order_T2}
-	\caption{}
-	\label{fig:ranordert2}
-\end{figure}
 
 
 \begin{figure}[H]
@@ -134,6 +146,24 @@
 \subsubsection{Probability distrubition  for the L=20 system}
 
 
+OBS: Compare result with computed variance!
+
+OBS: Discuss behavior (In Discussion - maybe just merge result and discussion?)
+
+Computed variance (from same dataset?):
+
+$$ \sigma_E^2 = \left< E^2\right> - \left< E\right>^2 $$
+
+T = 1.0 K:
+
+$$ \sigma_E^2 = 1595.45 - (-1.997)^2 = 1591.46$$
+
+T = 2.4 K:
+
+$$ \sigma_E^2 =   620.734 - (-1.23759)^2
+= 619.20$$
+
+
 
 \begin{figure}[H]
 	\centering
@@ -150,4 +180,58 @@
 \end{figure}
 
 
+
+\subsection{Phase transition and Critical temperature}
+
+
+
+OBS: Plot of E, M, Cv, X as functions of T (put L as legend and plot together)
+
+OBS: Indication of phase transition? (Peak - at least for Cv and X)
+
+OBS: Use Equation \ref{eq:critical_T} to extract $T_C$.
+
+
+Timing parallellisering
+
+	\begin{figure}[H]
+	\begin{subfigure}[b]{0.5\textwidth}
+	\includegraphics[width=1\linewidth]{../results/4e/4e_energy}
+\caption{}
+\label{fig:4eenergy}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.5\textwidth}
+	\includegraphics[width=1\linewidth]{../results/4e/4e_mag}
+\caption{}
+\label{fig:4emag}
+	\end{subfigure}
+	\caption{}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../results/4e/4e_Cv}
+	\caption{}
+	\label{fig:4ecv}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../results/4e/4e_x}
+	\caption{}
+	\label{fig:4ex}
+\end{figure}
+
+
+\begin{table}[H]
+	\caption{text}
+	\label{tab: T_C}
+	\begin{tabular}{cccccc}
+		\input{../results/table_T_C.tex}
+	\end{tabular}
+\end{table}
 
