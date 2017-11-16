@@ -7,7 +7,7 @@ from numpy import *
 
 #Compare random v ordered 
 
-"""
+
 i=0
 for temp in [1,2.4]:
     i+=1
@@ -47,7 +47,7 @@ for temp in [1,2.4]:
             #ylim([-1.998, -1.990])
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
             xscale('log')
-            xlabel('Monte Carlo cycles, logarithmic scale')     
+            xlabel('Monte Carlo cycles')     
             ylabel('Energy, eV')
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
     figure(i)
@@ -58,43 +58,25 @@ for temp in [1,2.4]:
         legend(loc = 4)
     savefig('ran_order_T%i.pdf'%temp)   
 show()
-"""
 
-
-
-fig1, ax1 =subplots()
-ax2 = ax1.twinx()
-
-MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20.txt",unpack=True, skiprows=2)
-ax1.plot(MCcycles, E, 'b', label = "ordered")
 
 
 
-MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20_random.txt",unpack=True, skiprows=2)
-ax2.plot(MCcycles, E, 'r', label = "random")
+MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20.txt",unpack=True, skiprows=2)
+plot(MCcycles, E, 'b', label = "ordered initial spin system")
 
-ax1.set_xscale('log')
+ylabel('Energy')
+xlabel('Monte Carlo cycles')
+xscale('log')
+ylim([-2.01,-1.98])
+#ax1.set_xlim([0,1e4])
 
 
 
-ax1.set_ylabel('Energy', color = 'b')
-ax1.set_xlabel('Monte Carlo cycles')
-ax2.set_ylabel('Energy', color = 'r')
-ax1.tick_params('y', colors='b')
-ax2.tick_params('y', colors='r')
-
-ax1.set_ylim([-2.01,-1.9])
-ax1.set_xlim([0,1e4])
-
-grid('on')
-
-h1, l1 = ax1.get_legend_handles_labels()
-h2, l2 = ax2.get_legend_handles_labels()
-ax1.legend(h1+h2, l1+l2)
-title('$\\langle E \\rangle $ convergence trends for different initial systems')
-savefig('ran_order_T1_start.pdf')
+legend()
+title('$\\langle E \\rangle $ for ordered initial system at T=1 ')
+savefig('order_T1_start.pdf')
 show()
-
 
 
 
@@ -150,4 +132,4 @@ for file in files:
 
 
     show()
-    """
+"""

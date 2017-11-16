@@ -22,4 +22,4 @@ for j in range(len(temperatures)):
 legend()
 xlabel('Energy')
 ylabel('Number of occurrences')
-    
+show()

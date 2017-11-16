@@ -109,13 +109,13 @@ int main(int argc, char* argv[]){
 
     vec Ls = vec({40, 60, 80, 100});
 
-    MonteCarloCycles = 0.5e6;
+    MonteCarloCycles = 0.7e6; //must be much smaller than the thermalization time
     writeResolution = 1;
     //temperatures = linspace<vec>(2.0, 2.3, 15);
     //temperatures = linspace<vec>(2.15, 2.75, 25);
-    temperatures = vec({2.1, 2.2,2.23,2.25,2.26, 2.265,2.27,2.275,2.28, 2.285, 2.9, 2.95,2.30,2.32,2.34,2.36,2.38,2.4,2.45,2.5,2.55,2.6,2.7, 2.8});
-    cout << temperatures.size() <<endl;
-    /*
+    temperatures = vec({2.1, 2.2,2.23,2.25,2.26, 2.265,2.27,2.275, 2.278, 2.279, 2.28, 2.281,2.282,2.283,2.284, 2.285,2.286, 2.287,2.288,2.289, 2.29,2.30,2.32,2.35,2.38,2.4,2.45,2.5,2.55,2.6});
+
+
     randomStart = true;
     writeEveryMC = false ;
     writeWhenFinish = false;
@@ -136,30 +136,14 @@ int main(int argc, char* argv[]){
 
     if ( RankProcess == 0) {
         cout << "Time = " <<  TotalTime  << " on number of processors: "  << NProcesses  << endl;
-    }
 
-    ofstream outfiletime;
-    outfiletime.open("../../results/4e/timing.txt");
-    outfiletime << "Number of processors: "  << NProcesses  << " Time: " <<TotalTime<<endl;
-    outfiletime.close();
-*/
+        ofstream outfiletime;
+        outfiletime.open("../../results/4e/timing.txt");
+        outfiletime << "Number of processors: "  << NProcesses  << " Time: " <<TotalTime<<endl;
+        outfiletime << "Number of temperatures: "  << temperatures.size()  <<endl;
+        outfiletime << "MonteCarlo per thread: "  << MonteCarloCycles  <<endl;
+        outfiletime.close();
+    }
     MPI_Finalize();
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
