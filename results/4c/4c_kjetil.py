@@ -5,6 +5,13 @@ from matplotlib.pyplot import *
 from numpy import *
 
 
+
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
+
+matplotlib.rc('font', **font)
+
 #Compare random v ordered 
 
 
@@ -41,21 +48,20 @@ for temp in [1,2.4]:
             else: 
                 labell = "Ordered "
             figure(i)
-            title("$\langle E\\rangle$ for ordered and random initial spins, T = %.1f"%temp)
+            title("$\langle E\\rangle$ for ordered and random initial spins, T = %.1f"%temp, fontsize=14)
 
             plot(data["MCcycles"][1:], data["E"][1:], label = labell)
+            tight_layout()
             #ylim([-1.998, -1.990])
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
-            xscale('log')
-            xlabel('Monte Carlo cycles, logarithmic scale')     
+            #xscale('log')
+            
+            xlabel('Monte Carlo cycles')#, logarithmic scale')     
             ylabel('Energy, eV')
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
     figure(i)
     legend()
     savefig('ran_order_T%i.pdf'%temp)   
-show()
-
-"""
 
 output = Popen(["ls"], stdout=PIPE).communicate()[0]
 txtfiles = re.findall(".*random.*\.txt",output,re.IGNORECASE)
@@ -63,6 +69,12 @@ txtfiles = re.findall(".*random.*\.txt",output,re.IGNORECASE)
 
 
 for txtfile in txtfiles:
+    if "1" in txtfile:
+        temp = "1.0"
+        t = "1_0"
+    else: 
+        temp = "2.4"
+        t = "2_4"
     with open(txtfile,"r") as infile:
         data = {}
         infile.readline()
@@ -84,13 +96,21 @@ for txtfile in txtfiles:
 
         fig1, ax1 =subplots()
         ax2 = ax1.twinx()
-        title('Mean energy and magnetic moment at T = %s' %labell)
+        title('Mean energy and magnetic moment at T = ' + temp, fontsize=14)
         ax1.plot(data["MCcycles"], data["E"], 'b', label = ' $\langle E \\rangle$')
-        ax2.plot(data["MCcycles"], data["Mabs"], 'brown', label = ' $\langle M \\rangle$')
-
+        ax2.plot(data["MCcycles"], data["Mabs"], 'r', label = ' $\langle M \\rangle$')
+        
+        if "1" in txtfile:
+            ax1.set_ylim([-2.0,-1.95])
+            ax2.set_ylim([0.96,1.01])             
+        else: 
+            ax2.set_ylim([0.44,0.50])
+            ax1.set_ylim([-1.28, -1.22])        
+        
         ax1.set_ylabel('Energy (eV)', color = 'b')
         ax1.set_xlabel('Monte Carlo cycles')
-        ax2.set_ylabel(r' Magnetic moment', color = 'brown')
+        ax2.set_ylabel(r' Magnetic moment', color = 'r')
+        tight_layout()
         #ax1.legend(loc = 1)
         #ax2.legend(loc = 2)
         ax1.tick_params('y', colors='b')
@@ -100,11 +120,10 @@ for txtfile in txtfiles:
         h1, l1 = ax1.get_legend_handles_labels()
         h2, l2 = ax2.get_legend_handles_labels()
         ax2.legend(h2+h1, l2+l1, loc = 5)
-        savefig('En_mag_T'+labell+'.pdf')
+        savefig('En_mag_T' + t + '.pdf')
         #grid('on')
 
         
 
 
     show()
-    """

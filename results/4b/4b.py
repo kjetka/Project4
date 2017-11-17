@@ -2,10 +2,16 @@ from __future__ import division
 from numpy import *
 from matplotlib.pyplot import *
 
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
+
+matplotlib.rc('font', **font)
+
 #	MCcycle, energy, energy2, magnetic, magnetic2, magnetic_abs,acconf, X, Cv = loadtxt("opgbT_2.4_L2.txt", unpack=True, skiprows=2)
 
 
-MCcycle ,energy, energy2, magnetic, magnetic2, magnetic_abs, acconf, X, Cv = loadtxt("opgbT_1.0_L2_random.txt", unpack=True, skiprows=2)
+MCcycle ,energy, energy2, magnetic, magnetic2, magnetic_abs, acconf, X, Cv = loadtxt("b_T_1.0L2_random.txt", unpack=True, skiprows=2)
 
 #Analytical:
 anal_E = zeros(len(MCcycle))
@@ -36,7 +42,7 @@ ylim([-2,-1.99])
 ylabel("$\langle E \\rangle$ [eV]")
 #legend(loc=4)
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
-
+tight_layout()
 savefig("L_2_energy.pdf")
 
 
@@ -50,43 +56,14 @@ xlabel("Number of MC cycles")
 ylabel("Magnetic moment")
 legend(loc=1)
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
-ylim([0.998,0.999])
+ylim([0.9984,0.9994])
+tight_layout()
 savefig("L_2_magnetic_abs.pdf")
 
 
 
 
-
-
-
-
-
-fig1, ax1 =subplots()
-ax2 = ax1.twinx()
-title("Comparing $\langle |M| \\rangle$ with $\langle M \\rangle$ for L=2")
-
-ax1.plot(MCcycle, magnetic_abs,'b',  label="$\langle |M| \\rangle$, numerical")
-ax1.plot(MCcycle, anal_M_abs,'b--',label="analytical value")
-
-ax2.plot(MCcycle, magnetic,'r', label="$\langle M \\rangle$, numerical")
-ax2.plot(MCcycle, zeros(len(MCcycle)), 'r--',label="analytical value")
-
-
-ax1.set_xlabel("Number of MC cycles")
-ax1.set_ylabel("Magnetic moment", color = 'b' )
-ax2.set_ylabel("Magnetic moment", color = 'r')
-ax1.tick_params('y', colors='b')
-ax2.tick_params('y', colors='r')
-
-ax1.ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
-ax2.set_ylim([-0.5,0.07])
-h1, l1 = ax1.get_legend_handles_labels()
-h2, l2 = ax2.get_legend_handles_labels()
-ax1.legend(h2+h1, l2+l1, loc=5)
-savefig("L_2_mag_magabs.pdf")
-
-
-
+"""
 
 
 title('Relative energy')
@@ -100,8 +77,8 @@ grid('on')
 
 
 
+"""
 
-show()
 
 figure()
 plot(MCcycle, Cv, label="numerical")
@@ -109,8 +86,9 @@ plot(MCcycle,anal_Cv,'--',label="analytical value")
 title("Heat capacity per spin for L=2")
 xlabel("Number of MC cycles")
 ylabel("$C_V$ [eV]")
-ylim([0.023, 0.038])
+ylim([0.022, 0.038])
 legend(loc=4)
+tight_layout()
 savefig("L_2_heat_capasity.pdf")
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 
@@ -118,11 +96,12 @@ ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 figure()
 plot(MCcycle, X, label="numerical")
 plot(MCcycle,anal_X,'--',label="analytical value")
-title("Susceptibility per spin vs Monte Carlo cycles")
+title("Susceptibility per spin for L=2")
 xlabel("Number of MC cycles")
 ylabel("$\chi $, [eV]")
-ylim([0.003,0.006])
+ylim([0.002,0.005])
+tight_layout()
 savefig("L_2_susceptibility.pdf")
 
-
+show()
 

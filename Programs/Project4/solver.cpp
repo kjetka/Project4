@@ -86,7 +86,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
         for( int de =-8; de <= 8; de+=4) Acceptance(de+8) = exp(-de/Temperature);
 
-        int acceptedConfigurations;
+        int acceptedConfigurations=0;
 
         // The mean values are in the order:
         // <E>, <E^2>, <M>, <M^2>, <|M|>
@@ -96,7 +96,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             // Finding the percentage of accepted
             // configurations for every L^2th attempt.
             // Need to reset the number here
-            acceptedConfigurations = 0;
+            //acceptedConfigurations = 0;
 
             // Make L^2 attempts of changing the configuration
             // for every Monte Carlo cycle
@@ -150,7 +150,8 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 if(RankProcess == 0){
                     if (MC % (promille)==0|| MC ==1) {
                         double  percentAccepted = acceptedConfigurations/NSpins;
-                        writeToFile(TotalMeanValues, NProcesses, percentAccepted, MC, Temperature, L, outfile);
+                        //writeToFile(TotalMeanValues, NProcesses, percentAccepted, MC, Temperature, L, outfile);
+                        writeToFile(TotalMeanValues, NProcesses, acceptedConfigurations, MC, Temperature, L, outfile);
                     }
                 }
             }

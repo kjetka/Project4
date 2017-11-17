@@ -4,44 +4,25 @@ from subprocess import Popen, PIPE
 from numpy import *
 from matplotlib.pyplot import *
 
-output = Popen(["ls"], stdout=PIPE).communicate()[0]
-txtfiles = re.findall(".*T_2.*\.txt",output,re.IGNORECASE)
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
 
-print txtfiles
+MCcycle ,energy, energy2, magnetic, magnetic2, magnetic_abs, acconf1, X, Cv = loadtxt("c_T_1.0L20_random.txt", unpack=True, skiprows=2)
 
-for txtfile in txtfiles:
-    with open(txtfile,"r") as infile:
-        data = {}
-        infile.readline()
-        identifiers = infile.readline().split()
-        for identifier in identifiers:
-            data[identifier] = []
+MCcycle ,energy, energy2, magnetic, magnetic2, magnetic_abs, acconf2, X, Cv = loadtxt("c_T_2.4L20_random.txt", unpack=True, skiprows=2)
 
-        lines = infile.readlines()
-        for line in lines: 
-            values = line.split()
-            for identifier,value in zip(identifiers,values):
-                data[identifier].append(float(value))
 
-        for key in data.keys():
-            data[key] = array(data[key])
-
-        print data.keys()
-        
-
-        figure(10)
-        if "random" in txtfile:
-             llabel="random"
-        else:
-             llabel = "ordered"
-        plot(data["MCcycles"], data["accepted"], label= llabel)
-figure(10)
-title("Accepted configurations - T = 2.4")
+figure()
+semilogy(MCcycle, acconf1,label= "T = 1.0 K")
+semilogy(MCcycle, acconf2, label= "T = 2.4 K")
+title("Total accepted configurations")
 xlabel("Number of MC cycles")
-ylabel("% accepted of attempted configurations")
+ylabel("Number of accepted configurations")
 legend(loc=4)
+tight_layout()
 ticklabel_format(style='sci',axis='x')
-savefig("L_20_accepted_T2_4.pdf")
+savefig("../L_20_total_accepted.pdf")
         
 
 

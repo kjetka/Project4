@@ -1,6 +1,12 @@
 from numpy import *
 from matplotlib.pyplot import*
 
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
+
+matplotlib.rc('font', **font)
+
 L = [40 ,60, 80, 100]
 
 a = linspace(-1,0.2,100)
@@ -23,5 +29,6 @@ axhline(2.269, min(a), max(a),linestyle='--', label= r"$T_C^{exact}$ =2.269")
 title("Finding the critical temperature")
 xlabel("a")
 ylabel(r"$T_C(\infty)$")
+tight_layout()
 legend(loc=2)
 savefig('critical_t.pdf')

@@ -4,6 +4,10 @@ from subprocess import Popen, PIPE
 from numpy import *
 from matplotlib.pyplot import *
 
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
+
 output = Popen(["ls"], stdout=PIPE).communicate()[0]
 txtfiles = re.findall(".*random.*\.txt",output,re.IGNORECASE)
 
