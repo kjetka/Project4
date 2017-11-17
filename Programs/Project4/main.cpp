@@ -62,20 +62,20 @@ int main(int argc, char* argv[]){
     // EXERCISE C
     //----------------------------------------------------
 
-       L = 20;
-       MonteCarloCycles = 5e5;
-       writeResolution = 1000;
-       temperatures = vec({1, 2.4});
+//       L = 20;
+//       MonteCarloCycles = 5e5;
+//       writeResolution = 1000;
+//       temperatures = vec({1, 2.4});
 
-       randomStart = true;
-       writeEveryMC = true ;
-       writeWhenFinish = false;
-       writeForTemp = false;
+//       randomStart = true;
+//       writeEveryMC = true ;
+//       writeWhenFinish = false;
+//       writeForTemp = false;
 
-      Solver exercisec(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
-      exercisec.algorithm("4c/c_", temperatures, randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
+//      Solver exercisec(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
+//      exercisec.algorithm("4c/c_", temperatures, randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
-      //randomStart = false;
+//      //randomStart = false;
       //exercisec.algorithm("4c/c_", temperatures, randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     //----------------------------------------------------
@@ -104,13 +104,13 @@ int main(int argc, char* argv[]){
     // EXERCISE E
     //----------------------------------------------------
 
-    /*
-    //vec Ls = vec({40, 60, 80, 100});
-    vec Ls = vec({5, 10});
 
-    MonteCarloCycles = 0.5e3;
+    //vec Ls = vec({40, 60, 80, 100});
+    vec Ls = vec({60});
+
+    MonteCarloCycles = 1e6;
     writeResolution = 1;
-    temperatures = linspace<vec>(2.0, 2.3, 6);
+    temperatures = linspace<vec>(2.0, 2.3, 2);
 
     for (int i =0;i<size(temperatures)[0]; i++)
         cout << temperatures[i]<<endl;
@@ -124,11 +124,11 @@ int main(int argc, char* argv[]){
         L = Ls[i];
 
         Solver exercisee(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
-        string name = "4e/e_L_" + to_string(L);
+        string name = "timing_" + to_string(L);
         exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     }
-    */
+
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;

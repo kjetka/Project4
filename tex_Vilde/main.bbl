@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{Ising}
+Ising model.
+\newblock \url{https://en.wikipedia.org/wiki/Ising_model}.
+\newblock Accessed: 2017-11-17.
+
 \bibitem{Onsager}
 Lars Onsager.
 \newblock Crystal statistics. i. a two-dimensional model with an order-disorder

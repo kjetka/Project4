@@ -81,14 +81,17 @@ OBS: Discuss behavior (In Discussion - maybe just merge result and discussion?)
 Computed variance (from same dataset?):
 
 $$ \sigma_E^2 = \left< E^2\right> - \left< E\right>^2 $$
+$$\text{FWHM} = 2 \sqrt{2ln2} \sigma \approx 2.355 \sigma$$ 
 
 T = 1.0 K:
 $$ \sigma_E^2 = 638181 - (-798.855)^2 = 11.69 $$
 $$ \sigma = 3.42 $$
+$$ \text{FWHM} \approx 2.355 \cdot 3.24 = 7.63 $$
 
 T = 2.4 K:
 $$ \sigma_E^2 =   247886 - (-494.628)^2 = 3229.14 $$
 $$ \sigma = 56.8  $$
+$$ \text{FWHM} \approx 2.355 \cdot 56.8 = 133.76 $$
 
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{../results/4d/d_T_1probability}\caption{This is a plot of the energy probability when T = 1.0 K. The energy is the total energy of the 2D lattice with $20\times 20$ spins.}\label{fig:probability_T_1.0}
@@ -143,3 +146,11 @@ T_C(\infty) &= - a \cdot 100^{-1} + 2.27\label{eq:find_critial_T_end}
 
 Exact $T_C =  kTC/J = 2/ \ln(1+\sqrt{
 2}) \approx 2.269$ \cite{Onsager}
+
+\begin{table}\caption{L=80 and MC cycles is 1e6.}
+\begin{tabular}{cc}
+Number of processors:& CPU time [s]: \\ \hline
+ 1 & 513.069\\
+ 2 & 306.975\\
+\end{tabular}
+\end{table}
