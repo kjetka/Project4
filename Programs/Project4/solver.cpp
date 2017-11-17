@@ -43,7 +43,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         listOfEnergies.reserve(200);
         vector<int> listOfProbabilityEnergies;
         listOfProbabilityEnergies.reserve(200);
-       // int numberOfEnergies;
 
         // Vector used when summing result from different
         // processors because of parallellizing
@@ -139,11 +138,11 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 }
                 else{
                     listOfEnergies.push_back(Energy);
-                   // numberOfEnergies +=1;
                     listOfProbabilityEnergies.push_back(1);
                 }
             }
 
+            // Writing to file: mean values versus MC cycles
             if (writeEveryMC){
                 for( int i =0; i < 5; i++){
                     MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -157,7 +156,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             }
         } // end of MC loop
 
-        // cout << "variance: " << meanValues[1]/(MonteCarloCycles*NSpins) << " - " << meanValues[0]/(MonteCarloCycles*NSpins) << "^2" << endl;
+        // cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - " << meanValues[0]/(MonteCarloCycles) << "^2" << endl;
 
         //Compare with analytical result:
 
@@ -175,7 +174,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             analExpValues.print("Analytical:");
         cout <<"stop"<<endl;
             */
-
+        // Writing the probability to file
         ofstream outfile2;
         if (writeWhenFinish && (RankProcess == 0)){
 
@@ -190,7 +189,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         if (RankProcess == 0 && (writeEveryMC)){
             outfile.close();
         }
-
+        // Writing to file: mean values versus temperature
         if (writeForTemp){
             for( int i =0; i < 5; i++){
                 MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
@@ -246,7 +245,7 @@ vec Solver::calculateProperties(vec MeanValues, double T){
     calculatedValues[1] = beta*beta*(MeanValues[1] - MeanValues[0]*MeanValues[0]);
     return calculatedValues;
 }
-
+// Analytical values for L = 2
 vec Solver::analyticalExpectationValues(double T){
     cout << "-------------------------" <<endl;
     cout << "T = "<< T <<endl;

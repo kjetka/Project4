@@ -15,11 +15,13 @@ def Tc_infty(L,a,L_Tc):
 for i in range(len(L)):
     plot(a, Tc_infty(L[i],a,L_Tc[i]), label="L=%g"%L[i])
     Tc_infty_L[i] = Tc_infty(L[i],a,L_Tc[i])
-    if i > 0:
-        idx = argwhere(diff(sign(Tc_infty_L[i] - Tc_infty_L[i-1])) != 0).reshape(-1) + 0
-        plot(a[idx], Tc_infty_L[i,idx], 'ro')
+    #if i > 0:
+    #    idx = argwhere(diff(sign(Tc_infty_L[i] - Tc_infty_L[i-1])) != 0).reshape(-1) + 0
+    #    plot(a[idx], Tc_infty_L[i,idx], 'ro')
 
+axhline(2.269, min(a), max(a),linestyle='--', label= r"$T_C^{exact}$ =2.269")
 title("Finding the critical temperature")
 xlabel("a")
 ylabel(r"$T_C(\infty)$")
 legend(loc=2)
+savefig('critical_t.pdf')

@@ -100,7 +100,8 @@ $$ \sigma = 56.8  $$
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4e/4e_x}\caption{This is a plot if the susceptibility versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_suscept}
+\includegraphics[width=\linewidth]{../results/4e/4e_x}\caption{This is a plot if the susceptibility versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100. The exact value is $T_C =  kTC/J = 2/ \ln(1+\sqrt{
+2}) \approx 2.269 \,\text{k}_\text{B} \,\text{K}$ \cite{Onsager}.}\label{fig:4e_suscept}
 \end{figure}
 
 OBS: Indication of phase transition? (Peak - at least for Cv and X)
@@ -116,12 +117,16 @@ T_C(100) - T_C(\infty) &= a \cdot 100^{-1}\\
 \end{align*}
 
 (Sett inn tall!)
-\begin{align*}
+\begin{align}\label{eq:find_critial_T}
 T_C(\infty) &= - a \cdot 40^{-1} + 2.28\\
 T_C(\infty) &= - a \cdot 60^{-1} + 2.27\\
 T_C(\infty) &= - a \cdot 80^{-1} + 2.28\\
-T_C(\infty) &= - a \cdot 100^{-1} + 2.27\\
-\end{align*}
+T_C(\infty) &= - a \cdot 100^{-1} + 2.27\label{eq:find_critial_T_end}
+\end{align}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{../results/4f/critical_t}\caption{This is a plot of Equation \ref{eq:critical_T} with different values of L (See Equations \ref{eq:find_critial_T} - \ref{eq:find_critial_T_end}). The interssections represent the solution. They should have all had a cross section in the same place, and the y-value of the intersection would have been the critical temperature when $L \rightarrow \infty$.}\label{fig:critical_T}
+\end{figure}
 
 Exact $T_C =  kTC/J = 2/ \ln(1+\sqrt{
 2}) \approx 2.269$ \cite{Onsager}
