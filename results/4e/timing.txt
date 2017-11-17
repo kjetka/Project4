@@ -1,0 +1,3 @@
+Number of processors: 2 Time: 25687.3
+Number of temperatures: 30
+MonteCarlo per thread: 700000
