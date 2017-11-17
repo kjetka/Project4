@@ -160,8 +160,10 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 }
             }
         } // end of MC loop
+        cout << "T: "<< Temperature <<endl;
+         cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - " << meanValues[0]/(MonteCarloCycles) << "^2" <<" = " << meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) <<endl;
 
-        // cout << "variance: " << meanValues[1]/(MonteCarloCycles*NSpins) << " - " << meanValues[0]/(MonteCarloCycles*NSpins) << "^2" << endl;
+         cout << "standard deviation = variance^0.5 = "  << sqrt(meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) )<<endl;
 
         //Compare with analytical result:
 

@@ -7,7 +7,7 @@ from numpy import *
 
 #Compare random v ordered 
 
-
+"""
 i=0
 for temp in [1,2.4]:
     i+=1
@@ -48,7 +48,7 @@ for temp in [1,2.4]:
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
             xscale('log')
             xlabel('Monte Carlo cycles')     
-            ylabel('Energy, eV')
+            ylabel('Energy')
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
     figure(i)
     if temp == 1:
@@ -56,11 +56,9 @@ for temp in [1,2.4]:
         legend()
     else:
         legend(loc = 4)
+    rcParams['font.size'] = 14
+
     savefig('ran_order_T%i.pdf'%temp)   
-show()
-
-
-
 
 MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20.txt",unpack=True, skiprows=2)
 plot(MCcycles, E, 'b', label = "ordered initial spin system")
@@ -71,16 +69,18 @@ xscale('log')
 ylim([-2.01,-1.98])
 #ax1.set_xlim([0,1e4])
 
+rcParams['font.size'] = 14
 
 
 legend()
 title('$\\langle E \\rangle $ for ordered initial system at T=1 ')
+tight_layout()
 savefig('order_T1_start.pdf')
-show()
-
 
 
 """
+
+
 
 output = Popen(["ls"], stdout=PIPE).communicate()[0]
 files = re.findall(".*random.*\.txt",output,re.IGNORECASE)
@@ -105,7 +105,10 @@ for file in files:
             data[key] = array(data[key])
 
         print data.keys()
-
+        if "1.0" in file:
+            labell = "1.0"
+        else:
+            labell = "2.4"
 
         fig1, ax1 =subplots()
         ax2 = ax1.twinx()
@@ -113,11 +116,15 @@ for file in files:
         ax1.plot(data["MCcycles"], data["E"], 'b', label = ' $\langle E \\rangle$')
         ax2.plot(data["MCcycles"], data["Mabs"], 'brown', label = ' $\langle M \\rangle$')
 
-        ax1.set_ylabel('Energy (eV)', color = 'b')
+        ax1.set_ylabel('Energy', color = 'b')
         ax1.set_xlabel('Monte Carlo cycles')
         ax2.set_ylabel(r' Magnetic moment', color = 'brown')
         #ax1.legend(loc = 1)
         #ax2.legend(loc = 2)
+        if "1.0" in file:
+            ax2.set_ylim([0,1.1])
+            ax1.set_ylim([-2.1,-0.6])
+
         ax1.tick_params('y', colors='b')
         ax2.tick_params('y', colors='brown')
         ax1.ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
@@ -125,11 +132,14 @@ for file in files:
         h1, l1 = ax1.get_legend_handles_labels()
         h2, l2 = ax2.get_legend_handles_labels()
         ax2.legend(h2+h1, l2+l1, loc = 5)
+        rcParams['font.size'] = 14
+        tight_layout()
+
         savefig('En_mag_T'+labell+'.pdf')
         #grid('on')
 
         
 
 
-    show()
-"""
+show()
+

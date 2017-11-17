@@ -1,11 +1,4 @@
 
-
-Ising model
-
-Markhow chain - convergance
-Error
-Random number ?????
-
 The theory and method sections are based on chapter 12 and 13 in Jensen, \cite{Jensen}.
 \subsection{The Ising model}
 
@@ -43,77 +36,59 @@ At the boundaries of a finite spin matrix it is fewer nearest neighbours than in
 
 \subsection{Phase transitions}
 
-A phase transition happens that a thermodynamically stable state of a system changes abruptly  when one or more thermodynamical  variables describing the structure reaches a critical value. In addition to changing state, macroscopic properties of the system must change. Melting of a solid is a example of an everyday phase transition, depending on a critical pressure and a critical temperature. At a critical temperature ($ T_C $) the Ising model undergoes a second order phase transition, where both the mean energy and magnetization is changed. 
+A phase transition happens when a thermodynamically stable state of a system changes abruptly as one or more thermodynamical  variables describing the structure reaches a critical value. In addition to changing state, macroscopic properties of the system must change. Melting of a solid is a example of an everyday phase transition, depending on a critical pressure and a critical temperature. At a critical temperature ($ T_C $) the Ising model undergoes a second order phase transition, affecting both the mean energy and magnetization. 
 
 
-A first order phase transition, like melting ice, have two state that coexist at the critical point, with a finite  correlation length
-A second order phase transition is characterized by having 
+A first order phase transition is a gradual change from a phase to another and have two phases that coexist at the critical point, for example the melting of ice. The long range ordering exist in each phase, which gives a relatively large correlation length. For a second order phase transition, in the Ising model caused by  Boltzmann statistics , the correlation length spans the entire system at the critical point. This means that the two phases on either side of the critical point is the same. 
 
+For a finite lattice the correlation length, mean magnetization,  susceptibility and heat capacity  is described by the following equations  near the critical temperature. 
+\begin{align}
+	\chi(T) &\simeq (T_C-T)^{-\alpha}\label{eq: X_TC}\\
+		\xi (T) &\simeq \abs{T_C-T}^{-\nu} \\
+	C_V(T) &\simeq \abs{T_C-T}^{-\gamma} \label{eq:C_V_finite}\\
+		\langle M\rangle &\simeq \abs{T-T_C}^{\beta}\\
+ \end{align}
 
-Correlation length, forklare second order ????
-spin correlation -related to suscepti
-
-
-Regardless of the matrix size of the 2 dimensional system, there are only 16 
-
-
-
-Energy, magnetic moment, susceptibility, heat capacity, critical temperature:
-
+The critical exponents $ \alpha, \beta, \nu $ and $ \gamma $ are all positive. From equation \ref{eq: X_TC}-\ref{eq:C_V_finite} it is clear that $\chi$,  $\xi (T)$ and $ C_V $  diverges to infinity at $ T = T_C $. As the correlation length spans the whole system, it is limited by the lattice size, L. The critical temperature is related to the finite scaling by equation \ref{eq:critical_T}
 
 \begin{equation}\label{eq:critical_T}
-T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
+	T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
 \end{equation}
-for matrixes of size $ L\times L $
+
+
+
 
 \subsection{Simple example of the Ising model}
 
-It is possible to model the $ 2\times 2 $ Ising model with periodic boundary conditions analytically. This specific system has $ N = 2^{L^2} = 2^4=16 $ different micro states.
+It is possible to model the $ 2\times 2 $ Ising model with periodic boundary conditions analytically. This specific system has $ N = 2^{L^2} = 2^4=16 $ different micro states. 
 
-To do:  beskrive alle data: tabell,  Eavg Mavg, Z, Cv, X, 
 
+\begin{table}[H]
+	\caption{Overview  of the degeneracy of the $ L=2 $ system. See table \ref{tab: mikro} for all the different microstates}
+	\label{tab: makro}
+	\begin{tabular}{cccccc}
+		\input{../results/table_makro.tex}
+	\end{tabular}
+\end{table}
+
+From table \ref{tab: makro} it is possible to calculate the partition function of the system: 
 
 \[
-Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{\beta 8 J} + 12
+Z = \sum_i^M e^{-\beta E_i} = 2e^{-\beta 8 J}  + 2e^{\beta 8 J} + 12 = 4 \cosh\left( \beta 8 J \right) + 12
 \]
 
-\[
-= 4 \cosh\left( \beta 8 J \right) + 12
-\]
+The mean energy is given as a derivation by parts of $ \ln Z $ with regards to $ \beta $:
 
+\[ 	\langle E \rangle = - \left(\pdv{\ln Z}{\beta}\right)_{V,N} = 	 - \frac{\partial}{\partial \beta} \ln \left[ 4 \cosh \left( 8J\beta\right)+12\right] =\frac{-8J \sinh(8J\beta)}{3\cosh(J\beta)+ 4} \]  
 
-Energy:
-\[
-\left< E \right> = k_B T^2 \left(\frac{\partial Z}{\partial T}
-\right)_{V,N}
-\]
-\[
-= k_B T^2 \frac{\partial}{\partial T} \left[\ln \left(4\cosh \left(\frac{8J}{k_BT}\right) +12\right) \right]\]
-
-\[
-\frac{\partial \ln Z}{\partial T} = \frac{\partial Z}{\partial \beta}\frac{\partial \beta}{\partial T} = \frac{\partial \ln Z}{\partial \beta}\left(\frac{-1}{k_B T^2}\right)
-\]
-
-\[
-\left< E\right> = -\left(\frac{\partial Z}{\partial \beta} \right)_{V,N} = - \frac{\partial}{\partial \beta} \ln \left[ 4 \cosh \left( 8J\beta\right)+12\right]
-\]
-
-\[
-= \frac{-1}{4\cosh (8J\beta) + 12}4 \sinh(8J\beta)8J\beta
-\]
+By investigating table \ref{tab: makro}, the mean magnetization 
 $
-= \frac{-8J \sinh(8J\beta)}{3\cosh(J\beta)+ 4}
-$
-
-Following the same method, we found that:
+\left< M \right> $ must be $0$. However, that is not true for the mean absolute magnetization:
 
 \[
 \left< |M| \right> = \frac{1}{Z} \sum_i^M M_i e^{\beta E_i}  = \frac{(8J)^2 \cosh(8J\beta )}{\cosh (8J\beta ) + 3}
 \]
 
-\[
-\left< M \right> = 0
-\]
 
 \[
 \left< E^2 \right> = \frac{8 \left( e^{8J\beta } + 1\right) }{\cosh (8J\beta ) + 3}
@@ -134,14 +109,9 @@ C_V = k \beta^2\left( \left< E^2\right> - \left< E\right>^2 \right)
 \chi = \beta \left( \left< M^2\right> - \left< M\right>^2\right)
 \]
 
-\begin{table}[H]
-	\caption{text}
-	\label{tab: makro}
-\begin{tabular}{cccccc}
-	\input{../results/table_makro.tex}
-\end{tabular}
-\end{table}
-
-See table \ref{tab: makro} for all the possible micro states the L=2 system can take. 
 
 
+Describes all the nearest neighbour interactions possible in all systems
+
+
+To do:  beskrive alle data: tabell,  Eavg Mavg, Z, Cv, X, 

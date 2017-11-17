@@ -37,7 +37,8 @@ for i in range(16):
 
 
 with open('../results/table_micro.tex', 'w+') as file:
-	file.write("Microstate & Spinn  & Energi & Magnetization	\\\\ \\hline \n")
+	file.write("	Microstate & Spinn  & Energi & Magnetization	\\\\ \\hline \n")
+	
 	for i in range(16):
 		mikro = Mikro_sort[i]
 		string = " %i & "%(i+1)
@@ -58,7 +59,6 @@ with open('../results/table_micro.tex', 'w+') as file:
 			str_slutt += "& $%i \\text{J}$ &$ %i$   \\\\"%(-E_sort[i], Mag_sort[i]) 
 		str_slutt += "\\hline"
 		file.write(string + spinn_str+str_slutt + '\n')
-
 
 
 
