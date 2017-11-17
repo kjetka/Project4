@@ -101,6 +101,7 @@ int main(int argc, char* argv[]){
         exercised.algorithm("4d/d_T_2_4", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
 */
 
+
     //----------------------------------------------------
     // EXERCISE E
     //----------------------------------------------------
