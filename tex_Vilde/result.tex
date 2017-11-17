@@ -87,7 +87,21 @@ $$ \sigma = 56.8  $$
 
 \subsection{Increasing dimensionality/ Critical temperature}
 
-OBS: Plot of E, M, Cv, X as functions of T (put L as legend and plot together)
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{../results/4e/4e_energy}\caption{This is a plot if the energy versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_energy}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{../results/4e/4e_mag}\caption{This is a plot if the absolute magnetic moment versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_magnetic}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{../results/4e/4e_Cv}\caption{This is a plot if the heat capacity versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_heat_capa}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{../results/4e/4e_x}\caption{This is a plot if the susceptibility versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_suscept}
+\end{figure}
 
 OBS: Indication of phase transition? (Peak - at least for Cv and X)
 
@@ -95,18 +109,18 @@ OBS: Use Equation \ref{eq:critical_T} to extract $T_C$.
 
 Getting these equations from \ref{eq:critical_T} where $\nu = 1$:
 \begin{align*}
-T_C(40) - T_C(\infty) &= a 40^{-1}\\
-T_C(60) - T_C(\infty) &= a 60^{-1}\\
-T_C(80) - T_C(\infty) &= a 80^{-1}\\
-T_C(100) - T_C(\infty) &= a 100^{-1}\\
+T_C(40) - T_C(\infty) &= a \cdot 40^{-1}\\
+T_C(60) - T_C(\infty) &= a \cdot 60^{-1}\\
+T_C(80) - T_C(\infty) &= a \cdot 80^{-1}\\
+T_C(100) - T_C(\infty) &= a \cdot 100^{-1}\\
 \end{align*}
 
 (Sett inn tall!)
 \begin{align*}
-T_C(\infty) &= - a 40^{-1} + T_C(40)\\
-T_C(\infty) &= - a 60^{-1} + T_C(60)\\
-T_C(\infty) &= - a 80^{-1} + T_C(80)\\
-T_C(\infty) &= - a 100^{-1} + T_C(100)\\
+T_C(\infty) &= - a \cdot 40^{-1} + 2.28\\
+T_C(\infty) &= - a \cdot 60^{-1} + 2.27\\
+T_C(\infty) &= - a \cdot 80^{-1} + 2.28\\
+T_C(\infty) &= - a \cdot 100^{-1} + 2.27\\
 \end{align*}
 
 Exact $T_C =  kTC/J = 2/ \ln(1+\sqrt{
