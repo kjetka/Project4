@@ -1,8 +1,33 @@
+\subsection{Ising model}
+
+The two dimensional Ising model is a statistical model that allows us to investigate the temperature dependence of different properties of a magnet. The model consists of a two dimensional lattice of spins that can be in two different states, spin up, $\uparrow$, or spin down, $\downarrow$ \cite{Ising}. In our system we do not have an applied field, $B_a = 0$.
+
+The energy of our system is then:
+
+\begin{equation}\label{eq:total_energy}
+E = - J \sum^N_{\left< kl \right>} s_k s_l
+\end{equation}
+
+where in our system $J > 0$, giving a ferromagnetic ordering, and $s_k, \, s_l = \pm 1$.
+
+
 \subsection{Introduction to statistics}
+
+The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability.
 
 \begin{equation}\label{eq:probability_density}
 P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
 \end{equation}
+
+\begin{equation}\label{eq:Boltzmann}
+P_i(\beta) = \frac{e^{-\beta E_i}}{Z}
+\end{equation}
+
+\begin{equation}\label{eq:Partitionfunction}
+Z = \sum_{i=1}^M e^{-\beta E_i}
+\end{equation}
+
+
 
 \begin{equation}\label{eq:expectation_value}
 \left< h \right>_X = \int \,h(x) \,p(x)\,dx
@@ -16,7 +41,11 @@ P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
 \left< x \right> = \int \,x \,p(x)\,dx
 \end{equation}
 
-\subsection{Magnet - properties}
+Partition function
+
+Boltzman
+
+\subsection{Magnetic properties}
 
 Energy, magnetic moment, susceptibility, heat capacity.
 
@@ -24,8 +53,9 @@ Energy, magnetic moment, susceptibility, heat capacity.
 T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
 \end{equation}
 
-Boltzman
 Markhow chain - convergance
+
+\subsection{Analytical solutions for L=2}
 
 L=2 case:
 \begin{table}[H]

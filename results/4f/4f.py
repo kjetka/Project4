@@ -10,7 +10,7 @@ matplotlib.rc('font', **font)
 L = [40 ,60, 80, 100]
 
 a = linspace(-1,0.2,100)
-a = linspace(-5, 3,100)
+a = linspace(-4, 3,100)
 #Need the right values here:
 L_Tc = [2.28, 2.27, 2.28, 2.27]
 Tc_infty_L = zeros([len(L),len(a)])
@@ -30,5 +30,5 @@ title("Finding the critical temperature")
 xlabel("a")
 ylabel(r"$T_C(\infty)$")
 tight_layout()
-legend(loc=2)
+#legend(loc=2)
 savefig('critical_t.pdf')
