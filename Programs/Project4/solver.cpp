@@ -184,9 +184,9 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         if (writeWhenFinish && (RankProcess == 0)){
 
             outfile2.open("../../results/"+ folderFilename+"probability.txt");
-            outfile2 << "E" << "\t"<< "P"<< endl;
+            outfile2 << "E" <<" EE"  <<"\t"<< "P"<< endl;
             for(unsigned int i = 0; i<=listOfEnergies.size(); i++){
-                outfile2 << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
+                outfile2 << listOfEnergies[i] << "\t"<< listOfEnergies[i]*listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
             }
             outfile2.close();
         }

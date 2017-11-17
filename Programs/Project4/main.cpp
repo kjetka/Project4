@@ -83,7 +83,7 @@ int main(int argc, char* argv[]){
     // EXERCISE D
     //----------------------------------------------------
 
-      /*
+
          L = 20;
          MonteCarloCycles = 1e6;
          writeResolution = 1;
@@ -100,13 +100,12 @@ int main(int argc, char* argv[]){
         temperatures = vec({2.4});
         exercised.algorithm("4d/d_T_2_4", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
 
-*/
 
     //----------------------------------------------------
     // EXERCISE E
     //----------------------------------------------------
 
-
+/*
     //vec Ls = vec({40, 60, 80, 100});
 
     MonteCarloCycles = 0.5e6; //must be much smaller than the thermalization time
@@ -132,11 +131,11 @@ int main(int argc, char* argv[]){
         exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     }
-
+*/
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;
-
+/*
     if ( RankProcess == 0) {
         cout << "Time = " <<  TotalTime  << " on number of processors: "  << NProcesses  << endl;
 
@@ -147,6 +146,7 @@ int main(int argc, char* argv[]){
         outfiletime << "MonteCarlo per thread: "  << MonteCarloCycles  <<endl;
         outfiletime.close();
     }
+    */
     MPI_Finalize();
     return 0;
 }
