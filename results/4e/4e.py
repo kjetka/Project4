@@ -137,8 +137,9 @@ def func(x,b,a):
 for i in range(len(L_liste)):
     L_liste[i] = 1./float(L_liste[i])
 p0 = [-0.1,2.3]
-p = polyfit(L_liste,T_C_CV_list,1) # (func,xdata,y,p0)
 
+print T_C_CV_list
+p = polyfit(L_liste,T_C_CV_list,1) # (func,xdata,y,p0)
 print p[1]
 figure()
 plot(L_liste, T_C_CV_list, '*-',label = 'Experimental data' )
@@ -147,7 +148,8 @@ plot(x, x*p[0]+p[1], label = 'Linear fit')
 title('Linear fit of $T_C$ for different grid sizes')
 ylabel('Temperature, $\\frac{k_BT}{J}')
 xlabel('Inverse grid size, 1/L')
-legend(loc = 1)
+legend(loc = 2)
+ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 savefig('linfit.pdf')
-
+show()
 
