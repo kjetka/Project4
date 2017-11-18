@@ -1,19 +1,20 @@
+INCLUDE?
+Markhow chain - convergance
+
+
 \subsection{Ising model}
 
-The two dimensional Ising model is a statistical model that allows us to investigate the temperature dependence of different properties of a magnet. The model consists of a two dimensional lattice of spins that can be in two different states, spin up, $\uparrow$, or spin down, $\downarrow$ \cite{Ising}. In our system we do not have an applied field, $B_a = 0$.
-
-The energy of our system is then:
+The two dimensional Ising model is a statistical model that allows us to investigate the temperature dependence of different properties of a magnet. Our model consists of a two dimensional lattice of spins that can be in two different states, spin up, $\uparrow$, or spin down, $\downarrow$ \cite{Ising}. In our system we do not have an applied field, $B_a = 0$. The energy of our system is then given by Equation \ref{eq:total_energy}.
 
 \begin{equation}\label{eq:total_energy}
 E = - J \sum^N_{\left< kl \right>} s_k s_l
 \end{equation}
 
-where in our system $J > 0$, giving a ferromagnetic ordering, and $s_k, \, s_l = \pm 1$.
-
+where in our system $J > 0$, $J$ is the coupling constant, giving a ferromagnetic ordering, and $s_k, \, s_l = \pm 1$, $s_k$ is the $k$-th spin of $N$ number of spins.
 
 \subsection{Introduction to statistics}
 
-The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability (Equation \ref{eq:Partitionfunction}).
+The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability (Equation \ref{eq:Partitionfunction}). To calculate $Z$, we need to know all the different states,$i$, and their energy, $E_i$. It can be calculated for small systems (\ref{sec:analytical_sol} Analytical solutions for L=2), but it would be very time consuming to include it in Monte Carlo Sampling. A method that does not include it is necessary.
 
 \begin{equation}\label{eq:probability_density}
 P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
@@ -27,98 +28,49 @@ P_i(\beta) = \frac{e^{-\beta E_i}}{Z}
 Z = \sum_{i=1}^M e^{-\beta E_i}
 \end{equation}
 
-In this project we are looking at different properties of a magnet. That is energy, magnetic moment, heat capacity and susceptibility. To get out this data form our Ising model, we need some statistical terms. We will use Monte Carlo cycles and the Metropolis algorithm to calculate the first order moment (Equation \ref{eq:moment}), the mean value (Equation \ref{eq:mean_value}) of the energy and the magnetic moment.
+In this project we are looking at different properties of a magnet. That is energy, magnetic moment, heat capacity and susceptibility. To get out this data form our Ising model, we need some statistical terms. We will use Monte Carlo cycles and the Metropolis algorithm to calculate the second order moment (Equation \ref{eq:moment}) and the first order moment also called the mean value (Equation \ref{eq:mean_value}) of the energy and the magnetic moment. These values, we can use to get the heat capacity and the susceptibility.
 
 \begin{equation}\label{eq:moment}
-\left< x^n \right> = \int \,x^n \,p(x)\,dx
+\left< x^2 \right> = \int \,x^2 \,P(x)\,dx
 \end{equation}
 
 \begin{equation}\label{eq:mean_value}
-\left< x \right> = \int \,x \,p(x)\,dx
+\left< x \right> = \int \,x \,P(x)\,dx
 \end{equation}
-
-The mean value of the energy is then:
-
-\[
-\left< E \right> = \int E \,p(E)\, dE = \int E \int_b^a\, \frac{e^{-\beta E_i}}{\sum_{i=1}^M e^{-\beta E_i}}\, dE_i\,dE
-\]
-\[
-= k_B T^2 \left( \frac{\partial Z}{\partial T}\right)_{V,N}
-\]
-
-Boltzman
 
 \subsection{Magnetic properties}
 
-The energy of this system is found by 
-Helmholtz free energy:
-\[
-F = \left< E \right> - TS = -kT \ln Z
-\]
-
-\[
-\ln Z = -F/kT = -F\beta
-\]
-
-\[
-\left< E\ \right> = -\frac{\partial \ln Z}{\partial \beta}
-\]
-
-Energy, magnetic moment, susceptibility, heat capacity.
+The energy of the system is found by using Equation \ref{eq:total_energy}. The total magnetic moment is found by adding the magnetic moments of all spins in the lattice. The susceptibility represents how a material responds to an applied magnetic field. The heat capacity is the ration of heat added to a material and the resulting temperature change. 
 
 derivative of F (with respect to T/external magnetic field): E, M
 
 second derivative of F (\_,,\_): X, Cv
 
-Second order phase transition.
-    Correlation length diverges (spin correlation - they all "feel" each other? - they all change?)
-    The spin gets more and more correlated as $T \rightarrow T_C$. Correlation length increases - second order - span the whole system.
-    
-The Ising model exhibits a second-order phase transition since the heat capacity diverges.
+We are looking at the temperature dependence of these properties and finding the critical temperature, $T_C$,  where the phase transition between paramagnetic and ferromagnetic occurs. When $T< T_C$ the system exhibit spontaneous magnetization it is ferromagnetic, but when $T > T_C$ the net magnetization is zero it is paramagnetic. This phase transition is of second order. That means that the correlation length of the system diverges when $T \rightarrow T_C$, it spans the whole system. The correlation length represents the correlation between the spins. It is a spacial unit because it indicates how far away spins can be from each other and still correlate. We can find out that the Ising model exhibits a second-order phase transition since the heat capacity diverges.
 
-T< Tc : Spontanious magnetization - ferromagnetic
-
-T > Tc : Net magnetication = zero - paramagnetic
 
 \begin{equation}\label{eq:critical_T}
 T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
 \end{equation}
 
-Markhow chain - convergance
+The other equation also?
 
-\subsection{Our problem}
 
-Monte Carlo sampling function:
+\subsection{Analytical solutions for L=2}\label{sec:analytical_sol}
 
-The probability of finding the state in state i:
-\[
-P(E_i) = \frac{e^{-\beta E_i}}{Z}
-\]
+Here are the calculation of the analytical values for the system where L=2. These were used as benchmark calculations for the numerical calculations.
 
-To calculate Z we need to know the energy of all states:
-\[
-Z = \sum_i^M e^{-\beta E_i}
-\]
-
-We can do this for the small lattice where L=2.
-
-\subsection{Analytical solutions for L=2}
-
-L=2 case:
 \begin{table}[H]
-	\caption{text}
-	\label{tab: makro}
+	\caption{This table lists the possible states and their accompanying energies when L=2.}
+	\label{tab:macro_energies}
 \begin{tabular}{cccccc}
 	\input{../results/table_makro.tex}
 \end{tabular}
 \end{table}
 
-Error
-Random number
-
-The partition function:
+First we calculated the partition function using Equation \ref{eq:total_energy} and the numbers in Table \ref{tab:macro_energies}:
 \[
-Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{\beta 8 J} + 12
+Z = \sum_i^N e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}+e^{\beta 8 J} + 12
 \]
 \[
 = 2e^{-\beta 8 J}+ 2e^{\beta 8 J} + 12 = 4\left(\frac{e^{-\beta 8 J}+ e^{-\beta 8 J}}{2}\right)+12
@@ -126,7 +78,8 @@ Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{
 \[
 = 4 \cosh\left( \beta 8 J \right) + 12
 \]
- The energy:
+
+Using thermodynamical relations we calculate the expectation values of the energy and magnetic moment\cite{Thermal}.
 
 \[
 \left< E \right> = k_B T^2 \left(\frac{\partial Z}{\partial T}
@@ -135,11 +88,11 @@ Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{
 
 \[
 = k_B T^2 \frac{\partial}{\partial T} \left[\ln \left(4\cosh \left(\frac{8J}{k_BT}\right) +12\right) \right]\]
-
+\hrule
 \[
 \frac{\partial \ln Z}{\partial T} = \frac{\partial Z}{\partial \beta}\frac{\partial \beta}{\partial T} = \frac{\partial \ln Z}{\partial \beta}\left(\frac{-1}{k_B T^2}\right)
 \]
-
+\hrule
 \[
 \left< E\right> = -\left(\frac{\partial Z}{\partial \beta} \right)_{V,N} = - \frac{\partial}{\partial \beta} \ln \left[ 4 \cosh \left( 8J\beta\right)+12\right]
 \]
@@ -153,9 +106,8 @@ Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{
 \]
 
 Following the same method, we found that:
-
 \[
-\left< |M| \right> = \frac{1}{Z} \sum_i^M M_i e^{\beta E_i}  = \frac{(8J)^2 \cosh(8J\beta )}{\cosh (8J\beta ) + 3}
+\left< |M| \right> = \frac{1}{Z} \sum_i^N M_i e^{\beta E_i}  = \frac{(8J)^2 \cosh(8J\beta )}{\cosh (8J\beta ) + 3}
 \]
 
 \[
@@ -163,15 +115,15 @@ Following the same method, we found that:
 \]
 
 \[
-\left< E^2 \right> = \frac{8 \left( e^{8J\beta } + 1\right) }{\cosh (8J\beta ) + 3}
+\left< E^2 \right> = \frac{1}{Z} \left( \sum_i^N E_i^2 e^{\beta E_i}\right) =\frac{8 \left( e^{8J\beta } + 1\right) }{\cosh (8J\beta ) + 3}
 \]
 
 
 \[
-\left< M^2 \right> = \frac{1}{Z} \left( \sum_i^M M_i^2 e^{\beta E_i}\right) = \frac{2 \left( e^{8J\beta } + 2\right) }{\cosh (8J\beta ) + 3}
+\left< M^2 \right> = \frac{1}{Z} \left( \sum_i^N M_i^2 e^{\beta E_i}\right) = \frac{2 \left( e^{8J\beta } + 2\right) }{\cosh (8J\beta ) + 3}
 \]
 
-We can use these to calculate the rest:
+We can use these to calculate the rest, with these definitions:
 
 \[
 C_V = k \beta^2\left( \left< E^2\right> - \left< E\right>^2 \right)

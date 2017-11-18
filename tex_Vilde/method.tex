@@ -1,15 +1,107 @@
 In this project we tried out many new concepts in our algorithm.
 
+
+\subsection{Monte Carlo sampling}
+
+To reach the most likely state, the steady state, we use Monte Carlo sampling. Our Monte Carlo sampling function is given in Equation \ref{eq:Boltzmann} and it is the Boltzmann distribution which is temperature dependent because $\beta = \frac{1}{k_b T}$. It is the probability of finding the system in state $i$. The sampling rule is explained in \ref{sec:metropolis} Metropolis algorithm.
+
+\subsection{Metropolis Algorithm}\label{sec:metropolis}
+
+We are looking at transition from one state to another. $W_{ij}$ is the transformation probability of going from state $j$ to state $i$. $\omega_i$ is our PDF, $P_i$. That means that a transition from $i$ to $j$ can be written:
+\[
+\omega_i = W_{ij}\omega_j
+\]
+
+The steady state of a system can be written as:
+\[
+\omega_i = \sum_j W_{ij}\omega_{j}
+\]
+or in matrix form:
+\[
+\hat{\omega}(t+1) = \hat{W}\hat{\omega}(t)
+\]
+
+In our case we do not know the transition probability, and we have to model it. We do this using the Metropolis algorithm. We separate $W_{ij}$ into two parts, the probability of accepting the move from state $j$ to state $i$, $A_{ij}$, and the probability of making the move to state $i$ when in state $j$, $T_{ij}$. We define $T_{ij}$ and $A_{ij}$ to lead the system to the most likely state.
+
+In our case the algorithm starts with suggesting a move from state $j$ to state $i$, it does this by picking a random spin and flipping it. The picking of the spin is governed by the uniform distribution, that gives $T_{ij }= T_{ji}$, it is symmetric. The uniform distribution is baked into the random number generators.
+
+After the move is suggested, it has to be accepted or not. This acceptance has to make the system go towards the most likely state, the steady state.
+
+Our ratio between probabilities is:
+\[
+\frac{A_{ij}}{A_{ji}} = \frac{\omega_iT_{ij}}{\omega_jT_{ji}} = \exp(-\beta (E_i-E_j))= \exp(-\beta \Delta E_{ij})
+\]
+with the Boltzmann distribution and the acceptance probability is:
+\[
+A_{ij} = \begin{cases}
+\exp(-\beta \Delta E_{ij}) &\indent \text{if } \Delta E_{ij} > 0\\
+1 & \indent\text{if } \Delta E_{ij} \leq 0\\
+\end{cases}
+\]
+
+We need to accept some moves where $\Delta E_{ij} > 0$ so that the algorithm is ergodic, that all possible states in the system can be reached, even though the probability of it happening is small.
+
+In practice:
+
+The metropolis algorithm is an algorithm that takes the system to the steady state. We want to find out what the real state of the system is when the outer parameters are what they are, for example temperature.
+
+- Calculate total energy of initial lattice, $E_{tot}$
+
+- Pick a random spin in the lattice
+
+- Flip the spin
+
+- Calculate the change in energy, $\Delta E$ (only five possibilities)
+
+    
+    (flipping only one)
+    $$ \Delta E = -J\sum_{\left<kl\right>}^M s^2_k \left( s_l^2-s_l^1\right)$$
+    $(\left( s_l^2-s_l^1\right) = -2$  if $s_l^1 = 1$ and $(\left( s_l^2-s_l^1\right) = 2$  if $s_l^1 = -1$:
+    $$ \Delta E = 2Js_l^1\sum_{\left<k\right>}^M s^2_k$$
+
+- If $\Delta E \leq 0$ - accept because we want to move to a state with the lowest energy
+
+- If $\Delta E > 0$ - calculate $\omega = e^{-\beta \Delta E}$
+
+- Compare $\omega$ with a random number $r$, if $r \leq \omega$ - accept new configuration
+    
+    E += $\Delta E$ and 
+    M += $\Delta M = 2s_l^1$
+
+- Update mean values
+
+- Repeat  
+
+Should show how to find the five $\Delta E$s.
+
+
+\subsection{Random number generators}
+
+The random number generator (RNG) used in this project is gain from a linear congruential relation (Equation \ref{eq:linearcr}). Which can, with good parameters, $a$ and $c$ give a list of quasi random numbers with a maximum periodicity $M$, that means that the numbers repeat themselves after $M$ numbers. It is important that the periodicity is large compared with the number of Monte Carlo cycles, to the 'measurements' represent the truly random real world. The RNG gives a number $x_i \in [0,1]$ because $x_i = N_i/M$. The PDF for generating random numbers in the interval $[0,1]$ is the uniform distribution.
+
+\begin{equation}\label{eq:linearcr}
+N_i = (aN_{i-1} + c)MOD(M)
+\end{equation}
+
+\subsection{The algorithm}
+
+
+
 \begin{lstlisting}[language=C++]
 for(i =0; i<temperature.size();i++){
-   T = temperature[i];
+    
+    //make vector with all possible omega_i/omega_j   
+    //dependent on temperature and
    for(MC = 1; MC < MCcycles.size(); MC++){
+       
        for(i=0; i< L*L; i++){
            ix, iy = random(i);
            // with random spin generator        
+           
            Matrix(ix, iy) *= -1;
+
            dE = dEs[i];
-           // dEs = vec({})
+           
            MetropolisAlgorithm();
            // decide if the flip is accepted
            if(flip is accepted){
@@ -28,76 +120,35 @@ for(i =0; i<temperature.size();i++){
 }
 \end{lstlisting}
 
-
-\subsection{Monte Carlo cycles}
-
-In Monte Carlo methods, the goal is to compute as many possible outcomes of the systems properties and find the mean value of them. By computing enough times, a steady state will be reached.
-
-
-\subsection{Metropolis algorithm}
-
-The metropolis algorithm is an algorithm that takes the system to the steady state. We want to find out what the real state of the system is when the outer parameters are what they are, for example temperature.
-
-- Calculate total energy of initial lattice, $E_{tot}$
-
-- Pick a random spin in the lattice
-
-- Flip the spin
-
-- Calculate the change in energy, $\Delta E$ (only five possibilities)
-
-- If $\Delta E \leq 0$ - accept because we want to move to a state with the lowest energy
-
-- If $\Delta E > 0$ - calculate $\omega = e^{-\beta \Delta E}$
-
-- Compare $\omega$ with a random number $r$, if $r \leq \omega$ - accept new configuration
-
-- Update mean values
-
-- Repeat  
-
-Should show how to find the five $\Delta E$s.
-
-\subsection{Random number generator}
-
 \subsection{Parallelizing}
+
+In this project we used parallelization. We used Message Passing Interface (MPI) to parallelize our code.Each process read and executes the whole program. We had to use different MPI functions to make sure that all processes sent their results to one main process that would write to file for example. Beneath is some samples of the program that shows the process. 
+
+\begin{lstlisting}[language=C++]
+int NProcesses, RankProcess;
+//   MPI initializations
+MPI_Init(&argc, &argv);
+MPI_Comm_size(MPI_COMM_WORLD, &NProcesses);
+MPI_Comm_rank(MPI_COMM_WORLD, &RankProcess);
+ 
+//Sending result to RankProcess = 0
+for( int i =0; i < 5; i++){
+    MPI_Reduce(&meanValues[i], &TotalMeanValues[i], 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+}
+    
+if (RankProcess == 0){
+    writeToFile();
+}
+// MPI end     
+MPI_Finalize();
+\end{lstlisting}
+
+%- Develop codes locally, run with some few processes and test your codes. Do benchmarking, timing and so forth on local nodes, for example your laptop or PC.
+%- When you are convinced that your codes run correctly, you can start your production runs on available supercomputers.
 
 \subsection{Unit tests}
 
-Check the L=2 result with the analytical one
- - We did it visually
+In this project we did not write any unit tests, we only wrote out the results during the program development and saw if it was logical. We could have made a unit test that calculated the properties of the L=2-system and compared them to the analytical values calculated in the theory. This would have helped us make sure that when we made changes to the program, for example implementing parallelization and classes, the program was doing what it was supposed to do and not getting the wrong result. 
 
-Make a small matrix (ordered initial), calculate energy - flip one spin, calculate energy - is the change in energy what we expect? 
-
- - Should have had it underveis
- - Kan neste gang lage tester som gjør at når vi implementerer nye ting som for eksempel classes eller paralelleisering, vet at det ikke har skjedd noe galt.
-
-
-
-
-Metropolis (T,A,...)
-	Stochastic matrix  - convergences (forhold eigenvalue).
+Another unit test we could have included is just flipping one spin in a small matrix and checking is the change in energy is what we expect. We should use unit tests from the start in the next project.
 	
-	Hvilken random number engine
-	
-MPI:	
-	
-- Develop codes locally, run with some few processes and test your codes. Do benchmarking, timing and so forth on local nodes, for example your laptop or PC.
-- When you are convinced that your codes run correctly, you can start your production runs on available supercomputers.
-	
-	
-MPI functions:
-%
-%MPI_InitMPI_Init - initiate an MPI computation
-%
-%MPI_FinalizeMPI_Finalize - terminate the MPI computation and clean up
-%
-%MPI_Comm_sizeMPI_Comm_size - how many processes participate in a given MPI communicator?
-%
-%MPI_Comm_rankMPI_Comm_rank - which one am I? (A number between 0 and size-1.)
-%
-%MPI_SendMPI_Send - send a message to a particular process within an MPI communicator
-%
-%MPI_RecvMPI_Recv - receive a message from a particular process within an MPI communicator
-%
-%MPI_reduceMPI_reduce or MPI_AllreduceMPI_Allreduce, send and receive messages

@@ -57,6 +57,9 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         double Energy = 0;
         double MagneticMoment = 0;
 
+        double probability;
+        int ix, iy, dE;
+
         // printing ----------------------------------------------
         ofstream outfile;
 
@@ -107,17 +110,17 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             // for every Monte Carlo cycle
             for (int xy =0; xy<L*L;xy++){
                 // Pick a random spin to flip
-                int ix =random_nr()*L;
-                int iy = random_nr()*L;
+                ix =random_nr()*L;
+                iy = random_nr()*L;
 
                 // Calculate the change in energy if the
                 // spin is flipped
-                int dE =  2*Microstate(ix,iy)*( Microstate(ix , periodicBC(iy,L,1) )
+                dE =  2*Microstate(ix,iy)*( Microstate(ix , periodicBC(iy,L,1) )
                                                 + Microstate(ix, periodicBC(iy,L,-1))
                                                 + Microstate(periodicBC(ix,L,1), iy)
                                                 + Microstate(periodicBC(ix,L,-1), iy)    );
 
-                double probability = Acceptance(dE + 8);
+                probability = Acceptance(dE + 8);
 
                 // Metropolis algorithm:
                 // Desides if the new configuration is accepted

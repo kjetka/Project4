@@ -3,7 +3,7 @@ import os
 import operator
 from subprocess import Popen, PIPE
 from matplotlib.pyplot import *
-from scipy.optimize import curve_fit
+from scipy.optimize import *
 
 from numpy import *
 
@@ -161,8 +161,10 @@ figure()
 plot(L_liste, T_C_CV_list, 'o',label = 'Experimental data' )
 x = linspace(0,max(L_liste), 100)
 plot(x, x*p[0]+p[1], label = 'Linear fit')
-title('Linear fit of $T_C$ for different grid sizes')
+#axhline(2.269, 0, 5,linestyle='--', label= r"$T_C^{exact}$ =2.269")
+title('Linear fit of $T_C$',fontsize=14)
 ylabel('Temperature, $\\frac{k_BT}{J}$ ')
+#ylim([2.277-0.001,0.009+2.277])
 xlabel('Inverse grid size, 1/L')
 legend(loc = 2)
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
