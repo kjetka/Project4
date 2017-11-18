@@ -1,15 +1,62 @@
-In this project we tried out many new concepts in our algorithm. We used Monte Carlo method. 
+In this project we tried out many new concepts in our algorithm.
+
+\begin{lstlisting}[language=C++]
+for(i =0; i<temperature.size();i++){
+   T = temperature[i];
+   for(MC = 1; MC < MCcycles.size(); MC++){
+       for(i=0; i< L*L; i++){
+           ix, iy = random(i);
+           // with random spin generator        
+           Matrix(ix, iy) *= -1;
+           dE = dEs[i];
+           // dEs = vec({})
+           MetropolisAlgorithm();
+           // decide if the flip is accepted
+           if(flip is accepted){
+               Energy += dE;
+               Magnetic += dM;
+           }
+      }
+      //Add the new values to the sum of the values:
+      mean_E += Energy;
+      mean_E2 += Energy*Energy;
+      mean_M += Magnetic;
+      sum M\^2 += M\^2;
+      sum |M| += |M|;
+   }
+//Before print, the values are divided by the number of Monte Carlo cycles to find the mean values.
+}
+\end{lstlisting}
 
 
 \subsection{Monte Carlo cycles}
 
-In Monte Carlo methods, the goal is to 
-
-
-
+In Monte Carlo methods, the goal is to compute as many possible outcomes of the systems properties and find the mean value of them. By computing enough times, a steady state will be reached.
 
 
 \subsection{Metropolis algorithm}
+
+The metropolis algorithm is an algorithm that takes the system to the steady state. We want to find out what the real state of the system is when the outer parameters are what they are, for example temperature.
+
+- Calculate total energy of initial lattice, $E_{tot}$
+
+- Pick a random spin in the lattice
+
+- Flip the spin
+
+- Calculate the change in energy, $\Delta E$ (only five possibilities)
+
+- If $\Delta E \leq 0$ - accept because we want to move to a state with the lowest energy
+
+- If $\Delta E > 0$ - calculate $\omega = e^{-\beta \Delta E}$
+
+- Compare $\omega$ with a random number $r$, if $r \leq \omega$ - accept new configuration
+
+- Update mean values
+
+- Repeat  
+
+Should show how to find the five $\Delta E$s.
 
 \subsection{Random number generator}
 

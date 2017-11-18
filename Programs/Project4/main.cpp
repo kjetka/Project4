@@ -82,21 +82,21 @@ int main(int argc, char* argv[]){
     // EXERCISE D
     //----------------------------------------------------
 
-//         L = 20;
-//         MonteCarloCycles = 1e6;
-//         writeResolution = 1;
-//         temperatures = vec({1});
+         L = 20;
+         MonteCarloCycles = 1e6;
+         writeResolution = 1;
+         temperatures = vec({1});
 
-//         randomStart = true;
-//         writeEveryMC = false ;
-//         writeWhenFinish = true;
-//         writeForTemp = false;
+         randomStart = true;
+         writeEveryMC = false ;
+         writeWhenFinish = true;
+         writeForTemp = false;
 
-//        Solver exercised(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
-//        exercised.algorithm("4d/d_T_1", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
+        Solver exercised(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
+        exercised.algorithm("4d/d_T_1", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
 
-//        temperatures = vec({2.4});
-//        exercised.algorithm("4d/d_T_2_4", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
+        temperatures = vec({2.4});
+        exercised.algorithm("4d/d_T_2_4", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
 
 
 
@@ -106,28 +106,27 @@ int main(int argc, char* argv[]){
 
 
     //vec Ls = vec({40, 60, 80, 100});
-    vec Ls = vec({60});
+//    vec Ls = vec({60});
 
-    MonteCarloCycles = 1e6;
-    writeResolution = 1;
-    temperatures = linspace<vec>(2.0, 2.3, 2);
+//    MonteCarloCycles = 1e6;
+//    writeResolution = 1;
+//    temperatures = linspace<vec>(2.0, 2.3, 2);
 
-    for (int i =0;i<size(temperatures)[0]; i++)
-        cout << temperatures[i]<<endl;
+//    for (int i =0;i<size(temperatures)[0]; i++)
+//        cout << temperatures[i]<<endl;
 
-    randomStart = true;
-    writeEveryMC = false ;
-    writeWhenFinish = false;
-    writeForTemp = true;
+//    randomStart = true;
+//    writeEveryMC = false ;
+//    writeWhenFinish = false;
+//    writeForTemp = true;
 
-    for(int i = 0; i < Ls.size(); i ++){
-        L = Ls[i];
+//    for(int i = 0; i < Ls.size(); i ++){
+//        L = Ls[i];
 
-        Solver exercisee(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
-        string name = "timing_" + to_string(L);
-        exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
-
-    }
+//        Solver exercisee(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
+//        string name = "timing_" + to_string(L);
+//        exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
+//    }
 
     // End timing
     TimeEnd = MPI_Wtime();

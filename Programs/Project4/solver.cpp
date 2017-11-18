@@ -44,6 +44,11 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         vector<int> listOfProbabilityEnergies;
         listOfProbabilityEnergies.reserve(200);
 
+        vector<int> listOfMagnetizations;
+        listOfMagnetizations.reserve(200);
+        vector<int> listOfProbabilityMagnetizations;
+        listOfProbabilityMagnetizations.reserve(200);
+
         // Vector used when summing result from different
         // processors because of parallellizing
         vec TotalMeanValues = zeros(5);
@@ -140,6 +145,14 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                     listOfEnergies.push_back(Energy);
                     listOfProbabilityEnergies.push_back(1);
                 }
+                if (find(listOfMagnetizations.begin(),listOfMagnetizations.end(),MagneticMoment) != listOfMagnetizations.end()){
+                    int j = find(listOfMagnetizations.begin(), listOfMagnetizations.end(), MagneticMoment) - listOfMagnetizations.begin();
+                    listOfProbabilityMagnetizations[j] +=1;
+                }
+                else{
+                    listOfMagnetizations.push_back(MagneticMoment);
+                    listOfProbabilityMagnetizations.push_back(1);
+                }
             }
 
             // Writing to file: mean values versus MC cycles
@@ -177,6 +190,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             */
         // Writing the probability to file
         ofstream outfile2;
+        ofstream outfile3;
         if (writeWhenFinish && (RankProcess == 0)){
 
             outfile2.open("../../results/"+ folderFilename+"probability.txt");
@@ -185,6 +199,13 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 outfile2 << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
             }
             outfile2.close();
+
+            outfile3.open("../../results/"+ folderFilename+"MagneticPropability.txt");
+            outfile3 << "M" << "\t"<< "P"<< endl;
+            for(unsigned int i = 0; i<=listOfMagnetizations.size(); i++){
+                outfile3 << listOfMagnetizations[i] << "\t" << listOfProbabilityMagnetizations[i] << endl;
+            }
+            outfile3.close();
         }
 
         if (RankProcess == 0 && (writeEveryMC)){

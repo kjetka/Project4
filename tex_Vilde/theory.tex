@@ -13,7 +13,7 @@ where in our system $J > 0$, giving a ferromagnetic ordering, and $s_k, \, s_l =
 
 \subsection{Introduction to statistics}
 
-The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability.
+The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability (Equation \ref{eq:Partitionfunction}).
 
 \begin{equation}\label{eq:probability_density}
 P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
@@ -27,11 +27,7 @@ P_i(\beta) = \frac{e^{-\beta E_i}}{Z}
 Z = \sum_{i=1}^M e^{-\beta E_i}
 \end{equation}
 
-
-
-\begin{equation}\label{eq:expectation_value}
-\left< h \right>_X = \int \,h(x) \,p(x)\,dx
-\end{equation}
+In this project we are looking at different properties of a magnet. That is energy, magnetic moment, heat capacity and susceptibility. To get out this data form our Ising model, we need some statistical terms. We will use Monte Carlo cycles and the Metropolis algorithm to calculate the first order moment (Equation \ref{eq:moment}), the mean value (Equation \ref{eq:mean_value}) of the energy and the magnetic moment.
 
 \begin{equation}\label{eq:moment}
 \left< x^n \right> = \int \,x^n \,p(x)\,dx
@@ -41,19 +37,70 @@ Z = \sum_{i=1}^M e^{-\beta E_i}
 \left< x \right> = \int \,x \,p(x)\,dx
 \end{equation}
 
-Partition function
+The mean value of the energy is then:
+
+\[
+\left< E \right> = \int E \,p(E)\, dE = \int E \int_b^a\, \frac{e^{-\beta E_i}}{\sum_{i=1}^M e^{-\beta E_i}}\, dE_i\,dE
+\]
+\[
+= k_B T^2 \left( \frac{\partial Z}{\partial T}\right)_{V,N}
+\]
 
 Boltzman
 
 \subsection{Magnetic properties}
 
+The energy of this system is found by 
+Helmholtz free energy:
+\[
+F = \left< E \right> - TS = -kT \ln Z
+\]
+
+\[
+\ln Z = -F/kT = -F\beta
+\]
+
+\[
+\left< E\ \right> = -\frac{\partial \ln Z}{\partial \beta}
+\]
+
 Energy, magnetic moment, susceptibility, heat capacity.
+
+derivative of F (with respect to T/external magnetic field): E, M
+
+second derivative of F (\_,,\_): X, Cv
+
+Second order phase transition.
+    Correlation length diverges (spin correlation - they all "feel" each other? - they all change?)
+    The spin gets more and more correlated as $T \rightarrow T_C$. Correlation length increases - second order - span the whole system.
+    
+The Ising model exhibits a second-order phase transition since the heat capacity diverges.
+
+T< Tc : Spontanious magnetization - ferromagnetic
+
+T > Tc : Net magnetication = zero - paramagnetic
 
 \begin{equation}\label{eq:critical_T}
 T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
 \end{equation}
 
 Markhow chain - convergance
+
+\subsection{Our problem}
+
+Monte Carlo sampling function:
+
+The probability of finding the state in state i:
+\[
+P(E_i) = \frac{e^{-\beta E_i}}{Z}
+\]
+
+To calculate Z we need to know the energy of all states:
+\[
+Z = \sum_i^M e^{-\beta E_i}
+\]
+
+We can do this for the small lattice where L=2.
 
 \subsection{Analytical solutions for L=2}
 
@@ -80,10 +127,12 @@ Z = \sum_i^M e^{-\beta E_i} = e^{-\beta 8 J} + e^{-\beta 8 J} + e^{\beta 8 J}e^{
 = 4 \cosh\left( \beta 8 J \right) + 12
 \]
  The energy:
+
 \[
 \left< E \right> = k_B T^2 \left(\frac{\partial Z}{\partial T}
 \right)_{V,N}
 \]
+
 \[
 = k_B T^2 \frac{\partial}{\partial T} \left[\ln \left(4\cosh \left(\frac{8J}{k_BT}\right) +12\right) \right]\]
 
