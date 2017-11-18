@@ -1,63 +1,48 @@
 
-Metropolis (T,A,...)
-	Stokastisk matrise  - konvergens - Markhov chain.
-		Equilibrium- hva skjer med Z?
-		
-	Hvilken random number engine ??? 
+
+We want to study the Ising model at equilibrium. However, the system has to start from a initial condition. Markov chains are useful for this.
+
 
 	
 	OBS: Bruker forventing av abs(M) i susceptbilitet. 
 
 
+\subsection{Markov chains}
 
-VILDE: 
-
-
-\subsection{Monte Carlo cycles}
-
-In Monte Carlo methods, the goal is to 
-
-
-
+The idea behind the markov chains is to make a random movement with a given probability of actually making the move, describing the microscopic principle of Brownian motion. This is often done by an eigenvalue problem, using a stochastic matrix W with the probabilities of making a move. As the eigenvalue of a $ L\times L $ stochastic matrix has  L eigenvalues with $ \lambda_1 = 1, \  \lambda_i <1$, it will eventually converge towards a equilibrium eigenvector through the relation $ w_N = W^nw_0 $. The steady state is reached when $ w_{i+1} = Ww_{i} $.
+In real life, this corresponds for instance to a particle diffusing through a solid. This particle  has at every given moment a specific energy and in order to diffuse it has to overcome an energy barrier. However, a markov chain needs to obey the principles of ergodicity and detailed balance. 
 
 
 \subsection{Metropolis algorithm}
+The matrix W is often unknown and in the metropolis algorithm it is instead described by $ W =AT $. The acceptance probability of the problem is handled by matrix A, while the physics of the problem is handled by matrix T, describing  the likelihood of making a transition. The detailed balance guaranties that the most likely state is reached, ie. that the probability of state $ w_i $ to transit to state $ w_j $ is the same as back from $ w_j $ to $ w_i $: 
+$ w_jT(j\rightarrow i) A(j\rightarrow i) = w_iT(i\rightarrow j) A(i\rightarrow j)$. 
+
+In this project, the probability of a certain state is $ w_i = \frac{1}{Z_{\beta}} e^{-\beta E_i} $ and the  physics of moving between $ w_i $ and $ w_j $ is the same, one gets the following relation:
+
+\begin{equation}\label{eq_w_j}
+w_j = \frac{A(i\rightarrow j)}{A(j\rightarrow i) } w_i = e^{-\beta \Delta E} w_i
+\end{equation}
+
+A system developing like this, with $ \Delta E = E_j - E_i $ will reach the most likely state eventually. However, a real system fluctuates around the equilibrium. In order to ensure this, it must be probable to reach a state with higher energy than the previous. For the algorithm used in this project, all situations where the energy got lower by making a random transition, $E_{i+1}<E_{i} \Rightarrow \frac{w_{i+1}}{w_i}\geq 1 $ was accepted. But also some states with $ \frac{w_{i+1}}{w_i}>1 $ was accepted by random acceptance. Another important feature of equation  \ref{eq_w_j} is that there is no need to calculate the partition function, which for large systems would lead to numerical errors. 
+
+
+For each Monte Carlo cycle our algorithm tried  $ L^2 $ transitions, accepting only those transitions that fulfilled the requirements set in the previous section. This was done in order to directly compare how different matrix sizes converged to an equilibrium as a function of Monte Carlo cycles. 
+
 
 \subsection{Random numbers}
-
-Ikke uavhengig
-Periode
-Hvilken generator
+An ideal random number generator is not deterministic and produces an infinite number of different random numbers. However, this is not the case for a real generator. Every computer generated pseudo random generator will reproduce the same set of random numbers after a given period, which should be as large as possible. This means that a deterministic computer cannot produce a true random number, but a good pseudo random number generator has  a negligible  correlation between the different numbers. In this project the Mersene Twister 19937 generator (64 bit)
+was used, which has a period of $ 2^{19937} $.
 
 
-\subsection{Parallelizing}
+\subsection{Parallelizing and speed up }
+	Parallel computing represents a big increase in speed of these simple Monte Carlo calculations. When computing in parallel, the same program runs on a multitude of threads, effectively doing several experiments at the same time. A computer with two CPU's will be able to run the two programs parallel, collecting the data in the end. For this project parallel computing was utilized to split up the number of Monte Carlo cycles by the number of available CPU's. Assuming that the number of Monte Carlo cycles the system need to reach equilibrium is negligible compared to the total Monte Carlo cycles in the experiment, this approach is reasonable. By running on computer with $ p $ CPU's, this should give a speedup, defined by $Speedup(code,sys,p) = T_1/T_p$ of approximately 0.5.  
+	
+	Another way to increase the speed of the algorithm is to precalculate the energy. As there are only 16 changes in energy by changing a single spin, discussed in section \ref{sec_L2}, it is possible to pre-calculate $ e^{-\beta \Delta E} $. Not only does this save FLOPS, but calculating the exponent is costly procedure. 
 
-Speedup
-0.5e6 v 1e6 - mulige feil (likevekt tidlig - liten effekt)
+\subsection{Unit tests}
 
-Metropolis (T,A,...)
-Stochastic matrix  - convergences (forhold eigenvalue).
-
-Hvilken random number engine
-
-MPI:	
-
-- Develop codes locally, run with some few processes and test your codes. Do benchmarking, timing and so forth on local nodes, for example your laptop or PC.
-- When you are convinced that your codes run correctly, you can start your production runs on available supercomputers.
+In the program located at the github adress, there is no unit tests. As the finial state is expected to fluctuate around the equilibrium after the equilibrium is reached, the unit tests would need to deal with this fluctuation. We found it simpler to do this visually. In addition we checked each new element of the code as we developed the algorithm, a good example would be that the random number generator returned what looked like truly random numbers on the interval we wanted. 
 
 
-MPI functions:
-%
-%MPI_InitMPI_Init - initiate an MPI computation
-%
-%MPI_FinalizeMPI_Finalize - terminate the MPI computation and clean up
-%
-%MPI_Comm_sizeMPI_Comm_size - how many processes participate in a given MPI communicator?
-%
-%MPI_Comm_rankMPI_Comm_rank - which one am I? (A number between 0 and size-1.)
-%
-%MPI_SendMPI_Send - send a message to a particular process within an MPI communicator
-%
-%MPI_RecvMPI_Recv - receive a message from a particular process within an MPI communicator
-%
-%MPI_reduceMPI_reduce or MPI_AllreduceMPI_Allreduce, send and receive messages
+A possible unit test would be to check that the case with $ L=2 $ gave approximately the analytical results for the various expectation values. Another relevant unit test could be to check that flipping one spin actually reproduced the $ \Delta E $ which was computed analytically. 
+

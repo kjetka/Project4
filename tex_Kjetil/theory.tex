@@ -25,8 +25,8 @@ In order to characterize the system, the mean energy, mean magnetization and mea
 \langle E \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N E_i P_{\beta}(E_i)\\
 \langle M \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N M_i P_{\beta}(E_i)\\
 \langle |M | \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N |M|_i P_{\beta}(E_i)\\
- C_V &= \frac{1}{k_B T^2} \left( 	\langle E^2 \rangle - \langle E\rangle^2 	\right)\\
-\chi &= \frac{1}{k_B T} \left( 	\langle M^2 \rangle - \langle M\rangle^2 	\right)
+ C_V &= \frac{1}{k_B T^2} \left( 	\langle E^2 \rangle - \langle E\rangle^2 	\right) \label{eq_C_V_def}\\
+\chi &= \frac{1}{k_B T} \left( 	\langle M^2 \rangle - \langle M\rangle^2 	\right)\label{eq_X_def}
 \end{align}
 
 
@@ -58,7 +58,7 @@ The critical exponents $ \alpha, \beta, \nu $ and $ \gamma $ are all positive. F
 
 
 
-\subsection{Simple example of the Ising model}
+\subsection{Simple example of the Ising model \label{sec_L2}}
 
 It is possible to model the $ 2\times 2 $ Ising model with periodic boundary conditions analytically. This specific system has $ N = 2^{L^2} = 2^4=16 $ different micro states. 
 
@@ -89,6 +89,7 @@ $
 \left< |M| \right> = \frac{1}{Z} \sum_i^M M_i e^{\beta E_i}  = \frac{(8J)^2 \cosh(8J\beta )}{\cosh (8J\beta ) + 3}
 \]
 
+By using the same methods as above, the expressions for $ \langle E^2 \rangle  $ and  $ \langle M^2 \rangle  $ is found to be:
 
 \[
 \left< E^2 \right> = \frac{8 \left( e^{8J\beta } + 1\right) }{\cosh (8J\beta ) + 3}
@@ -96,22 +97,17 @@ $
 
 
 \[
-\left< M^2 \right> = \frac{1}{Z} \left( \sum_i^M M_i^2 e^{\beta E_i}\right) = \frac{2 \left( e^{8J\beta } + 2\right) }{\cosh (8J\beta ) + 3}
+\left< M^2 \right>  = \frac{2 \left( e^{8J\beta } + 2\right) }{\cosh (8J\beta ) + 3}
 \]
-
-We can use these to calculate the rest:
+Combining these gives the expressions for the heat capacity and susceptibility from equations \ref{eq_C_V_def} and \ref{eq_X_def}.
 
 \[
-C_V = k \beta^2\left( \left< E^2\right> - \left< E\right>^2 \right)
+C_V = k \beta^2\left( \left< E^2\right> - \left< E\right>^2 \right) = \frac{\beta (8J)^2}{T} \left( \frac{\cosh^2x -\sinh^2 x + 3 \cosh x}{(\cosh x + 3)^2}\right) = \frac{ (8J)^2}{k_BT^2}  \frac{ 3 \cosh x}{(\cosh x + 3)^2}
 \]
-
+with $ x = 8J\beta $. Similary, $ \chi $ is found to be
 \[
-\chi = \beta \left( \left< M^2\right> - \left< M\right>^2\right)
+\chi = \beta \left( \left< M^2\right> - \left< M\right>^2\right) = \frac{8\beta \left( e^{x} +1\right)}{\cosh x +3}
 \]
 
+The real usefulness of the $ L=2 $ periodic system is that it describes all the nearest neighbour interactions, for any lattice size. 
 
-
-Describes all the nearest neighbour interactions possible in all systems
-
-
-To do:  beskrive alle data: tabell,  Eavg Mavg, Z, Cv, X, 
