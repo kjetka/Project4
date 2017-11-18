@@ -48,7 +48,7 @@ for txtfile in txtfiles:
         #plot(data["Temperatures"][3:-5], data["E_avg"][3:-5], label = "L = " + labell)
         plot(data["Temperatures"][0:-5], data["E_avg"][0:-5], label = "L = " + labell)
         xlabel('Temperature, $\\frac{k_BT}{J}$ ')
-        ylabel('Energy ')
+        ylabel('Energy $E_{kl}$')
 
         figure(2)
         plot(data["Temperatures"], data["M_abs"], label = "L = " + labell)

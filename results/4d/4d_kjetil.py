@@ -43,7 +43,7 @@ for txtfile in txtfiles:
         bar(data["E"][:-1], data["P"][:-1],4)
         ylim([0,max(data["P"])+0.01])
         ylabel("Probability")
-        xlabel("Energy")
+        xlabel("Energy $E_{kl}$")
 	savefig('PD_T_' + titlee[0:1]+'MC_1e6'+'.pdf')
 
 

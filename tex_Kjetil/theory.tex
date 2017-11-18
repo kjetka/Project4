@@ -22,8 +22,8 @@ with the partition function $ Z_{\beta} = \int dE \ e^{-E\beta} $ normalizes the
 
 In order to characterize the system, the mean energy, mean magnetization and mean absolute magnetization are important. The macroscopic property of mean energy $ \langle E \rangle $ is needed to define the heat capacity $ C_V$ of the system, while the microscopic effect of mean magnetization and the magnetic moment leads to the susceptibility $ \chi $. These are defined below: 
 \begin{align}
-\langle E \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N E_i P_{\beta}(E_i)\\
-\langle M \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N M_i P_{\beta}(E_i)\\
+\langle E \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N E_i P_{\beta}(E_i) \label{eq:L2_E}\\
+\langle M \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N M_i P_{\beta}(E_i) \label{eq:L2_M}\\
 \langle |M | \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N |M|_i P_{\beta}(E_i)\\
  C_V &= \frac{1}{k_B T^2} \left( 	\langle E^2 \rangle - \langle E\rangle^2 	\right) \label{eq_C_V_def}\\
 \chi &= \frac{1}{k_B T} \left( 	\langle M^2 \rangle - \langle M\rangle^2 	\right)\label{eq_X_def}
@@ -56,7 +56,9 @@ The critical exponents $ \alpha, \beta, \nu $ and $ \gamma $ are all positive. F
 \end{equation}
 
 
+\subsection{Scaling}
 
+In this project there is only one expression that needs to be scaled, namely $ e^{-\beta E} $. By introducing $ T' = \frac{k_B T	}{J} $ and $ E' = JE_{kl} $, with $ E_{kl} = \sum\limits_{<k,l>} s_ks_l $ this expression can be written as $ e^{-E'/T'} $.
 
 \subsection{Simple example of the Ising model \label{sec_L2}}
 

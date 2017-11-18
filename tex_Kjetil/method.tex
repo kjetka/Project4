@@ -26,7 +26,7 @@ w_j = \frac{A(i\rightarrow j)}{A(j\rightarrow i) } w_i = e^{-\beta \Delta E} w_i
 A system developing like this, with $ \Delta E = E_j - E_i $ will reach the most likely state eventually. However, a real system fluctuates around the equilibrium. In order to ensure this, it must be probable to reach a state with higher energy than the previous. For the algorithm used in this project, all situations where the energy got lower by making a random transition, $E_{i+1}<E_{i} \Rightarrow \frac{w_{i+1}}{w_i}\geq 1 $ was accepted. But also some states with $ \frac{w_{i+1}}{w_i}>1 $ was accepted by random acceptance. Another important feature of equation  \ref{eq_w_j} is that there is no need to calculate the partition function, which for large systems would lead to numerical errors. 
 
 
-For each Monte Carlo cycle our algorithm tried  $ L^2 $ transitions, accepting only those transitions that fulfilled the requirements set in the previous section. This was done in order to directly compare how different matrix sizes converged to an equilibrium as a function of Monte Carlo cycles. 
+For each Monte Carlo cycle our algorithm tried  $ L^2 $ transitions, accepting only those transitions that fulfilled the requirements set in the previous section. This was done in order to directly compare how different matrix sizes converged to an equilibrium as a function of Monte Carlo cycles. All values calculated in section \ref{sec:res} were also divided by the total number of spins in the matrix ($ L^2 $), so that all values could be compared regardless of matrix size. 
 
 
 \subsection{Random numbers}

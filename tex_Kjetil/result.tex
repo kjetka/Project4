@@ -4,17 +4,44 @@
 
 \subsection{The L=2 case}
 
+As the Monte Carlo cycles increases, the mean energy in figure \ref{fig:l2energy} stabilizes around the analytical value for $ T = 1 \frac{k_BT}{J}$, which is calculated from equation \ref{eq:L2_E}. After it reaches equilibrium around $0.25\E{7} $ MC cycles, it is however not constant and fluctuates. In addition it is not aligning perfectly with the analytical value, but it is accurate to the fourth digit. This can be seen from figure \ref{fig:abserror}. 
+
+Figure \ref{fig:l2magmagabs} shows the same trend for $ \langle \abs{M} \rangle $ and $ \langle {M} \rangle $. Both measurements equilibrates in roughly the same amount of MC-cycles, but there is a significant difference in the behaviour after  equilibrium is reached. $ \langle {M} \rangle $ is fluctuating much more about the analytical value. 
+
+
+
+	\begin{figure}[H]
+	\begin{subfigure}[b]{0.49\textwidth}
+	\includegraphics[width=1\linewidth]{../results/4b/L_2_energy}
+\caption{Mean energy as a function of Monte Carlo cycles. }
+\label{fig:l2energy}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+	\includegraphics[width=1\linewidth]{../results/4b/abs_error}
+\caption{Mean absolute error for the energy}
+\label{fig:abserror}
+	\end{subfigure}
+	\caption{Mean energy and mean absolute error of the energy at $T=1 \frac{k_BT}{J}$.}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../results/4b/L_2_mag_magabs}
-	\caption{}
+	\caption{Comparison of the mean magnetization and the mean absolute magnetization. }
 	\label{fig:l2magmagabs}
 \end{figure}
 
-Se forelesningsnotat for kommentar + diskusjon!
 
-	
+
+
+
+
+Due to the smaller fluctuation of  $ \langle \abs{M} \rangle $, the susceptibility for the system was calculated by \begin{equation}
+\chi = \frac{1}{k_B T} \left( 	\langle M^2 \rangle - \langle \abs{M}\rangle^2 	\right)\label{eq_X_def_new}
+\end{equation}
+
+
 	\begin{figure}[H]
 		\begin{subfigure}[b]{0.49\textwidth}
 	\includegraphics[width=1\linewidth]{../results/4b/L_2_susceptibility}
@@ -27,32 +54,26 @@ Se forelesningsnotat for kommentar + diskusjon!
 \caption{}
 \label{fig:l2heatcapasity}
 		\end{subfigure}
-		\caption{$\theta/2\theta$ scan around the (0002) peak and (0004) peak of ZnO and GaN.}
+		\caption{}
 	\end{figure}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{../results/4b/abs_error}
-	\caption{}
-	\label{fig:abserror}
-\end{figure}
 
-OBS! Need an number of MC cycles necessary!
 
 All calculations in this subsection are at T = 1.0 K. 
 
-\begin{table}\caption{This table compares the analytical values for L=2 with the numerical ones after $10^6$ Monte Carlo cycles. The values are in units per spin.}\label{tab:compare_values}
-	\begin{tabular}{ccc}
-		& Numerical: & Analytical:\\ \hline
-		$\left<E\right>$ &   -1.9958 & -1.9960\\
-		$\left<E^2\right>$ &   15.9664 & 15.9679\\
-		$\left<M\right>$ &    0.0451 & 0\\
-		$\left<M^2\right>$ &    3.9930 & 3.9933\\
-		$\left<|M|\right>$ &    0.9986 & 0.9987\\
-		$\chi$ &   3.9849 & 3.9933\\
-		$C_V$& 0.0335 & 0.0321\\
-	\end{tabular}
-\end{table}
+%\begin{table}[H]
+%\caption{This table compares the analytical values for L=2 with the numerical ones after $10^6$ Monte Carlo cycles. The values are in units per spin.}\label{tab:compare_values}
+%	\begin{tabular}{ccc}
+%		& Numerical: & Analytical:\\ \hline
+%		$\left<E\right>$ &   -1.9958 & -1.9960\\
+%		$\left<E^2\right>$ &   15.9664 & 15.9679\\
+%		$\left<M\right>$ &    0.0451 & 0\\
+%		$\left<M^2\right>$ &    3.9930 & 3.9933\\
+%		$\left<|M|\right>$ &    0.9986 & 0.9987\\
+%		$\chi$ &   3.9849 & 3.9933\\
+%		$C_V$& 0.0335 & 0.0321\\
+%	\end{tabular}
+%\end{table}
 
 
 \subsection{The L=20 system}

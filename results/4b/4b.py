@@ -30,7 +30,7 @@ plot(MCcycle, anal_E,'--',label="$\langle E \\rangle$, analytical value")
 title("Energy per spin for L=2")
 xlabel("Number of MC cycles")
 ylim([-2,-1.99])
-ylabel("Energy ")
+ylabel("Energy $ E_{kl}$ ")
 #legend(loc=4)
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 rcParams['font.size'] = 14
@@ -149,12 +149,12 @@ figure()
 title('Absolute error in energy for the L=2 system')
 plot(MCcycle, error, label = 'Absolute error')
 xlabel('Monte Carlo cycles')
-ylabel('Energy ')
+ylabel('Energy $E_{kl}$ ')
 grid('on')
 ylim([-0.001, 0.001])
 rcParams['font.size'] = 14
 tight_layout()
 legend()
 savefig('abs_error.pdf')
-show()
+
 

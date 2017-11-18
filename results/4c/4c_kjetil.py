@@ -7,7 +7,7 @@ from numpy import *
 
 #Compare random v ordered 
 
-"""
+
 i=0
 for temp in [1,2.4]:
     i+=1
@@ -63,7 +63,7 @@ for temp in [1,2.4]:
 MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20.txt",unpack=True, skiprows=2)
 plot(MCcycles, E, 'b', label = "ordered initial spin system")
 
-ylabel('Energy')
+ylabel('Energy $E_{kl}$')
 xlabel('Monte Carlo cycles')
 xscale('log')
 ylim([-2.01,-1.98])
@@ -78,7 +78,7 @@ tight_layout()
 savefig('order_T1_start.pdf')
 
 
-"""
+
 
 
 
@@ -116,7 +116,7 @@ for file in files:
         ax1.plot(data["MCcycles"], data["E"], 'b', label = ' $\langle E \\rangle$')
         ax2.plot(data["MCcycles"], data["Mabs"], 'brown', label = ' $\langle M \\rangle$')
 
-        ax1.set_ylabel('Energy', color = 'b')
+        ax1.set_ylabel('Energy $E_{kl}$', color = 'b')
         ax1.set_xlabel('Monte Carlo cycles')
         ax2.set_ylabel(r' Magnetic moment', color = 'brown')
         #ax1.legend(loc = 1)
@@ -141,5 +141,5 @@ for file in files:
         
 
 
-show()
+
 
