@@ -7,12 +7,6 @@ from scipy.optimize import curve_fit
 
 from numpy import *
 
-font = {'family' : 'normal',
-        'weight' : 'normal',
-        'size'   : 14}
-
-matplotlib.rc('font', **font)
-
 #energy, probability = loadtxt("probability.txt", unpack=True, skiprows=1)
 
 
@@ -49,61 +43,74 @@ for txtfile in txtfiles:
         start = txtfile.find("L_")
         stopp = txtfile.find(".txt")
         labell = txtfile[start+2:stopp]
+
         figure(1)
         #plot(data["Temperatures"][3:-5], data["E_avg"][3:-5], label = "L = " + labell)
         plot(data["Temperatures"][0:-5], data["E_avg"][0:-5], label = "L = " + labell)
-        xlabel('Temperature, ')
-        ylabel('Energy, ')
+        xlabel('Temperature, $\\frac{k_BT}{J}$ ')
+        ylabel('Energy $E_{kl}$')
 
         figure(2)
         plot(data["Temperatures"], data["M_abs"], label = "L = " + labell)
-        xlabel('Temperature, ')
-        ylabel('Magnetic moment, ')
+        xlabel('Temperature, $\\frac{k_BT}{J}$')
+        ylabel('Magnetic moment')
 
         figure(3)
         plot(data["Temperatures"], data["X"], label = "L = " + labell)
-        xlabel('Temperature')
-        ylabel('susceptibility, ')
+        xlabel('Temperature, $\\frac{k_BT}{J}$')
+        ylabel('susceptibility $\chi$ , $\\frac{J}{k_B^2T}$')
 
         figure(4)
         plot(data["Temperatures"], data["Cv"], label = "L = " + labell)
-        xlabel('Temperature')
-        ylabel('Heat capacity, ')
-
-
+        xlabel('Temperature, $\\frac{k_BT}{J}$')
+        ylabel('Heat capacity $C_V$, $\\frac{J^2}{k_B^3T^2}$')
+       
 
         index, value = max(enumerate(data["Cv"]), key = operator.itemgetter(1))
+
+        labell = float(labell)
         T_C = data["Temperatures"][index]
         T_C_CV_list[i] = (T_C)
         L_liste.append(txtfile)
 
+
+
+
+        """
         index, value = max(enumerate(data["X"]), key = operator.itemgetter(1))
         T_C = data["Temperatures"][index]
         T_C_X_list[i] = (T_C)
+        """
+ 
 
-
-
+"""
 figure(1)
 legend(loc = 2)
 title(r'$ \langle E \rangle$ as function of system size and temperature ')
+rcParams['font.size'] = 14
 savefig('4e_energy.pdf')
 
 figure(2)
 legend(loc = 1)
 title(r'$ \langle | M | \rangle$ as function of system size and temperature')
+rcParams['font.size'] = 14
 savefig('4e_mag.pdf')
 
 figure(3)
 legend()
 title('Susceptibility as function of system size and temperature ')
+rcParams['font.size'] = 14
+
 savefig('4e_x.pdf')
 
 figure(4)
 title('Heat capacity as function of system size and temperature ')
 legend()
+rcParams['font.size'] = 14
+
 savefig('4e_Cv.pdf')
 
-
+"""
 
 
 
@@ -143,17 +150,23 @@ def func(x,b,a):
 for i in range(len(L_liste)):
     L_liste[i] = 1./float(L_liste[i])
 p0 = [-0.1,2.3]
-p = polyfit(L_liste,T_C_CV_list,1) # (func,xdata,y,p0)
 
+
+
+
+print T_C_CV_list
+p = polyfit(L_liste,T_C_CV_list,1) # (func,xdata,y,p0)
 print p[1]
 figure()
-plot(L_liste, T_C_CV_list, '*-',label = 'Experimental data' )
+plot(L_liste, T_C_CV_list, 'o',label = 'Experimental data' )
 x = linspace(0,max(L_liste), 100)
 plot(x, x*p[0]+p[1], label = 'Linear fit')
 title('Linear fit of $T_C$ for different grid sizes')
-ylabel('Temperature, $\\frac{k_BT}{J}')
+ylabel('Temperature, $\\frac{k_BT}{J}$ ')
 xlabel('Inverse grid size, 1/L')
-legend(loc = 1)
+legend(loc = 2)
+ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
+rcParams['font.size'] = 14
 savefig('linfit.pdf')
-
+show()
 
