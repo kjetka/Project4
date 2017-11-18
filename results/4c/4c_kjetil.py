@@ -48,7 +48,7 @@ for temp in [1,2.4]:
             else: 
                 labell = "Ordered "
             figure(i)
-            title("$\langle E\\rangle$ for ordered and random initial spins, T = %.1f"%temp, fontsize=14)
+            title("$\langle E\\rangle$ with different initial states, T = %.1f"%temp, fontsize=14)
 
             plot(data["MCcycles"][1:], data["E"][1:], label = labell)
             tight_layout()
@@ -56,8 +56,8 @@ for temp in [1,2.4]:
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
             #xscale('log')
             
-            xlabel('Monte Carlo cycles')#, logarithmic scale')     
-            ylabel('Energy, eV')
+            xlabel('Number of Monte Carlo cycles')#, logarithmic scale')     
+            ylabel(r'Energy $[E_{kl}]$')
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
     figure(i)
     legend()
@@ -96,9 +96,9 @@ for txtfile in txtfiles:
 
         fig1, ax1 =subplots()
         ax2 = ax1.twinx()
-        title('Mean energy and magnetic moment at T = ' + temp, fontsize=14)
+        title(r'$\langle E \rangle$ and $\langle |M| \rangle$, T = ' + temp, fontsize=14)
         ax1.plot(data["MCcycles"], data["E"], 'b', label = ' $\langle E \\rangle$')
-        ax2.plot(data["MCcycles"], data["Mabs"], 'r', label = ' $\langle M \\rangle$')
+        ax2.plot(data["MCcycles"], data["Mabs"], 'r', label = ' $\langle |M| \\rangle$')
         
         if "1" in txtfile:
             ax1.set_ylim([-2.0,-1.95])
@@ -107,9 +107,9 @@ for txtfile in txtfiles:
             ax2.set_ylim([0.44,0.50])
             ax1.set_ylim([-1.28, -1.22])        
         
-        ax1.set_ylabel('Energy (eV)', color = 'b')
-        ax1.set_xlabel('Monte Carlo cycles')
-        ax2.set_ylabel(r' Magnetic moment', color = 'r')
+        ax1.set_ylabel(r'Energy $[E_{kl}]$', color = 'b')
+        ax1.set_xlabel('Number of Monte Carlo cycles')
+        ax2.set_ylabel('Magnetic moment', color = 'r')
         tight_layout()
         #ax1.legend(loc = 1)
         #ax2.legend(loc = 2)

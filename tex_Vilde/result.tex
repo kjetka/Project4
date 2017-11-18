@@ -1,19 +1,17 @@
-\subsection{Matrix dimension L=2}
+\subsection{Matrix dimension $L$=2}
 
-OBS! Need an number of MC cycles necessary!
+The result form the two dimensional lattice with lattice size $L$=2 and at T= 1.0 $\text{k}_\text{B}T/\text{J}$ are in Figures \ref{fig:L_2_energy}, \ref{fig:L_2_magnetic_abs}, \ref{fig:L_2_heat_capacity} and \ref{fig:L_2_susceptibility}. From the plots, we can see that the numerical result gives a good agreement with the analytical values calculated in \ref{sec:analytical_sol} Analytical solutions for L=2 after approximately $5\cdot 10^5$ Monte Carlo cycles. Table \ref{tab:compare_values} lists the result after $10^6$ Monte Carlo cycles, and it show a good agreement as well. 
 
-All calculations in this subsection are at T = 1.0 K. 
-
-\begin{table}\caption{This table compares the analytical values for L=2 with the numerical ones after $10^6$ Monte Carlo cycles. The values are in units per spin.}\label{tab:compare_values}
+\begin{table}\caption{This table compares the analytical values for $L$=2 with the numerical ones after $10^6$ Monte Carlo cycles. The values are in units per spin and at T=1.0 $\text{k}_\text{B}T/\text{J}$.}\label{tab:compare_values}
 \begin{tabular}{ccc}
 & Numerical: & Analytical:\\ \hline
-$\left<E\right>$ &   -1.9958 & -1.9960\\
-$\left<E^2\right>$ &   15.9664 & 15.9679\\
+$\left<E\right>\, [E_{kl}]$ &   -1.9958 & -1.9960\\
+$\left<E^2\right>\, [E_{kl}^2]$ &   15.9664 & 15.9679\\
 $\left<M\right>$ &    0.0451 & 0\\
 $\left<M^2\right>$ &    3.9930 & 3.9933\\
 $\left<|M|\right>$ &    0.9986 & 0.9987\\
-$\chi$ &   3.9849 & 3.9933\\
-  $C_V$& 0.0335 & 0.0321\\
+$\chi \, [J/k_B^T]$ &   3.9849 & 3.9933\\
+$C_V \, [J^2/k_B^3T^2]$& 0.0335 & 0.0321\\
 \end{tabular}
 \end{table}
 
@@ -33,7 +31,16 @@ $\chi$ &   3.9849 & 3.9933\\
 \includegraphics[width=\linewidth]{../results/4b/L_2_susceptibility}\caption{This is a plot of the susceptibility per spin verus number of Monte Carlo cycles. The plot shows that we have a good agreement after $ 5 \cdot 10^{5} $ MC cycles.}\label{fig:L_2_susceptibility}
 \end{figure}
 
-\subsection{Matrix dimension L = 20}
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{../results/4b/L_2_magnetic}\caption{This is a plot of the expectation value of the mean value of the magnetic moment per spin verus number of Monte Carlo cycles. The plot shows that we would not have had a good agreement after $ 5 \cdot 10^{5} $ MC cycles, when not using the absolute value as in Figure \ref{fig:L_2_magnetic_abs}.}\label{fig:L_2_magnetic}
+\end{figure}
+
+
+We see that the energy converges fastest. The magnetic moment is not converging as fast but still fast, we are plotting the absolute value, and that makes it converge faster, because the oscillation between the same size, but different signs does not show. Figure \ref{fig:L_2_magnetic} shows how the magnetic moment converges much slower. It can be shown however that the magnetic moment will converge, but slower and we would have needed more Monte Carlo cycles. 
+
+\subsection{Matrix dimension $L$ = 20}
+
+We increased the size of the system and 
 
 HMM: Should define an area that is enough for equilibrium!
 
@@ -44,12 +51,13 @@ OBS: Need equilibration time! (5 1e5?)
 OBS: Comment accepted configs T dependency
 
 \subsubsection{Different temperatures}
+
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4c/En_mag_T1_0}\caption{This is a plot of both the expectation value of the energy and absolute magnetic moment per spin verus number of Monte Carlo cycles at T = 1.0 K. The plot shows that an equilibrium is reached already at $2 \cdot 10^{5}$ MC cycles.}\label{fig:L_20_energy_mag_T_1.0}
+\includegraphics[width=\linewidth]{../results/4c/En_mag_T1_0}\caption{This is a plot of both the expectation value of the energy and absolute magnetic moment per spin verus number of Monte Carlo cycles at T = 1.0 $\text{k}_\text{B}T/\text{J}$. The plot shows that an equilibrium is reached already at $2 \cdot 10^{5}$ MC cycles.}\label{fig:L_20_energy_mag_T_1.0}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4c/En_mag_T2_4}\caption{This is a plot of both the expectation value of the energy and absolute magnetic moment per spin verus number of Monte Carlo cycles at T = 2.4 K. The plot shows that an equilibrium is reached at around $5 \cdot 10^{5}$ MC cycles.}\label{fig:L_20_energy_mag_T_2.4}
+\includegraphics[width=\linewidth]{../results/4c/En_mag_T2_4}\caption{This is a plot of both the expectation value of the energy and absolute magnetic moment per spin verus number of Monte Carlo cycles at T = 2.4 $\text{k}_\text{B}T/\text{J}$. The plot shows that an equilibrium is reached at around $5 \cdot 10^{5}$ MC cycles.}\label{fig:L_20_energy_mag_T_2.4}
 \end{figure}
 
 \subsubsection{Initial state}
@@ -68,9 +76,9 @@ OBS: Comment accepted configs T dependency
 \includegraphics[width=\linewidth]{../results/4c/L_20_total_accepted}\caption{This is a plot of the total number of accepted configurations versus number of Monte Carlo cycles with random initial state.}\label{fig:total_accepted}
 \end{figure}
 
-\begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4c/L_20_accepted_configs}\caption{This is a plot of the percentage accepted of attempted configurations versus  Monte Carlo cycles with random initial state.}\label{fig:percentage_accepted}
-\end{figure}
+%\begin{figure}[H]
+%\includegraphics[width=\linewidth]{../results/4c/L_20_accepted_configs}\caption{This is a plot of the percentage accepted of attempted configurations versus  Monte Carlo cycles with random initial state.}\label{fig:percentage_accepted}
+%\end{figure}
 
 \subsection{Energy probability}
 
@@ -104,19 +112,19 @@ $$ \text{FWHM} \approx 2.355 \cdot 56.8 = 133.76 $$
 \subsection{Increasing dimensionality/ Critical temperature}
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4e/4e_energy}\caption{This is a plot if the energy versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_energy}
+\includegraphics[width=\linewidth]{../results/4e/4e_energy}\caption{This is a plot if the energy versus temperature around the critical temperature for the different lattice sizes with $L$ = 40, $L$ = 60, $L$ = 80 and $L$ = 100.}\label{fig:4e_energy}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4e/4e_mag}\caption{This is a plot if the absolute magnetic moment versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_magnetic}
+\includegraphics[width=\linewidth]{../results/4e/4e_mag}\caption{This is a plot if the absolute magnetic moment versus temperature around the critical temperature for the different lattice sizes with $L$ = 40, $L$ = 60, $L$ = 80 and $L$ = 100.}\label{fig:4e_magnetic}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4e/4e_Cv}\caption{This is a plot if the heat capacity versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100.}\label{fig:4e_heat_capa}
+\includegraphics[width=\linewidth]{../results/4e/4e_Cv}\caption{This is a plot if the heat capacity versus temperature around the critical temperature for the different lattice sizes with $L$ = 40, $L$ = 60, $L$ = 80 and $L$ = 100.}\label{fig:4e_heat_capa}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4e/4e_x}\caption{This is a plot if the susceptibility versus temperature around the critical temperature for the different lattice sizes with L = 40, L = 60, L = 80 and L = 100. The exact value is $T_C =  kTC/J = 2/ \ln(1+\sqrt{
+\includegraphics[width=\linewidth]{../results/4e/4e_x}\caption{This is a plot if the susceptibility versus temperature around the critical temperature for the different lattice sizes with $L$ = 40, $L$ = 60, $L$ = 80 and $L$ = 100. The exact value is $T_C =  kTC/J = 2/ \ln(1+\sqrt{
 2}) \approx 2.269 \,\text{k}_\text{B} \,\text{K}$ \cite{Onsager}.}\label{fig:4e_suscept}
 \end{figure}
 
@@ -143,13 +151,13 @@ T_C(\infty) &= - a \cdot 100^{-1} + 2.28\label{eq:find_critial_T_end}
 \end{align}
 
 \begin{figure}[H]
-\includegraphics[width=\linewidth]{../results/4f/critical_t}\caption{This is a plot of Equation \ref{eq:critical_T} with different values of L (See Equations \ref{eq:find_critial_T} - \ref{eq:find_critial_T_end}). The interssections represent the solution. They should have all had a cross section in the same place, and the y-value of the intersection would have been the critical temperature when $L \rightarrow \infty$.}\label{fig:critical_T}
+\includegraphics[width=\linewidth]{../results/4f/critical_t}\caption{This is a plot of Equation \ref{eq:critical_T} with different values of $L$ (See Equations \ref{eq:find_critial_T} - \ref{eq:find_critial_T_end}). The interssections represent the solution. They should have all had a cross section in the same place, and the y-value of the intersection would have been the critical temperature when $L \rightarrow \infty$.}\label{fig:critical_T}
 \end{figure}
 
 Exact $T_C =  kTC/J = 2/ \ln(1+\sqrt{
 2}) \approx 2.269$ \cite{Onsager}
 
-\begin{table}\caption{L=60 and MC cycles is 1e6.}
+\begin{table}\caption{This is a list of the CPU time with different numbers of processes for $L$=60 and number of Monte Carlo cycles were $10^6$.}\label{tab:CPU}
 \begin{tabular}{cc}
 Number of processors:& CPU time [s]: \\ \hline
  1 & 513.069\\

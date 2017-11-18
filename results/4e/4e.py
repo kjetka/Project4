@@ -7,6 +7,11 @@ from scipy.optimize import *
 
 from numpy import *
 
+font = {'family' : 'normal',
+        'weight' : 'normal',
+        'size'   : 14}
+
+matplotlib.rc('font', **font)
 #energy, probability = loadtxt("probability.txt", unpack=True, skiprows=1)
 
 
@@ -47,24 +52,26 @@ for txtfile in txtfiles:
         figure(1)
         #plot(data["Temperatures"][3:-5], data["E_avg"][3:-5], label = "L = " + labell)
         plot(data["Temperatures"][0:-5], data["E_avg"][0:-5], label = "L = " + labell)
-        xlabel('Temperature, $\\frac{k_BT}{J}$ ')
-        ylabel('Energy $E_{kl}$')
+        xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$ ')
+        ylabel(r'Energy $[E_{kl}]$')
+        title('Energy')
 
         figure(2)
         plot(data["Temperatures"], data["M_abs"], label = "L = " + labell)
-        xlabel('Temperature, $\\frac{k_BT}{J}$')
+        xlabel(r'Temperature, $[\left[ \frac{k_BT}{J}\right]$')
         ylabel('Magnetic moment')
+        title('Magnetic moment')
 
         figure(3)
         plot(data["Temperatures"], data["X"], label = "L = " + labell)
-        xlabel('Temperature, $\\frac{k_BT}{J}$')
-        ylabel('susceptibility $\chi$ , $\\frac{J}{k_B^2T}$')
-
+        xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
+        ylabel(r' $\chi$ , $\left[ \frac{J}{k_B^2T}\right]$')
+        title('Susceptibility')
         figure(4)
         plot(data["Temperatures"], data["Cv"], label = "L = " + labell)
-        xlabel('Temperature, $\\frac{k_BT}{J}$')
-        ylabel('Heat capacity $C_V$, $\\frac{J^2}{k_B^3T^2}$')
-       
+        xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
+        ylabel(r' $C_V$, $\left[ \frac{J^2}{k_B^3T^2}\right]$')
+        title('Heat capacity')
 
         index, value = max(enumerate(data["Cv"]), key = operator.itemgetter(1))
 
@@ -163,7 +170,7 @@ x = linspace(0,max(L_liste), 100)
 plot(x, x*p[0]+p[1], label = 'Linear fit')
 #axhline(2.269, 0, 5,linestyle='--', label= r"$T_C^{exact}$ =2.269")
 title('Linear fit of $T_C$',fontsize=14)
-ylabel('Temperature, $\\frac{k_BT}{J}$ ')
+ylabel(r'Temperature, $\left[ \frac{k_BT}{J} \right]$ ')
 #ylim([2.277-0.001,0.009+2.277])
 xlabel('Inverse grid size, 1/L')
 legend(loc = 2)

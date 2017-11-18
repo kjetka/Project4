@@ -2,9 +2,11 @@ INCLUDE?
 Markhow chain - convergance
 
 
+The theory and method sections are based on chapter 12 and 13 in Jensen, \cite{Jensen}.
+
 \subsection{Ising model}
 
-The two dimensional Ising model is a statistical model that allows us to investigate the temperature dependence of different properties of a magnet. Our model consists of a two dimensional lattice of spins that can be in two different states, spin up, $\uparrow$, or spin down, $\downarrow$ \cite{Ising}. In our system we do not have an applied field, $B_a = 0$. The energy of our system is then given by Equation \ref{eq:total_energy}.
+The two dimensional Ising model is a statistical model that allows us to investigate the temperature dependence of different properties of a magnet. Our model consists of a two dimensional lattice of spins that can be in two different states, spin up, $\uparrow$, or spin down, $\downarrow$ \cite{Ising}. The number of spins in each dimension is $L$ and the lattice is assumed to be quadratic. In our system we do not have an applied field, $B_a = 0$. The energy of our system is then given by Equation \ref{eq:total_energy}.
 
 \begin{equation}\label{eq:total_energy}
 E = - J \sum^N_{\left< kl \right>} s_k s_l
@@ -12,9 +14,16 @@ E = - J \sum^N_{\left< kl \right>} s_k s_l
 
 where in our system $J > 0$, $J$ is the coupling constant, giving a ferromagnetic ordering, and $s_k, \, s_l = \pm 1$, $s_k$ is the $k$-th spin of $N$ number of spins.
 
+\subsubsection{Periodic boundary conditions}
+
+\subsection{Scaling}
+
+In this project there is only one expression that needs to be scaled, namely $ e^{-\beta E} $. By introducing $ T' = \frac{k_B T	}{J} $ and $ E' = JE_{kl} $, with $ E_{kl} = \sum\limits_{<k,l>} s_ks_l $ this expression can be written as $ e^{-E'/T'} $.
+
+
 \subsection{Introduction to statistics}
 
-The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability (Equation \ref{eq:Partitionfunction}). To calculate $Z$, we need to know all the different states,$i$, and their energy, $E_i$. It can be calculated for small systems (\ref{sec:analytical_sol} Analytical solutions for L=2), but it would be very time consuming to include it in Monte Carlo Sampling. A method that does not include it is necessary.
+The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability (Equation \ref{eq:Partitionfunction}). To calculate $Z$, we need to know all the different states,$i$, and their energy, $E_i$. It can be calculated for small systems (\ref{sec:analytical_sol} Analytical solutions for $L$=2), but it would be very time consuming to include it in Monte Carlo Sampling. A method that does not include it is necessary.
 
 \begin{equation}\label{eq:probability_density}
 P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
@@ -55,13 +64,12 @@ T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
 
 The other equation also?
 
+\subsection{Analytical solutions for $L$=2}\label{sec:analytical_sol}
 
-\subsection{Analytical solutions for L=2}\label{sec:analytical_sol}
-
-Here are the calculation of the analytical values for the system where L=2. These were used as benchmark calculations for the numerical calculations.
+Here are the calculation of the analytical values for the system where $L$=2. These were used as benchmark calculations for the numerical calculations.
 
 \begin{table}[H]
-	\caption{This table lists the possible states and their accompanying energies when L=2.}
+	\caption{This table lists the possible states and their accompanying energies when $L$=2.}
 	\label{tab:macro_energies}
 \begin{tabular}{cccccc}
 	\input{../results/table_makro.tex}
