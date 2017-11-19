@@ -43,12 +43,10 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         listOfEnergies.reserve(200);
         vector<int> listOfProbabilityEnergies;
         listOfProbabilityEnergies.reserve(200);
-       // int numberOfEnergies;
 
         // Vector used when summing result from different
         // processors because of parallellizing
         vec TotalMeanValues = zeros(5);
-
 
         double Energy = 0;
         double MagneticMoment = 0;
@@ -140,7 +138,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 }
                 else{
                     listOfEnergies.push_back(Energy);
-                   // numberOfEnergies +=1;
                     listOfProbabilityEnergies.push_back(1);
                 }
             }
@@ -158,27 +155,13 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 }
             }
         } // end of MC loop
-        cout << "T: "<< Temperature <<endl;
-         cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - " << meanValues[0]/(MonteCarloCycles) << "^2" <<" = " << meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) <<endl;
 
-         cout << "standard deviation = variance^0.5 = "  << sqrt(meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) )<<endl;
-
-        //Compare with analytical result:
-
-        /*
-            cout <<" <E>, " << "<E^2>, " << "<M>, " << "<M^2>, " << "<|M|>, " << "Xv, " << "Cv" << setprecision(8)<< endl;
-            vec analExpValues = analyticalExpectationValues(Temperature);
-
-            vec properties = calculateProperties(meanValues/MonteCarloCycles, Temperature);
-            meanValues = meanValues/(MonteCarloCycles*L*L);
-            properties = properties/(L*L);
-            meanValues.print("Expect:");
-            properties.print("Properties");
-            cout <<"stop"<<endl;
-
-            analExpValues.print("Analytical:");
-        cout <<"stop"<<endl;
-            */
+         cout << "T: "<< Temperature <<endl;
+         cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - ";
+         cout <<  meanValues[0]/(MonteCarloCycles) << "^2" << " = ";
+         cout << meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) <<endl;
+         cout << "standard deviation = variance^0.5 = ";
+         cout << sqrt(meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) )<<endl;
 
         ofstream outfile2;
         if (writeWhenFinish && (RankProcess == 0)){
@@ -190,7 +173,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             }
             outfile2.close();
         }
-
 
 
     if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
@@ -212,15 +194,16 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         outfile_temp.close();
     }
 
-
 }
-
+// This function governs the periodic boundary conditions
 int Solver::periodicBC(int i, int limit, int add){
     if ((i+add)>=limit) return 0;
     if ((i+add) <0) return limit-1;
     else return i+add;
 }
 
+// This function returns random numbers 1 or -1
+// to make a matrix of random spins up or down
 double Solver::randomSpin(){
     double number =  (double) (RandomNumberGenerator(gen));
     if(number>0.5) number = 1;
@@ -228,10 +211,13 @@ double Solver::randomSpin(){
     return number;
 }
 
+// This is just giving the RNG a shorter name
 double Solver::random_nr(){
     return RandomNumberGenerator(gen);
 }
 
+// This function sets up a matrix or either ordered
+// or random spins
 mat Solver::makeMicrostate(int L, bool initialType){ // initialType: true -> random spins | false -> ordered spins
     mat microstate = ones<mat>(L,L);
     if(initialType == true){
@@ -245,6 +231,8 @@ mat Solver::makeMicrostate(int L, bool initialType){ // initialType: true -> ran
     return microstate;
 }
 
+// This function calculates the heat caacity and the
+// susceptibility from the mean values
 vec Solver::calculateProperties(vec MeanValues, double T){
     double beta = 1.0/T;
     vec calculatedValues = zeros(2);
@@ -253,6 +241,9 @@ vec Solver::calculateProperties(vec MeanValues, double T){
     return calculatedValues;
 }
 
+// This function calculate the analytical mean
+// values per spin for the L=2 system.
+// It was used to make sure the results were correct.
 vec Solver::analyticalExpectationValues(double T){
     cout << "-------------------------" <<endl;
     cout << "T = "<< T <<endl;

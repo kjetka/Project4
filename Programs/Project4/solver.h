@@ -35,24 +35,18 @@ public:
     double randomSpin();
     mat makeMicrostate(int L, bool initialType);
     vec calculateProperties(vec MeanValues, double T);
+    double random_nr();
 
-vec analyticalExpectationValues(double T);
+    vec analyticalExpectationValues(double T);
 
-void writeToFile(vec Means, int NProcesses, double percentAccepted, int &MCcycle, double &T, int L, ofstream &outfile);
+    void writeHeader(ofstream &outfile, int MCcycles, double Temperature, bool Randomstart);
+    void writeToFile(vec Means, int NProcesses, double percentAccepted, int &MCcycle, double &T, int L, ofstream &outfile);
 
-
-void writeHeader(ofstream &outfile, int MCcycles, double Temperature, bool Randomstart);
-
-void writeHeaderTemperature(ofstream &outfile);
-void writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NProcesses ,double &T, int NSpins, ofstream &outfile);
+    void writeHeaderTemperature(ofstream &outfile);
+    void writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NProcesses ,double &T, int NSpins, ofstream &outfile);
 
 
- double random_nr();
 
 };
-/*
-inline double random_nr(){
-    return RandomNumberGenerator(gen);}
-*/
 
 #endif // SOLVER_H
