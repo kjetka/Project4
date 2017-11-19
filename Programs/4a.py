@@ -37,23 +37,28 @@ for i in range(16):
 
 
 with open('../results/table_micro.tex', 'w+') as file:
-	file.write("State & Spinn  & Energi & Magnetization	\\\\ \\hline")
+	file.write("	Microstate & Spinn  & Energi & Magnetization	\\\\ \\hline \n")
+	
 	for i in range(16):
 		mikro = Mikro_sort[i]
-		str = " %i & "%i
+		string = " %i & "%(i+1)
+		spinn_str = " "
+		str_slutt = " "
 		for j in range(4):
 			spinn = mikro[j]
 			if spinn ==1:
-				str += "$\\uparrow$"
+				spinn_str += "$\\uparrow$ "
 			if spinn ==-1:
-				str += "$\\downarrow $"
-			str += " "
+				spinn_str += "$\\downarrow $ "
+			if j==1:
+				spinn_str += '\\newline'
+			string += " "
 		if E_sort[i] ==0:
-			str += "& $%i $ &$ %i$   \\\\"%(-E_sort[i], Mag_sort[i]) 
+			str_slutt += "& $%i $ &$ %i$   \\\\"%(-E_sort[i], Mag_sort[i]) 
 		else: 
-			str += "& $%i \\text{J}$ &$ %i$   \\\\"%(-E_sort[i], Mag_sort[i]) 
-		file.write(str)
-
+			str_slutt += "& $%i \\text{J}$ &$ %i$   \\\\"%(-E_sort[i], Mag_sort[i]) 
+		str_slutt += "\\hline"
+		file.write(string + spinn_str+str_slutt + '\n')
 
 
 

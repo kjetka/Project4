@@ -1,18 +1,118 @@
 
+The theory and method sections are based on chapter 12 and 13 in Jensen, \cite{Jensen}.
+\subsection{The Ising model}
+
+The Ising model is a model used to simulate magnetic phase transitions of solids. In this project a somewhat simplified version of the model will be used, assuming no external magnetic field and a finite, 2 dimentional system. It is also assumed that the each spin can only take the values $ s  = \pm 1$.  In this model only the nearest neighbours affect each other, excluding long range effects. The energy in a system of a total of N spins is then defined as
+
+\begin{equation}\label{eq: Energy_Ising}
+E = -J \sum\limits_{\langle jk \rangle }^{N} s_ks_l
+\end{equation}
+
+with J being a coupling constant and  $ \langle jk \rangle $ indicating that the sum is over the nearest neighbours only. The useful quantity Energy per spin is defined as $ E_{spin}  = \frac{E}{N}$. 
 
 
-Bolzman
-Markhow chain - convergance
+\subsubsection{Statistical physics in the Ising model}
 
-L=2 case:
+The spins in the Ising model follows Boltzmann statistics, meaning that the probability of a state $\ket{i}$ is defined as 
+\begin{equation}\label{eq:boltzmann}
+P(E_i) = \frac{e^{-E_i\beta}}{Z_{\beta}} 
+\end{equation}
+
+with the partition function $ Z_{\beta} = \int dE \ e^{-E\beta} $ normalizes the expression and $ \beta = (k_BT)^{-1} $. The partition function used in the project is discrete,$ Z_{\beta} = \sum\limits_{i}^{N} \ e^{-E_i\beta} $. As the temperature T increases, the probability of each state decreases, giving a broader distribution of probable states.  
+
+In order to characterize the system, the mean energy, mean magnetization and mean absolute magnetization are important. The macroscopic property of mean energy $ \langle E \rangle $ is needed to define the heat capacity $ C_V$ of the system, while the microscopic effect of mean magnetization and the magnetic moment leads to the susceptibility $ \chi $. These are defined below: 
+\begin{align}
+\langle E \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N E_i P_{\beta}(E_i) \label{eq:L2_E}\\
+\langle M \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N M_i P_{\beta}(E_i) \label{eq:L2_M}\\
+\langle |M | \rangle &= \frac{1}{Z_{\beta}} \sum\limits_{i}^N |M|_i P_{\beta}(E_i)\\
+ C_V &= \frac{1}{k_B T^2} \left( 	\langle E^2 \rangle - \langle E\rangle^2 	\right) \label{eq_C_V_def}\\
+\chi &= \frac{1}{k_B T} \left( 	\langle M^2 \rangle - \langle M\rangle^2 	\right)\label{eq_X_def}
+\end{align}
+
+
+\subsubsection{Periodic boundary conditions}
+
+At the boundaries of a finite spin matrix it is fewer nearest neighbours than in the bulk of the matrix. This is analogous to a surface of a material. By assuming periodic boundary conditions, the effects of the surface is neglected and easy to handle. For a 1 dimensional case with N spins, the neighbours of spin $ S_N $ is $ S_{N-1} $ and $ S_1 $. 
+
+\subsection{Phase transitions}
+
+A phase transition happens when a thermodynamically stable state of a system changes abruptly as one or more thermodynamical  variables describing the structure reaches a critical value. In addition to changing state, macroscopic properties of the system must change. Melting of a solid is a example of an everyday phase transition, depending on a critical pressure and a critical temperature. At a critical temperature ($ T_C $) the Ising model undergoes a second order phase transition, affecting both the mean energy and magnetization. 
+
+
+A first order phase transition is a gradual change from a phase to another and have two phases that coexist at the critical point, for example the melting of ice. The long range ordering exist in each phase, which gives a relatively large correlation length. For a second order phase transition, in the Ising model caused by  Boltzmann statistics , the correlation length spans the entire system at the critical point. This means that the two phases on either side of the critical point is the same. 
+
+For a finite lattice the correlation length, mean magnetization,  susceptibility and heat capacity  is described by the following equations  near the critical temperature. 
+\begin{align}
+	\chi(T) &\simeq (T_C-T)^{-\alpha}\label{eq: X_TC}\\
+		\xi (T) &\simeq \abs{T_C-T}^{-\nu} \\
+	C_V(T) &\simeq \abs{T_C-T}^{-\gamma} \label{eq:C_V_finite}\\
+		\langle M\rangle &\simeq \abs{T-T_C}^{\beta}\\
+ \end{align}
+
+The critical exponents $ \alpha, \beta, \nu $ and $ \gamma $ are all positive. From equation \ref{eq: X_TC}-\ref{eq:C_V_finite} it is clear that $\chi$,  $\xi (T)$ and $ C_V $  diverges to infinity at $ T = T_C $. As the correlation length spans the whole system, it is limited by the lattice size, L. The critical temperature is related to the finite scaling by equation \ref{eq:critical_T}
+
+\begin{equation}\label{eq:critical_T}
+	T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
+\end{equation}
+
+The analytical value of 
+ $T_C =  kTC/J = 2/ \ln(1+\sqrt{
+	2}) \approx 2.269$  was reported by Onsager \cite{Onsager}
+
+\subsection{Scaling}
+
+In this project there is only one expression that needs to be scaled, namely $ e^{-\beta E} $. By introducing $ T' = \frac{k_B T	}{J} $ and $ E' = JE_{kl} $, with $ E_{kl} = \sum\limits_{<k,l>} s_ks_l $ this expression can be written as $ e^{-E'/T'} $.
+
+\subsection{Simple example of the Ising model \label{sec_L2}}
+
+It is possible to model the $ 2\times 2 $ Ising model with periodic boundary conditions analytically. This specific system has $ N = 2^{L^2} = 2^4=16 $ different micro states. 
+
+
 \begin{table}[H]
-	\caption{text}
+	\caption{Overview  of the degeneracy of the $ L=2 $ system. See table \ref{tab: mikro} for all the different microstates}
 	\label{tab: makro}
-\begin{tabular}{cccccc}
-	\input{../results/table_makro.tex}
-\end{tabular}
+	\begin{tabular}{cccccc}
+		\input{../results/table_makro.tex}
+	\end{tabular}
 \end{table}
 
+From table \ref{tab: makro} it is possible to calculate the partition function of the system: 
 
-Error
-Random number
+\[
+Z = \sum_i^M e^{-\beta E_i} = 2e^{-\beta 8 J}  + 2e^{\beta 8 J} + 12 = 4 \cosh\left( \beta 8 J \right) + 12
+\]
+
+The mean energy is given as a derivation by parts of $ \ln Z $ with regards to $ \beta $:
+
+\[ 	\langle E \rangle = - \left(\pdv{\ln Z}{\beta}\right)_{V,N} = 	 - \frac{\partial}{\partial \beta} \ln \left[ 4 \cosh \left( 8J\beta\right)+12\right] =\frac{-8J \sinh(8J\beta)}{3\cosh(J\beta)+ 4} \]  
+
+By investigating table \ref{tab: makro}, the mean magnetization 
+$
+\left< M \right> $ must be $0$. However, that is not true for the mean absolute magnetization:
+
+\[
+\left< |M| \right> = \frac{1}{Z} \sum_i^M M_i e^{\beta E_i}  = \frac{(8J)^2 \cosh(8J\beta )}{\cosh (8J\beta ) + 3}
+\]
+
+By using the same methods as above, the expressions for $ \langle E^2 \rangle  $ and  $ \langle M^2 \rangle  $ is found to be:
+
+\[
+\left< E^2 \right> = \frac{8 \left( e^{8J\beta } + 1\right) }{\cosh (8J\beta ) + 3}
+\]
+
+
+\[
+\left< M^2 \right>  = \frac{2 \left( e^{8J\beta } + 2\right) }{\cosh (8J\beta ) + 3}
+\]
+Combining these gives the expressions for the heat capacity and susceptibility from equations \ref{eq_C_V_def} and \ref{eq_X_def}.
+
+\[
+C_V = k \beta^2\left( \left< E^2\right> - \left< E\right>^2 \right) = \frac{\beta (8J)^2}{T} \left( \frac{\cosh^2x -\sinh^2 x + 3 \cosh x}{(\cosh x + 3)^2}\right) = \frac{ (8J)^2}{k_BT^2}  \frac{ 3 \cosh x}{(\cosh x + 3)^2}
+\]
+with $ x = 8J\beta $. Similary, $ \chi $ is found to be
+\[
+\chi = \beta \left( \left< M^2\right> - \left< M\right>^2\right) = \frac{8\beta \left( e^{x} +1\right)}{\cosh x +3}
+\]
+
+The real usefulness of the $ L=2 $ periodic system is that it describes all the nearest neighbour interactions, for any lattice size. 
+

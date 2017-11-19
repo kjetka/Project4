@@ -31,7 +31,7 @@ for txtfile in txtfiles:
             data[key] = array(data[key])
 
         print data.keys()
-        figure(10)
+        figure(1)
         if "T_1" in txtfile:
             labell = "1.0"
         else:
@@ -40,11 +40,12 @@ for txtfile in txtfiles:
         plot(data["MCcycles"], data["accepted"], label= 'T = '+labell)
 
 
-figure(10)
-title("Accepted configurations")
+figure(1)
+title("Percentage of accepted configurations")
 xlabel("Number of MC cycles")
 ylabel("% of accepted configurations")
-legend(loc=4)
+legend(loc=1)
+ylim([-0.05,0.45])
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 savefig("L_20_accepted_configs.pdf")
 show()

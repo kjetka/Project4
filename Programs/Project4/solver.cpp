@@ -66,9 +66,9 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         if(writeEveryMC){
             stringstream stream;
 
-            stream << fixed << setprecision(1  ) << Temperature;
+            stream << fixed << setprecision(1) << Temperature;
             string Temp_string = stream.str();
-            string Filename =  folderFilename + "T_"+ Temp_string +"L" + to_string(L);
+            string Filename =  folderFilename + "T_"+ Temp_string +"L_" + to_string(L);
             if (randomStart) Filename += "_random";
             if (RankProcess == 0){
                 outfile.open("../../results/" + Filename + ".txt");
@@ -77,6 +77,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
         if (writeEveryMC && (RankProcess == 0)){
             writeHeader(outfile,  MonteCarloCycles, Temperature, randomStart);
+            cout << RankProcess <<endl;
         }
         // ---------------------------------------------------------
 
@@ -165,6 +166,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 }
                 if(RankProcess == 0){
                     if (MC % (promille)==0|| MC ==1) {
+
                         double  percentAccepted = acceptedConfigurations/NSpins;
                         //writeToFile(TotalMeanValues, NProcesses, percentAccepted, MC, Temperature, L, outfile);
                         writeToFile(TotalMeanValues, NProcesses, acceptedConfigurations, MC, Temperature, L, outfile);
@@ -172,8 +174,10 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
                 }
             }
         } // end of MC loop
+        cout << "T: "<< Temperature <<endl;
+         cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - " << meanValues[0]/(MonteCarloCycles) << "^2" <<" = " << meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) <<endl;
 
-        // cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - " << meanValues[0]/(MonteCarloCycles) << "^2" << endl;
+         cout << "standard deviation = variance^0.5 = "  << sqrt(meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) )<<endl;
 
         //Compare with analytical result:
 
@@ -197,9 +201,9 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
         if (writeWhenFinish && (RankProcess == 0)){
 
             outfile2.open("../../results/"+ folderFilename+"probability.txt");
-            outfile2 << "E" << "\t"<< "P"<< endl;
+            outfile2 << "E" <<" EE"  <<"\t"<< "P"<< endl;
             for(unsigned int i = 0; i<=listOfEnergies.size(); i++){
-                outfile2 << listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
+                outfile2 << listOfEnergies[i] << "\t"<< listOfEnergies[i]*listOfEnergies[i] << "\t" << listOfProbabilityEnergies[i] << endl;
             }
             outfile2.close();
 
@@ -230,6 +234,7 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
     if (RankProcess == 0 && writeForTemp){
         outfile_temp.close();
     }
+
 
 }
 
@@ -322,7 +327,7 @@ void Solver::writeToFileTemperature(vec meanValues, int MonteCarloCycles, int NP
 }
 
 void Solver::writeHeaderTemperature(ofstream &outfile){
-    outfile << "Temperatures \t <E> \t\t <|M|> \t\t X \t\t Cv" <<endl;
+    outfile << "Temperatures \t E_avg \t\t M_abs \t\t X \t\t Cv" <<endl;
 }
 
 void Solver::writeHeader(ofstream &outfile, int MCcycles, double Temperature, bool Randomstart){

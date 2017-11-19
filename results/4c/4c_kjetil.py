@@ -19,11 +19,11 @@ i=0
 for temp in [1,2.4]:
     i+=1
     output = Popen(["ls"], stdout=PIPE).communicate()[0]
-    txtfiles = re.findall("c_T_%i.*\.txt" %temp,output,re.IGNORECASE)
+    files = re.findall("c_T_%i.*\.txt" %temp,output,re.IGNORECASE)
 
-
-    for txtfile in txtfiles:
-        with open(txtfile,"r") as infile:
+    print files
+    for file in files:
+        with open(file,"r") as infile:
             data = {}
             infile.readline()
             identifiers = infile.readline().split()
@@ -39,43 +39,84 @@ for temp in [1,2.4]:
             for key in data.keys():
                 data[key] = array(data[key])
 
-            print data.keys()
+            #print data.keys()
 
 
 
-            if "random" in txtfile:
+            if "random" in file:
                 labell = "Random"
             else: 
                 labell = "Ordered "
             figure(i)
             title("$\langle E\\rangle$ with different initial states, T = %.1f"%temp, fontsize=14)
 
-            plot(data["MCcycles"][5:], data["E"][5:], label = labell)
-            tight_layout()
+            plot(data["MCcycles"], data["E"], label = labell)
             #ylim([-1.998, -1.990])
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
-            #xscale('log')
+            xscale('log')
+            xlabel('Monte Carlo cycles')     
+            ylabel('Energy $ E_{kl}$')
             
-            xlabel('Number of Monte Carlo cycles')#, logarithmic scale')     
-            ylabel(r'Energy $[E_{kl}]$')
+
+            figure(i+10)
+            title("$\langle E\\rangle$ for ordered and random initial spins, T = %.1f"%temp)
+            plot(data["MCcycles"][100:], data["E"][100:], label = labell)
+            #ylim([-1.998, -1.990])
+            #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
+            xscale('log')
+            xlabel('Monte Carlo cycles')     
+            ylabel('Energy $ E_{kl}$')
+
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
     figure(i)
-    legend()
+    if temp == 1:
+        #ylim([ -2.01,-1.8])
+        legend()
+    else:
+        legend(loc = 4)
+    rcParams['font.size'] = 14
+    tight_layout()
     savefig('ran_order_T%i.pdf'%temp)   
 
+    figure(i+10)
+    rcParams['font.size'] = 14
+    tight_layout()
+
+    savefig('ran_order_T_zoom%i.pdf'%temp)   
+
+
+
+MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20.txt",unpack=True, skiprows=2)
+
+figure()
+plot(MCcycles, E, 'b', label = "ordered initial spin system")
+
+ylabel('Energy $E_{kl}$')
+xlabel('Monte Carlo cycles')
+xscale('log')
+ylim([-2.01,-1.98])
+#ax1.set_xlim([0,1e4])
+
+rcParams['font.size'] = 14
+
+
+legend()
+title('$\\langle E \\rangle $ for ordered initial system at T=1 ')
+tight_layout()
+savefig('order_T1_start.pdf')
+
+show()
+
+
+
+
 output = Popen(["ls"], stdout=PIPE).communicate()[0]
-txtfiles = re.findall(".*random.*\.txt",output,re.IGNORECASE)
+files = re.findall(".*random.*\.txt",output,re.IGNORECASE)
 
 
 
-for txtfile in txtfiles:
-    if "1" in txtfile:
-        temp = "1.0"
-        t = "1_0"
-    else: 
-        temp = "2.4"
-        t = "2_4"
-    with open(txtfile,"r") as infile:
+for file in files:
+    with open(file,"r") as infile:
         data = {}
         infile.readline()
         identifiers = infile.readline().split()
@@ -92,30 +133,26 @@ for txtfile in txtfiles:
             data[key] = array(data[key])
 
         print data.keys()
-
+        if "1.0" in file:
+            labell = "1.0"
+        else:
+            labell = "2.4"
 
         fig1, ax1 =subplots()
         ax2 = ax1.twinx()
         title(r'$\langle E \rangle$ and $\langle |M| \rangle$, T = ' + temp, fontsize=14)
         ax1.plot(data["MCcycles"], data["E"], 'b', label = ' $\langle E \\rangle$')
-        ax2.plot(data["MCcycles"], data["Mabs"], 'r', label = ' $\langle |M| \\rangle$')
-        
-        if "1" in txtfile:
-            ax1.set_ylim([-2.00,-1.97])
-            ax2.set_ylim([0.97,1.0])    
-            ax1.axhline(data["E"][-2],0,1e6,linestyle='--')
-            ax2.axhline(data["Mabs"][-1],0,1e6,linestyle='--')
-        else: 
-            ax2.set_ylim([0.44,0.48])
-            ax1.set_ylim([-1.27, -1.23])        
-        
-        ax1.set_ylabel(r'Energy $[E_{kl}]$', color = 'b')
-        ax1.set_xlabel('Number of Monte Carlo cycles')
-        ax2.set_ylabel('Magnetic moment', color = 'r')
-        
-        tight_layout()
+        ax2.plot(data["MCcycles"], data["Mabs"], 'brown', label = ' $\langle M \\rangle$')
+
+        ax1.set_ylabel('Energy $E_{kl}$', color = 'b')
+        ax1.set_xlabel('Monte Carlo cycles')
+        ax2.set_ylabel(r' Magnetic moment', color = 'brown')
         #ax1.legend(loc = 1)
         #ax2.legend(loc = 2)
+        if "1.0" in file:
+            ax2.set_ylim([0,1.1])
+            ax1.set_ylim([-2.1,-0.6])
+
         ax1.tick_params('y', colors='b')
         ax2.tick_params('y', colors='r')
         ax1.ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
@@ -123,10 +160,14 @@ for txtfile in txtfiles:
         h1, l1 = ax1.get_legend_handles_labels()
         h2, l2 = ax2.get_legend_handles_labels()
         ax2.legend(h2+h1, l2+l1, loc = 5)
-        savefig('En_mag_T' + t + '.pdf')
+        rcParams['font.size'] = 14
+        tight_layout()
+
+        savefig('En_mag_T'+labell+'.pdf')
         #grid('on')
 
         
 
 
-    show()
+
+
