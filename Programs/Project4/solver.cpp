@@ -68,7 +68,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
         if (writeEveryMC && (RankProcess == 0)){
             writeHeader(outfile,  MonteCarloCycles, Temperature, randomStart);
-            cout << RankProcess <<endl;
         }
         // ---------------------------------------------------------
 
@@ -156,12 +155,12 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             }
         } // end of MC loop
 
-         cout << "T: "<< Temperature <<endl;
-         cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - ";
-         cout <<  meanValues[0]/(MonteCarloCycles) << "^2" << " = ";
-         cout << meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) <<endl;
-         cout << "standard deviation = variance^0.5 = ";
-         cout << sqrt(meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) )<<endl;
+//         cout << "T: "<< Temperature <<endl;
+//         cout << "variance: " << meanValues[1]/(MonteCarloCycles) << " - ";
+//         cout <<  meanValues[0]/(MonteCarloCycles) << "^2" << " = ";
+//         cout << meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) <<endl;
+//         cout << "standard deviation = variance^0.5 = ";
+//         cout << sqrt(meanValues[1]/(MonteCarloCycles) - pow(meanValues[0]/(MonteCarloCycles) , 2) )<<endl;
 
         ofstream outfile2;
         if (writeWhenFinish && (RankProcess == 0)){
