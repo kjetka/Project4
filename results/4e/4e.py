@@ -168,5 +168,5 @@ legend(loc = 2)
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 rcParams['font.size'] = 14
 savefig('linfit.pdf')
-show()
+
 

@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
 
 
-         L = 20;
+        /* L = 20;
          MonteCarloCycles = 1e6;
          writeResolution = 1;
          temperatures = vec({1});
@@ -99,24 +99,24 @@ int main(int argc, char* argv[]){
 
         temperatures = vec({2.4});
         exercised.algorithm("4d/d_T_2_4", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
-
+*/
 
     //----------------------------------------------------
     // EXERCISE E
     //----------------------------------------------------
 
-/*
-    //vec Ls = vec({40, 60, 80, 100});
 
-    MonteCarloCycles = 0.5e6; //must be much smaller than the thermalization time
+
+    MonteCarloCycles = 1.5e6; //must be much smaller than the thermalization time
     writeResolution = 1;
     //temperatures = linspace<vec>(2.0, 2.3, 15);
     //temperatures = linspace<vec>(2.15, 2.75, 25);
-    //temperatures = vec({2.1, 2.2,2.23,2.25,2.26, 2.265,2.27,2.275, 2.278, 2.279, 2.28, 2.281,2.282,2.283,2.284, 2.285,2.286, 2.287,2.288,2.289, 2.29,2.30,2.32,2.35,2.38,2.4,2.45,2.5,2.55,2.6});
+    temperatures = vec({2.1, 2.2,2.23,2.25,2.26, 2.265,2.27,2.275, 2.278, 2.279, 2.28, 2.281,2.282,2.283,2.284, 2.285,2.286, 2.287,2.288,2.289, 2.29,2.30,2.32,2.35,2.38,2.4,2.45,2.5,2.55,2.6});
+    vec Ls = vec({40, 60, 80, 100});
 
     //Timing run
-    temperatures = vec({2,2,2.3,2.4,2.5});
-    vec Ls = vec({100});
+    //temperatures = vec({2,2,2.3,2.4,2.5});
+    //vec Ls = vec({100});
 
     randomStart = true;
     writeEveryMC = false ;
@@ -131,7 +131,7 @@ int main(int argc, char* argv[]){
         exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     }
-*/
+
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;
