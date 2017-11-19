@@ -12,7 +12,7 @@ L = [40 ,60, 80, 100]
 a = linspace(-1,0.2,100)
 a = linspace(-4, 3,100)
 #Need the right values here:
-L_Tc = [2.28, 2.28, 2.28, 2.28]
+L_Tc =  [2.282,  2.279,  2.278,  2.281]
 Tc_infty_L = zeros([len(L),len(a)])
 
 figure(figsize=(7,5))

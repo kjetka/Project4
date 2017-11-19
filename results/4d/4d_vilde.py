@@ -6,7 +6,7 @@ font = {'family' : 'normal',
         'size'   : 14}
 
 matplotlib.rc('font', **font)
-"""
+
 energy, probability = loadtxt("d_T_1probability.txt", unpack=True, skiprows=1)
 
 # normalizing probability:
@@ -100,4 +100,5 @@ xlabel("M")
 tight_layout()
 #xticks(sorted(energy[:-1]))
 savefig("d_T_2_5Magneticprobability.pdf")
+"""
 show()

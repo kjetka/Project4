@@ -1,5 +1,59 @@
 
-
+\begin{table}[H]\caption{This is a list of all total energy possibilities and total magnetic moment for the lattice with $L$ = 2.}\label{tab:micro_energies}
 \begin{tabular}{cccccc}
 \input{../results/table_micro.tex}
 \end{tabular}
+\end{table}
+
+\begin{table}[H]\caption{This table lists the possible energy changes when one spin in flipped.}\label{tab:energy_change}
+\begin{tabular}{c|c|c|c|c}
+Spin  & E before & Spin & E after& $\Delta E$\\
+configuration & &configuration& &\\
+before & &after& &\\ \hline
+$\begin{matrix}
+&\uparrow & \\
+\uparrow & \uparrow & \uparrow\\
+&\uparrow & \\
+\end{matrix}$& -4J &$\begin{matrix}
+&\uparrow & \\
+\uparrow & \downarrow & \uparrow\\
+&\uparrow & \\
+\end{matrix}$& 4J &8J\\ \hline
+$\begin{matrix}
+&\uparrow & \\
+\downarrow & \uparrow & \uparrow\\
+&\uparrow & \\
+\end{matrix}$&-2J&$\begin{matrix}
+&\uparrow & \\
+\downarrow & \downarrow & \uparrow\\
+&\uparrow & \\
+\end{matrix}$& 2J &4J\\ \hline
+$\begin{matrix}
+&\uparrow & \\
+\downarrow & \uparrow & \uparrow\\
+&\downarrow & \\
+\end{matrix}$& 0 &$\begin{matrix}
+&\uparrow & \\
+\downarrow & \downarrow & \uparrow\\
+&\downarrow & \\
+\end{matrix}$& 0&0\\ \hline
+$\begin{matrix}
+&\downarrow & \\
+\downarrow & \uparrow & \uparrow\\
+&\downarrow & \\
+\end{matrix}$&2J&$\begin{matrix}
+&\downarrow & \\
+\downarrow & \downarrow & \uparrow\\
+&\downarrow & \\
+\end{matrix}$& -2J &-4J\\ \hline
+$\begin{matrix}
+&\downarrow & \\
+\downarrow & \uparrow & \downarrow\\
+&\downarrow & \\
+\end{matrix}$&4J&$\begin{matrix}
+&\downarrow & \\
+\downarrow & \downarrow & \downarrow\\
+&\downarrow & \\
+\end{matrix}$&-4J& -8J\\
+\end{tabular}
+\end{table}

@@ -50,7 +50,7 @@ for temp in [1,2.4]:
             figure(i)
             title("$\langle E\\rangle$ with different initial states, T = %.1f"%temp, fontsize=14)
 
-            plot(data["MCcycles"][1:], data["E"][1:], label = labell)
+            plot(data["MCcycles"][5:], data["E"][5:], label = labell)
             tight_layout()
             #ylim([-1.998, -1.990])
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
@@ -101,20 +101,23 @@ for txtfile in txtfiles:
         ax2.plot(data["MCcycles"], data["Mabs"], 'r', label = ' $\langle |M| \\rangle$')
         
         if "1" in txtfile:
-            ax1.set_ylim([-2.0,-1.95])
-            ax2.set_ylim([0.96,1.01])             
+            ax1.set_ylim([-2.00,-1.97])
+            ax2.set_ylim([0.97,1.0])    
+            ax1.axhline(data["E"][-2],0,1e6,linestyle='--')
+            ax2.axhline(data["Mabs"][-1],0,1e6,linestyle='--')
         else: 
-            ax2.set_ylim([0.44,0.50])
-            ax1.set_ylim([-1.28, -1.22])        
+            ax2.set_ylim([0.44,0.48])
+            ax1.set_ylim([-1.27, -1.23])        
         
         ax1.set_ylabel(r'Energy $[E_{kl}]$', color = 'b')
         ax1.set_xlabel('Number of Monte Carlo cycles')
         ax2.set_ylabel('Magnetic moment', color = 'r')
+        
         tight_layout()
         #ax1.legend(loc = 1)
         #ax2.legend(loc = 2)
         ax1.tick_params('y', colors='b')
-        ax2.tick_params('y', colors='brown')
+        ax2.tick_params('y', colors='r')
         ax1.ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
         
         h1, l1 = ax1.get_legend_handles_labels()

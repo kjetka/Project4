@@ -32,48 +32,47 @@ Our ratio between probabilities is:
 \frac{A_{ij}}{A_{ji}} = \frac{\omega_iT_{ij}}{\omega_jT_{ji}} = \exp(-\beta (E_i-E_j))= \exp(-\beta \Delta E_{ij})
 \]
 with the Boltzmann distribution and the acceptance probability is:
-\[
+\begin{equation}\label{eq:acceptance}
 A_{ij} = \begin{cases}
 \exp(-\beta \Delta E_{ij}) &\indent \text{if } \Delta E_{ij} > 0\\
 1 & \indent\text{if } \Delta E_{ij} \leq 0\\
 \end{cases}
-\]
+\end{equation}
 
 We need to accept some moves where $\Delta E_{ij} > 0$ so that the algorithm is ergodic, that all possible states in the system can be reached, even though the probability of it happening is small.
 
-In practice:
+In practice we used this approach:
+\begin{itemize}
+\item Calculate total energy of initial lattice, $E_{tot}$
 
-The metropolis algorithm is an algorithm that takes the system to the steady state. We want to find out what the real state of the system is when the outer parameters are what they are, for example temperature.
+\item Pick a random spin in the lattice
 
-- Calculate total energy of initial lattice, $E_{tot}$
+\item Flip the spin
 
-- Pick a random spin in the lattice
+\item Calculate the change in energy, $\Delta E$ (only five possibilities)
 
-- Flip the spin
-
-- Calculate the change in energy, $\Delta E$ (only five possibilities)
-
+\item flipping only one)
     
-    (flipping only one)
     $$ \Delta E = -J\sum_{\left<kl\right>}^M s^2_k \left( s_l^2-s_l^1\right)$$
     $(\left( s_l^2-s_l^1\right) = -2$  if $s_l^1 = 1$ and $(\left( s_l^2-s_l^1\right) = 2$  if $s_l^1 = -1$:
     $$ \Delta E = 2Js_l^1\sum_{\left<k\right>}^M s^2_k$$
 
-- If $\Delta E \leq 0$ - accept because we want to move to a state with the lowest energy
+\item If $\Delta E \leq 0$ - accept because we want to move to a state with the lowest energy
 
-- If $\Delta E > 0$ - calculate $\omega = e^{-\beta \Delta E}$
+\item If $\Delta E > 0$ - calculate $\omega = e^{-\beta \Delta E}$
 
-- Compare $\omega$ with a random number $r$, if $r \leq \omega$ - accept new configuration
+\item Compare $\omega$ with a random number $r$, if $r \leq \omega$ - accept new configuration
     
     E += $\Delta E$ and 
     M += $\Delta M = 2s_l^1$
 
-- Update mean values
+\item Update mean values
 
-- Repeat  
+\item Repeat  
 
-Should show how to find the five $\Delta E$s.
+%Should show how to find the five $\Delta E$s.
 
+\end{itemize}
 
 \subsection{Random number generators}
 

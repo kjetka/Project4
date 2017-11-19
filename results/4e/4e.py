@@ -51,24 +51,25 @@ for txtfile in txtfiles:
 
         figure(1)
         #plot(data["Temperatures"][3:-5], data["E_avg"][3:-5], label = "L = " + labell)
-        plot(data["Temperatures"][0:-5], data["E_avg"][0:-5], label = "L = " + labell)
+        plot(data["Temperatures"][0:], data["E_avg"][0:], label = r"$L$ = " + labell)
         xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$ ')
         ylabel(r'Energy $[E_{kl}]$')
         title('Energy')
 
         figure(2)
-        plot(data["Temperatures"], data["M_abs"], label = "L = " + labell)
-        xlabel(r'Temperature, $[\left[ \frac{k_BT}{J}\right]$')
+        plot(data["Temperatures"], data["M_abs"], label = r"$L$ = " + labell)
+        xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
         ylabel('Magnetic moment')
         title('Magnetic moment')
 
         figure(3)
-        plot(data["Temperatures"], data["X"], label = "L = " + labell)
+        plot(data["Temperatures"], data["X"], label = r"$L$ = " + labell)
         xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
         ylabel(r' $\chi$ , $\left[ \frac{J}{k_B^2T}\right]$')
         title('Susceptibility')
+        
         figure(4)
-        plot(data["Temperatures"], data["Cv"], label = "L = " + labell)
+        plot(data["Temperatures"], data["Cv"], label = r"$L$ = " + labell)
         xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
         ylabel(r' $C_V$, $\left[ \frac{J^2}{k_B^3T^2}\right]$')
         title('Heat capacity')
@@ -90,34 +91,42 @@ for txtfile in txtfiles:
         """
  
 
-"""
+
 figure(1)
 legend(loc = 2)
-title(r'$ \langle E \rangle$ as function of system size and temperature ')
+#title(r'$ \langle E \rangle$ as function of system size and temperature ')
 rcParams['font.size'] = 14
+tight_layout()
+xlim([2.15,2.4])
 savefig('4e_energy.pdf')
 
 figure(2)
 legend(loc = 1)
-title(r'$ \langle | M | \rangle$ as function of system size and temperature')
+tight_layout()
+xlim([2.1,2.6])
+#title(r'$ \langle | M | \rangle$ as function of system size and temperature')
 rcParams['font.size'] = 14
 savefig('4e_mag.pdf')
 
 figure(3)
+tight_layout()
+xlim([2.1,2.6])
 legend()
-title('Susceptibility as function of system size and temperature ')
+#title('Susceptibility as function of system size and temperature ')
 rcParams['font.size'] = 14
 
 savefig('4e_x.pdf')
 
 figure(4)
-title('Heat capacity as function of system size and temperature ')
+#title('Heat capacity as function of system size and temperature ')
+tight_layout()
+
+xlim([2.1,2.6])
 legend()
 rcParams['font.size'] = 14
 
 savefig('4e_Cv.pdf')
 
-"""
 
 
 
@@ -169,10 +178,12 @@ plot(L_liste, T_C_CV_list, 'o',label = 'Experimental data' )
 x = linspace(0,max(L_liste), 100)
 plot(x, x*p[0]+p[1], label = 'Linear fit')
 #axhline(2.269, 0, 5,linestyle='--', label= r"$T_C^{exact}$ =2.269")
-title('Linear fit of $T_C$',fontsize=14)
+title('Linear regression to find $T_C$',fontsize=14)
 ylabel(r'Temperature, $\left[ \frac{k_BT}{J} \right]$ ')
-#ylim([2.277-0.001,0.009+2.277])
-xlabel('Inverse grid size, 1/L')
+ylim([2.277-0.001,0.009+2.277])
+xlabel(r'Inverse grid size, 1/$L$')
+xlim([0,0.026])
+tight_layout()
 legend(loc = 2)
 ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
 rcParams['font.size'] = 14

@@ -1,9 +1,25 @@
 \begin{thebibliography}{1}
 
+\bibitem{Jensen}
+Morten Hjorth-Jensen.
+\newblock Computational physics: Lecture notes fall 2015.
+\newblock Department of Physics, University of Oslo, 8 2015.
+\newblock Chapter 2 and 6.
+
 \bibitem{Ising}
 Ising model.
 \newblock \url{https://en.wikipedia.org/wiki/Ising_model}.
 \newblock Accessed: 2017-11-17.
+
+\bibitem{thermal}
+Daniel~V Schroeder.
+\newblock {\em An introduction to thermal physics}.
+\newblock Addison-Wesley, 2000.
+
+\bibitem{FWHM}
+Full width half maximum.
+\newblock \url{https://en.wikipedia.org/wiki/Full_width_at_half_maximum}.
+\newblock Accessed: 2017-11-19.
 
 \bibitem{Onsager}
 Lars Onsager.
