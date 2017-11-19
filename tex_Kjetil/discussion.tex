@@ -17,29 +17,17 @@ From the plots of the mean magnetization and energy for different temperatures, 
 As the temperature increases, the likelihood that the system will change  energy at equilibrium increases. This is due to inherent properties of the Boltzmann distribution. As the temperature increases, the difference between $ e^{-\beta E_i} $ and $ e^{-\beta E_j} $ decreases, resulting in higher variance for high temperatures. In real life, this corresponds to that the average thermal energy of each particle increases. Figure \ref{fig:L20_mag_T_2-4} shows this behaviour as greater fluctuations in both $\langle E \rangle  $, and $\langle M \rangle  $ at higher temperatures. 
  
 
-\subsection{Phase transition and Critical temperature}
+\subsection{Phase transition, Critical temperature and benchmarks}
 
-From equation \ref{eq_CV_analy}
-Diskutere rare plot
-Diskutere bredde Tc peak? Teoridel - se side 431 i kompedium
+When a phase transition occur, the properties of a system changes abruptly. By studying equation \ref{eq_CV_analy} and figure \ref{fig:4eenergy}, the gradient increases $ T = 2.3 $. In figure \ref{fig:4ecv} this is mapped as a peak. The temperature corresponding to the top of the peak is the critical temperature, where the properties changes quickest. Figure \ref{fig:4ecv} indicates that the larger L, the more abruptly the system changes properties. For smaller lattices, the change is more gradual. As the heat capacity diverges for an infinite lattice, sharper peaks for higher lattice sizes is expected. The same applies for $ \chi $. 
 
-benchmark (speed),
+By increasing the temperature resolution around $ T_C $ in the experiment, the hope was to gain a more precise value for $ T_C(L = \infty) $. However, the results show a fluctuation in this region, disrupting the expected trend for $ T_C (L) $. Figures \ref{fig:4ecv} and \ref{fig:4ex} shows that for L=80 and L=100, the maximum is at a different temperature than what would be expected by a symmetric peak. 
 
-OBS: Plot of E, M, Cv, X as functions of T (put L as legend and plot together)
+This fluctuation is not only located around $ T_C $, but is expected to occur at all temperatures, as long as the temperature resolution is big enough. The temperature step, dT, is relatively large on the interval $ T = 2.1-2.2 $ and $ T = 2.4-2.6 $ and the values of $ C_V $ and $ \chi $ changes significantly, the fluctuating effect is negligible.
 
-OBS: Indication of phase transition? (Peak - at least for Cv and X)
-
-OBS: Use Equation \ref{eq:critical_T} to extract $T_C$.
-
-def. Cv og X - stigningstall!
-
-Around the critical temperature, both the heat capacity and susceptibility fluctuates a lot. 
-
-
-
-Because of factors like the $MPI_reduce$ function, the speedup is not the ideal $ 0.5 $. 
-
-
-
-Phase transition
-As the temperature is increased, the Boltzmann distribution predicts that more states will become stable, lowering the energy necessary to change state of each spin. This can be seen  in figure \ref{fig:4emag} from the fact that $ \langle M \rangle $ approaches 0 after $ T_C $
+Both the mean energy and magnetization fluctuates at random around equilibrium. The scale of this fluctuation is related to the temperature, as figure \ref{fig:distribution} indicates. When running $ 10^6 $ Monte Carlo cycles and collecting only $ C_V $ and $ \chi $ at the last MC-cycle, no two runs at the same temperature would yield the same results.  
+ 
+ Figure \ref{fig:linfit}  and table \ref{tab: T_C} is affected by this, failing to illustrate the expected trend of lower $ T_C $ for larger lattices. 
+ 
+ 
+The CPU-timing shows a clear speedup, but not as large as expected. This is most likely caused by factors like the $MPI_reduce$ function. This function performs a lot more calculations with two threads as with only one thread. 
