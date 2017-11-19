@@ -53,26 +53,26 @@ for txtfile in txtfiles:
         #plot(data["Temperatures"][3:-5], data["E_avg"][3:-5], label = "L = " + labell)
         plot(data["Temperatures"][0:], data["E_avg"][0:], label = r"$L$ = " + labell)
         xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$ ')
-        ylabel(r'Energy $[E_{kl}]$')
-        title('Energy')
+        ylabel(r'$\left< E\right>$ $[E_{kl}]$')
+        title('Energy per spin')
 
         figure(2)
         plot(data["Temperatures"], data["M_abs"], label = r"$L$ = " + labell)
         xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
-        ylabel('Magnetic moment')
-        title('Magnetic moment')
+        ylabel(r'$\left< |M| \right>$')
+        title('Magnetic moment per spin')
 
         figure(3)
         plot(data["Temperatures"], data["X"], label = r"$L$ = " + labell)
         xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
         ylabel(r' $\chi$ , $\left[ \frac{J}{k_B^2T}\right]$')
-        title('Susceptibility')
+        title('Susceptibility per spin')
         
         figure(4)
         plot(data["Temperatures"], data["Cv"], label = r"$L$ = " + labell)
         xlabel(r'Temperature, $\left[ \frac{k_BT}{J}\right]$')
         ylabel(r' $C_V$, $\left[ \frac{J^2}{k_B^3T^2}\right]$')
-        title('Heat capacity')
+        title('Heat capacity per spin')
 
         index, value = max(enumerate(data["Cv"]), key = operator.itemgetter(1))
 

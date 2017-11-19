@@ -7,7 +7,7 @@ To reach the most likely state, the steady state, we use Monte Carlo sampling. O
 
 \subsection{Metropolis Algorithm}\label{sec:metropolis}
 
-We are looking at transition from one state to another. $W_{ij}$ is the transformation probability of going from state $j$ to state $i$. $\omega_i$ is our PDF, $P_i$. That means that a transition from $i$ to $j$ can be written:
+We are looking at transition from one state to another. $W_{ij}$ is the transformation probability of going from state $j$ to state $i$. $\omega_i$ is our PDF, $P_i$, (Equation \ref{eq:Boltzmann}). That means that a transition from $i$ to $j$ can be written:
 \[
 \omega_i = W_{ij}\omega_j
 \]
@@ -21,6 +21,8 @@ or in matrix form:
 \hat{\omega}(t+1) = \hat{W}\hat{\omega}(t)
 \]
 
+It means that our probability distribution is not changing with time (in our case Monte Carlo cycles) anymore.
+
 In our case we do not know the transition probability, and we have to model it. We do this using the Metropolis algorithm. We separate $W_{ij}$ into two parts, the probability of accepting the move from state $j$ to state $i$, $A_{ij}$, and the probability of making the move to state $i$ when in state $j$, $T_{ij}$. We define $T_{ij}$ and $A_{ij}$ to lead the system to the most likely state.
 
 In our case the algorithm starts with suggesting a move from state $j$ to state $i$, it does this by picking a random spin and flipping it. The picking of the spin is governed by the uniform distribution, that gives $T_{ij }= T_{ji}$, it is symmetric. The uniform distribution is baked into the random number generators.
@@ -31,7 +33,7 @@ Our ratio between probabilities is:
 \[
 \frac{A_{ij}}{A_{ji}} = \frac{\omega_iT_{ij}}{\omega_jT_{ji}} = \exp(-\beta (E_i-E_j))= \exp(-\beta \Delta E_{ij})
 \]
-with the Boltzmann distribution and the acceptance probability is:
+with the Boltzmann distribution. The acceptance probability is:
 \begin{equation}\label{eq:acceptance}
 A_{ij} = \begin{cases}
 \exp(-\beta \Delta E_{ij}) &\indent \text{if } \Delta E_{ij} > 0\\
@@ -41,87 +43,94 @@ A_{ij} = \begin{cases}
 
 We need to accept some moves where $\Delta E_{ij} > 0$ so that the algorithm is ergodic, that all possible states in the system can be reached, even though the probability of it happening is small.
 
-In practice we used this approach:
+In practice, this is how we executed the Metropolis Algorithm:
 \begin{itemize}
-\item Calculate total energy of initial lattice, $E_{tot}$
+\item Calculate total energy of initial lattice, $E_{tot}$.
 
-\item Pick a random spin in the lattice
+\item Calculate the possible acceptance probabilities (Equation \ref{eq:acceptance}) from the five possible $\Delta E$s (Table \ref{tab:energy_change}) and the temperature.
 
-\item Flip the spin
+\item Pick a random spin in the lattice.
 
-\item Calculate the change in energy, $\Delta E$ (only five possibilities)
+\item Flip the spin.
 
-\item flipping only one)
-    
+\item Calculate the change in energy, $\Delta E$, from the nearest neighbors:
     $$ \Delta E = -J\sum_{\left<kl\right>}^M s^2_k \left( s_l^2-s_l^1\right)$$
-    $(\left( s_l^2-s_l^1\right) = -2$  if $s_l^1 = 1$ and $(\left( s_l^2-s_l^1\right) = 2$  if $s_l^1 = -1$:
+    \subitem $(\left( s_l^2-s_l^1\right) = -2$  if $s_l^1 = 1$ 
+    \subitem $(\left( s_l^2-s_l^1\right) = 2$  if $s_l^1 = -1$
     $$ \Delta E = 2Js_l^1\sum_{\left<k\right>}^M s^2_k$$
 
-\item If $\Delta E \leq 0$ - accept because we want to move to a state with the lowest energy
+\item If $\Delta E \leq 0$ - accept new configuration.
 
-\item If $\Delta E > 0$ - calculate $\omega = e^{-\beta \Delta E}$
+\item Update mean values:
+\subitem    $E_{tot} += \Delta E$ 
+\subitem    $M_{tot} += \Delta M = 2s_l^1$ etc.
 
-\item Compare $\omega$ with a random number $r$, if $r \leq \omega$ - accept new configuration
-    
-    E += $\Delta E$ and 
-    M += $\Delta M = 2s_l^1$
+\subitem $\rightarrow$ Repeat
 
-\item Update mean values
+\item Else if $\Delta E > 0$ - find the relevant acceptance probability, $\omega$.
 
-\item Repeat  
+\item Compare $\omega$ with a random number $r \in [0,1]$
+\item If $r \leq \omega$ - accept new configuration.
 
-%Should show how to find the five $\Delta E$s.
+\item Update mean values:
+\subitem    $E_{tot} += \Delta E$ 
+\subitem    $M_{tot} += \Delta M = 2s_l^1$ etc.
+\subitem $\rightarrow$ Repeat
+
+\item If $r > \omega$ - do not accept new configuration.
+
+\subitem $\rightarrow$ Repeat with old configuration 
 
 \end{itemize}
 
 \subsection{Random number generators}
 
-The random number generator (RNG) used in this project is gain from a linear congruential relation (Equation \ref{eq:linearcr}). Which can, with good parameters, $a$ and $c$ give a list of quasi random numbers with a maximum periodicity $M$, that means that the numbers repeat themselves after $M$ numbers. It is important that the periodicity is large compared with the number of Monte Carlo cycles, to the 'measurements' represent the truly random real world. The RNG gives a number $x_i \in [0,1]$ because $x_i = N_i/M$. The PDF for generating random numbers in the interval $[0,1]$ is the uniform distribution.
+The random number generator (RNG) used in this project is gained from a linear congruential relation (Equation \ref{eq:linearcr}). Which can, with good parameters, $a$ and $c$ give a list of quasi random numbers with a maximum periodicity $M$, that means that the numbers repeat themselves after $M$ numbers. It is important that the periodicity is large compared with the number of Monte Carlo cycles, so the 'measurements' represent the truly random real world. The RNG gives a number $x_i \in [0,1]$ because $x_i = N_i/M$. The PDF for generating random numbers in the interval $[0,1]$ is the uniform distribution.
 
 \begin{equation}\label{eq:linearcr}
 N_i = (aN_{i-1} + c)MOD(M)
 \end{equation}
-
-\subsection{The algorithm}
-
-
-
-\begin{lstlisting}[language=C++]
-for(i =0; i<temperature.size();i++){
-    
-    //make vector with all possible omega_i/omega_j   
-    //dependent on temperature and
-   for(MC = 1; MC < MCcycles.size(); MC++){
-       
-       for(i=0; i< L*L; i++){
-           ix, iy = random(i);
-           // with random spin generator        
-           
-           Matrix(ix, iy) *= -1;
-
-           dE = dEs[i];
-           
-           MetropolisAlgorithm();
-           // decide if the flip is accepted
-           if(flip is accepted){
-               Energy += dE;
-               Magnetic += dM;
-           }
-      }
-      //Add the new values to the sum of the values:
-      mean_E += Energy;
-      mean_E2 += Energy*Energy;
-      mean_M += Magnetic;
-      sum M\^2 += M\^2;
-      sum |M| += |M|;
-   }
-//Before print, the values are divided by the number of Monte Carlo cycles to find the mean values.
-}
-\end{lstlisting}
+%
+%\subsection{The algorithm}
+%
+%
+%
+%\begin{lstlisting}[language=C++]
+%for(i =0; i<temperature.size();i++){
+%    
+%    //make vector with all possible omega_i/omega_j   
+%    //dependent on temperature and
+%   for(MC = 1; MC < MCcycles.size(); MC++){
+%       
+%       for(i=0; i< L*L; i++){
+%           ix, iy = random(i);
+%           // with random spin generator        
+%           
+%           Matrix(ix, iy) *= -1;
+%
+%           dE = dEs[i];
+%           
+%           MetropolisAlgorithm();
+%           // decide if the flip is accepted
+%           if(flip is accepted){
+%               Energy += dE;
+%               Magnetic += dM;
+%           }
+%      }
+%      //Add the new values to the sum of the values:
+%      mean_E += Energy;
+%      mean_E2 += Energy*Energy;
+%      mean_M += Magnetic;
+%      sum M\^2 += M\^2;
+%      sum |M| += |M|;
+%   }
+%//Before print, the values are divided by the number of Monte Carlo cycles to find the mean values.
+%}
+%\end{lstlisting}
 
 \subsection{Parallelizing}
 
-In this project we used parallelization. We used Message Passing Interface (MPI) to parallelize our code.Each process read and executes the whole program. We had to use different MPI functions to make sure that all processes sent their results to one main process that would write to file for example. Beneath is some samples of the program that shows the process. 
+In this project we used parallelization. We used Message Passing Interface (MPI) to parallelize our code. Each process read and executes the whole program. We had to use different MPI functions to make sure that all processes sent their results to one main process that would write to file for example. Beneath is some samples of the program that shows the process. 
 
 \begin{lstlisting}[language=C++]
 int NProcesses, RankProcess;
@@ -147,7 +156,7 @@ MPI_Finalize();
 
 \subsection{Unit tests}
 
-In this project we did not write any unit tests, we only wrote out the results during the program development and saw if it was logical. We could have made a unit test that calculated the properties of the L=2-system and compared them to the analytical values calculated in the theory. This would have helped us make sure that when we made changes to the program, for example implementing parallelization and classes, the program was doing what it was supposed to do and not getting the wrong result. 
+In this project we did not write any unit tests, we only wrote out the results during the program development and saw if it was logical. We could have made a unit test that calculated the properties of the $L$=2-system and compared them to the analytical values calculated in the theory. This would have helped us make sure that when we made changes to the program, for example implementing parallelization and classes, the program was doing what it was supposed to do and not getting the wrong result. 
 
 Another unit test we could have included is just flipping one spin in a small matrix and checking is the change in energy is what we expect. We should use unit tests from the start in the next project.
 	

@@ -1,4 +1,4 @@
-The theory and method sections are based on chapter 12 and 13 in Jensen, \cite{Jensen}.
+The theory and method sections are based mainly on chapter 5, 11, 12 and 13 in Computational Physics \cite{Jensen}.
 
 \subsection{Ising model}
 
@@ -10,15 +10,15 @@ E = - J \sum^N_{\left< kl \right>} s_k s_l
 
 where in our system $J > 0$, $J$ is the coupling constant, giving a ferromagnetic ordering, and $s_k, \, s_l = \pm 1$, $s_k$ is the $k$-th spin of $N$ number of spins.
 
-To get easier numbers to do calculation with we scaled $ e^{-\beta E} $ by setting $ T' = \frac{k_B T	}{J} $ and $ E' = JE_{kl} $, with $ E_{kl} = \sum\limits_{<k,l>} s_ks_l $ Then $e^{-\beta E} $ can be written as $ e^{-E'/T'} $.
+To get easier numbers to do calculations with we scaled $ e^{-\beta E} $ by setting $ T' = \frac{k_B T	}{J} $ and $ E' = JE_{kl} $, with $ E_{kl} = \sum\limits_{<k,l>} s_ks_l $ Then $e^{-\beta E} $ can be written as $ e^{-E'/T'} $.
 
-\subsubsection{Periodic boundary conditions}
+\subsection{Periodic boundary conditions}
 
 Because we did not have an infinite lattice, we included periodic boundary conditions. That means that when the spins on the edges are flipped, we use the spins on the other side of the lattice as nearest neighbors, to calculate the change in energy.
 
 \subsection{Introduction to statistics}
 
-The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability (Equation \ref{eq:Partitionfunction}). To calculate $Z$, we need to know all the different states,$i$, and their energy, $E_i$. It can be calculated for small systems (\ref{sec:analytical_sol} Analytical solutions for $L$=2), but it would be very time consuming to include it in Monte Carlo Sampling. A method that does not include it is necessary.
+The methods in this project require some statistics. Equation \ref{eq:probability_density} shows the probability density and in the Ising model, the probability distribution function (PDF) is Boltzmann distribution (Equation \ref{eq:Boltzmann}) where $Z$ is the partition function that normalizes the probability (Equation \ref{eq:Partitionfunction}). To calculate $Z$, we need to know all the different states, $i$, and their energy, $E_i$. It can be calculated for small systems (\ref{sec:analytical_sol} Analytical solutions for $L$=2), but it would be very time consuming to include it in Monte Carlo Sampling. A method that does not include it, is necessary.
 
 \begin{equation}\label{eq:probability_density}
 P(a\leq X \leq b) = \int_b^a\, p(x)\, dx
@@ -64,12 +64,12 @@ C_V = \frac{\partial \left< E \right>  }{\partial T}
 \chi = \frac{\partial \left< M \right>  }{\partial B_a}
 \]
 \end{multicols}
-We are looking at the temperature dependence of these properties and finding the critical temperature, $T_C$,  where the phase transition between paramagnetic and ferromagnetic occurs. When $T< T_C$ the system exhibit spontaneous magnetization it is ferromagnetic, but when $T > T_C$ the net magnetization is zero it is paramagnetic. This phase transition is of second order. That means that the correlation length of the system diverges when $T \rightarrow T_C$, it spans the whole system. The correlation length represents the correlation between the spins. It is a spacial unit because it indicates how far away spins can be from each other and still correlate. We can find out that the Ising model exhibits a second-order phase transition since the heat capacity diverges. The temperature dependence of the magnetic susceptibility from mean-field theory is shown in Equation \ref{eq:mag_suscept_T}.
+We are looking at the temperature dependence of these properties and finding the critical temperature, $T_C$,  where the phase transition between paramagnetic and ferromagnetic occurs. When $T< T_C$ the system exhibit spontaneous magnetization, it is ferromagnetic, but when $T > T_C$ the net magnetization is zero, it is paramagnetic. This phase transition is of second order. That means that the correlation length of the system diverges when $T \rightarrow T_C$, it spans the whole system. The correlation length represents the correlation between the spins. It is a spacial unit because it indicates how far away spins can be from each other and still correlate. We can find out that the Ising model exhibits a second-order phase transition since the heat capacity diverges. The temperature dependence of the magnetic susceptibility from mean-field theory is shown in Equation \ref{eq:mag_suscept_T}.
 
 \begin{equation}\label{eq:mag_suscept_T}
 \chi \propto (T-T_C)^{-\gamma}
 \end{equation}
-where $\gamma$ is a critical exponent and is different for different temperatures.
+where $\gamma$ is a critical exponent and is different for different materials.
 
 The critical temperature for finite lattices is lattice dependent, the result for finite lattice sizes is related to the critical temperature for the infinite lattice by Equation \ref{eq:critical_T}.
 
@@ -82,7 +82,7 @@ T_C(L) - T_C(L=\infty) = a L^{-1/\nu}
 Here are the calculation of the analytical values for the system where $L$=2. These were used as benchmark calculations for the numerical calculations.
 
 \begin{table}[H]
-	\caption{This table lists the possible states and their accompanying energies when $L$=2 The full list of energies without degeneration is in Table \ref{tab:micro_energies}.}
+	\caption{This table lists the possible states and their accompanying energies when $L$=2 The full list of energies without degeneration is in Table \ref{tab:micro_energies} in the Appendix.}
 	\label{tab:macro_energies}
 \begin{tabular}{cccccc}
 	\input{../results/table_makro.tex}
