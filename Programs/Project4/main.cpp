@@ -118,6 +118,7 @@ int main(int argc, char* argv[]){
     //temperatures = vec({2,2,2.3,2.4,2.5});
     //vec Ls = vec({100});
 
+
     randomStart = true;
     writeEveryMC = false ;
     writeWhenFinish = false;

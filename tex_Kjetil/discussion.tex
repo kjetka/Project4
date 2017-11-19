@@ -4,25 +4,22 @@
 
 \subsection{The L=2 case}
 
-Hvorfor $ \langle \abs{M} \rangle $ flukturere mer enn $ \langle {M} \rangle $?
-	Se forelesningsnotat for kommentar + diskusjon!
+The mean magnetic moment is fluctuating more than the mean absolute magnetic moment, see figure \ref{fig:l2magmagabs}. A small system  is strongly dependent on the periodic boundary conditions, meaning that for the L=2 system, three out of four spins determine each $ E_i $, linking them strongly together. This again means that if one spin changes, this very quickly have consequences for all the other spins. As this effect is expected to be lower at larger lattices, the smear out results of $ \langle \abs{M}\rangle$ is prefered to $ \langle {M}\rangle$ for calculating the magnetic susceptibility. 
+
+Figure \ref{fig:l2energy} shows that the $ \langle E \rangle $ stabilizes at a lower value than the analytically calculated value, an effect also seen by the behaviour of $ \chi  $ and $ C_V $. The plots show the clear trend of the statistical development of the system to the most likely state, but it also shows that  Monte Carlo methods will not give exact answers. However the error is in the fourth digit and give a good approximation of the analytical value. Due to the random acceptance of less likely states, fluctuation is also seen.
+
+It is also clear that the microscopic property of $ \langle M \rangle  $ is correlated to $\langle E \rangle  $, as expected from equation \ref{eq: Energy_Ising}.
+
 \subsection{The L=20 system}
 
+From the plots of the mean magnetization and energy for different temperatures, figures \ref{fig:her}, it is clear that the equilibration time is not identical for different temperatures. This  is probably partly due to the fact that higher temperatures fluctuates more, both while converging towards equilibrium and at the equilibrium. In order to be safe, a equilibration time of $ 2\E{5} $, corresponding to that of the highest temperature, and $ T = 2.4 $. This time corresponds to $ 0.2\cdot 10^6 $ Monte Carlo cycles, an important number when computing in parallel the way we chose to. As each thread calculated $ 10^6 $  Monte Carlo cycles, the equilibration time corresponds to only $ 20\% $ of the total amount of calculations. This means that the majority of each thread is at equilibrium when collecting the different parallel simulations.
 
-
-
-
-
-\subsubsection{Equilibrium time  for the random L=20 system}
-
-
-
-\subsubsection{Probability distrubition  for the L=20 system}
-
-sammenligne fluks
+As the temperature increases, the likelihood that the system will change  energy at equilibrium increases. This is due to inherent properties of the Boltzmann distribution. As the temperature increases, the difference between $ e^{-\beta E_i} $ and $ e^{-\beta E_j} $ decreases, resulting in higher variance for high temperatures. In real life, this corresponds to that the average thermal energy of each particle increases. Figure \ref{fig:L20_mag_T_2-4} shows this behaviour as greater fluctuations in both $\langle E \rangle  $, and $\langle M \rangle  $ at higher temperatures. 
+ 
 
 \subsection{Phase transition and Critical temperature}
 
+From equation \ref{eq_CV_analy}
 Diskutere rare plot
 Diskutere bredde Tc peak? Teoridel - se side 431 i kompedium
 
@@ -38,9 +35,9 @@ def. Cv og X - stigningstall!
 
 Around the critical temperature, both the heat capacity and susceptibility fluctuates a lot. 
 
-Timing parallellisering
 
 
+Because of factors like the $MPI_reduce$ function, the speedup is not the ideal $ 0.5 $. 
 
 
 

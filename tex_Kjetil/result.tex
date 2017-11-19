@@ -107,7 +107,7 @@ The behaviour in figure \ref{fig:ranordert2} is a bit more chaotic. The equilibr
 	\label{fig:ranordert2}
 \end{figure}
 
-Figures \ref{fig:her} provides a closer look at the equilibrium behaviour of the L=20 system. The same trend shown  in figure \ref{fig:ranordert1} and \ref{fig:ranordert2} for the behaviour of the system towards equilibrium is here seen around the equilibrium. For temperature T = 1 the fluctuations are small compared to the fluctuations for T =2.4. In addition the mean magnetization and energy is fully converged around $ 0.4\E{6} $, which is slower than the equilibration time of  $ 0.1\E{6} $ for T =1. Both figures  \ref{fig:L20_mag_T_1} and \ref{fig:L20_mag_T_2-4} show that the energy and magnetization is strongly correlated, converging at the approximately the same time.
+Figures \ref{fig:her} provides a closer look at the equilibrium behaviour of the L=20 system. The same trend shown  in figure \ref{fig:ranordert1} and \ref{fig:ranordert2} for the behaviour of the system towards equilibrium is here seen around the equilibrium. For temperature T = 1 the fluctuations are small compared to the fluctuations for T =2.4. In addition the mean magnetization and energy is fully converged around $ 0.2\E{6} $, which is slower than the equilibration time of  $ 0.1\E{6} $ for T =1. Both figures  \ref{fig:L20_mag_T_1} and \ref{fig:L20_mag_T_2-4} show that the energy and magnetization is strongly correlated, converging at the approximately the same time.
 
 	\begin{figure}[H]
 	\begin{subfigure}[b]{0.49\textwidth}
@@ -243,7 +243,7 @@ For the critical temperatures there is no clear trend, see table \ref{tab: T_C}.
 
 
 \subsection{Speedup}
-From table \ref{tab:speedy} it is clear that computing in parallel gives a speedup. The calculations were carried out for  the case of $ L=60 $, two temperatures and a total of $ 10^6 $ MC cycles on a computer with a 2 core i5 processor. This yields a speedup of $ \frac{T_1}{T_2} = 0.598  $
+From table \ref{tab:speedy} it is clear that computing in parallel gives a speedup. The calculations were carried out for  the case of $ L=60 $, two temperatures and a total of $ 10^6 $ MC cycles on a computer with a 2 core i5 processor. This yields a speedup of $ \frac{T_1}{T_2} = 0.598$.  Because of factors like the $MPI_reduce$ function, the speedup is not the ideal $ 0.5 $. 
 
 \begin{table}[H]\caption{Overview of the time spent computing the L=60 system with two temperatures.} \label{tab:speedy}
 	\begin{tabular}{cc}
