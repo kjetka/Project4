@@ -61,23 +61,23 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
     // EXERCISE C
     //----------------------------------------------------
-/*
+
        L = 20;
        MonteCarloCycles = 1e6;
-       writeResolution = 1000;
+       writeResolution = 10000;
        //temperatures = vec({1, 2.4});
        temperatures = vec({1, 2.4});
 
-       randomStart = false;
+       randomStart = true;
        writeEveryMC = true ;
        writeWhenFinish = false;
        writeForTemp = false;
 
       Solver exercisec(L, MonteCarloCycles, writeResolution, NProcesses, RankProcess);
       exercisec.algorithm("4c/c_", temperatures,randomStart,  writeEveryMC, writeWhenFinish, writeForTemp);
-
-     // randomStart = false;
-     // exercisec.algorithm("4c/c_", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
+/*
+      randomStart = false;
+      exercisec.algorithm("4c/c_", temperatures,randomStart,   writeEveryMC, writeWhenFinish, writeForTemp);
 */
     //----------------------------------------------------
     // EXERCISE D
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]){
     //----------------------------------------------------
 
 
-
+/*
     MonteCarloCycles = 1.5e6; //must be much smaller than the thermalization time
     writeResolution = 1;
     //temperatures = linspace<vec>(2.0, 2.3, 15);
@@ -131,7 +131,7 @@ int main(int argc, char* argv[]){
         exercisee.algorithm(name, temperatures,randomStart, writeEveryMC, writeWhenFinish, writeForTemp);
 
     }
-
+*/
     // End timing
     TimeEnd = MPI_Wtime();
     TotalTime = TimeEnd-TimeStart;

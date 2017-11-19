@@ -14,7 +14,7 @@ for temp in [1,2.4]:
     output = Popen(["ls"], stdout=PIPE).communicate()[0]
     files = re.findall("c_T_%i.*\.txt" %temp,output,re.IGNORECASE)
 
-
+    print files
     for file in files:
         with open(file,"r") as infile:
             data = {}
@@ -32,7 +32,7 @@ for temp in [1,2.4]:
             for key in data.keys():
                 data[key] = array(data[key])
 
-            print data.keys()
+            #print data.keys()
 
 
 
@@ -43,12 +43,23 @@ for temp in [1,2.4]:
             figure(i)
             title("$\langle E\\rangle$ for ordered and random initial spins, T = %.1f"%temp)
 
-            plot(data["MCcycles"][1:], data["E"][1:], label = labell)
+            plot(data["MCcycles"], data["E"], label = labell)
             #ylim([-1.998, -1.990])
             #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
             xscale('log')
             xlabel('Monte Carlo cycles')     
-            ylabel('Energy')
+            ylabel('Energy $ E_{kl}$')
+            
+
+            figure(i+10)
+            title("$\langle E\\rangle$ for ordered and random initial spins, T = %.1f"%temp)
+            plot(data["MCcycles"][100:], data["E"][100:], label = labell)
+            #ylim([-1.998, -1.990])
+            #yticks( [-1.998, -1.997,-1.996, -1.995, -1.994, -1.993, -1.992, -1.991 ,  -1.990])
+            xscale('log')
+            xlabel('Monte Carlo cycles')     
+            ylabel('Energy $ E_{kl}$')
+
             #ticklabel_format(style='sci',scilimits=(-3,3),axis='x')
     figure(i)
     if temp == 1:
@@ -57,10 +68,20 @@ for temp in [1,2.4]:
     else:
         legend(loc = 4)
     rcParams['font.size'] = 14
-
+    tight_layout()
     savefig('ran_order_T%i.pdf'%temp)   
 
+    figure(i+10)
+    rcParams['font.size'] = 14
+    tight_layout()
+
+    savefig('ran_order_T_zoom%i.pdf'%temp)   
+
+
+
 MCcycles,E,E2, M,M2,Mabs,accepted,X,Cv = loadtxt("c_T_1.0L_20.txt",unpack=True, skiprows=2)
+
+figure()
 plot(MCcycles, E, 'b', label = "ordered initial spin system")
 
 ylabel('Energy $E_{kl}$')
@@ -77,7 +98,7 @@ title('$\\langle E \\rangle $ for ordered initial system at T=1 ')
 tight_layout()
 savefig('order_T1_start.pdf')
 
-
+show()
 
 
 

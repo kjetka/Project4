@@ -65,13 +65,11 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
             if (randomStart) Filename += "_random";
             if (RankProcess == 0){
                 outfile.open("../../results/" + Filename + ".txt");
-                cout << "open "<< Temperature <<endl;
             }
         }
 
         if (writeEveryMC && (RankProcess == 0)){
             writeHeader(outfile,  MonteCarloCycles, Temperature, randomStart);
-            cout << "header ";
             cout << RankProcess <<endl;
         }
         // ---------------------------------------------------------
@@ -197,7 +195,6 @@ void Solver::algorithm(string folderFilename, vec temperatures, bool randomStart
 
     if (RankProcess == 0 && (writeWhenFinish || writeEveryMC)){
         outfile.close();
-        cout << "close"<<endl;
     }
         if (writeForTemp){
             for( int i =0; i < 5; i++){

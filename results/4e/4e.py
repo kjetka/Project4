@@ -83,7 +83,7 @@ for txtfile in txtfiles:
         """
  
 
-"""
+
 figure(1)
 legend(loc = 2)
 title(r'$ \langle E \rangle$ as function of system size and temperature ')
@@ -98,19 +98,19 @@ savefig('4e_mag.pdf')
 
 figure(3)
 legend()
-title('Susceptibility as function of system size and temperature ')
+title('Susceptibility for different L and temperatures ')
 rcParams['font.size'] = 14
 
 savefig('4e_x.pdf')
 
 figure(4)
-title('Heat capacity as function of system size and temperature ')
+title('Heat capacity for different L and temperatures ')
 legend()
 rcParams['font.size'] = 14
 
 savefig('4e_Cv.pdf')
 
-"""
+
 
 
 
@@ -132,7 +132,7 @@ for i in range(len(L_liste)):
 file = open('../table_T_C.tex','w+')
 file.write(' L & $T_C$ \\\\ \\hline    \n    ')
 for i in range(len(L_liste)):
-    file.write( " %s & %.2f \\\\ \n" %(L_liste[i],T_C_CV_list[i]))
+    file.write( " %s & %.3f \\\\ \n" %(L_liste[i],T_C_CV_list[i]))
 """
 L1 = float(L_liste[-1])
 L2 = float(L_liste[-2])
